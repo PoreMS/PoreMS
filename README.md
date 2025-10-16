@@ -1,22 +1,22 @@
-<img src="https://github.com/Ajax23/PoreMS/blob/master/docsrc/pics/logo_text_sub.svg" width="60%">
+<img src="https://github.com/porems/PoreMS/blob/main/docsrc/pics/logo_text_sub.svg" width="60%">
 
 --------------------------------------
 
 [![PyPI Version](https://img.shields.io/badge/PyPI-0.3.0-orange)](https://pypi.org/project/porems/)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/PoreMS/PoreMS/blob/master/LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/PoreMS/PoreMS/blob/main/LICENSE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14028652.svg)](https://doi.org/10.5281/zenodo.14028652)
 [![Build Status](https://github.com/PoreMS/PoreMS/actions/workflows/workflow.yml/badge.svg)](https://github.com/PoreMS/PoreMS/actions/workflows/workflow.yml)
-[![codecov](https://codecov.io/gh/PoreMS/PoreMS/branch/master/graph/badge.svg)](https://codecov.io/gh/PoreMS/PoreMS)
+[![codecov](https://codecov.io/gh/PoreMS/PoreMS/branch/main/graph/badge.svg)](https://codecov.io/gh/PoreMS/PoreMS)
 
 ## Documentation
 
-Online documentation is available at [ajax23.github.io/PoreMS](https://ajax23.github.io/PoreMS/).
+Online documentation is available at [porems.github.io/PoreMS](https://porems.github.io/PoreMS/).
 
-<img src="https://github.com/Ajax23/PoreMS/blob/master/docsrc/pics/pore.svg" width="60%">
+<img src="https://github.com/porems/PoreMS/blob/main/docsrc/pics/pore.svg" width="60%">
 
-The docs include an example for generating [molecules](https://ajax23.github.io/PoreMS/molecule.html) and [pores](https://ajax23.github.io/PoreMS/pore.html), and an [API reference](https://ajax23.github.io/PoreMS/api.html). Visit [process](https://ajax23.github.io/PoreMS/process.html) for an overview of the programs operating principle.
+The docs include an example for generating [molecules](https://porems.github.io/PoreMS/molecule.html) and [pores](https://porems.github.io/PoreMS/pore.html), and an [API reference](https://porems.github.io/PoreMS/api.html). Visit [process](https://porems.github.io/PoreMS/process.html) for an overview of the programs operating principle.
 
-An examplary [workflow](https://ajax23.github.io/PoreMS/workflow.html) has been provided for using the PoreMS package to create a pore system and run molecular dynamics simulation using [Gromacs](http://www.gromacs.org/).
+An examplary [workflow](https://porems.github.io/PoreMS/workflow.html) has been provided for using the PoreMS package to create a pore system and run molecular dynamics simulation using [Gromacs](http://www.gromacs.org/).
 
 ## Dependencies
 
@@ -33,9 +33,9 @@ The latest stable release (and older versions) can be installed from PyPI:
 
 You may instead want to use the development version from Github:
 
-    pip install git+https://github.com/ajax23/porems.git#egg=porems
+    pip install git+https://github.com/porems/porems.git#egg=porems
 
-    pip install git+https://github.com/ajax23/porems.git@develop#egg=porems
+    pip install git+https://github.com/porems/porems.git@develop#egg=porems
 
 Or download the repository and install in the top directory via:
 
@@ -49,9 +49,9 @@ To test porems, run the test in the test directory.
 
 ## Development
 
-PoreMS development takes place on Github: [www.github.com/Ajax23/PoreMS](https://github.com/Ajax23/PoreMS)
+PoreMS development takes place on Github: [www.github.com/porems/PoreMS](https://github.com/porems/PoreMS)
 
-Please submit any reproducible bugs you encounter to the [issue tracker](https://github.com/Ajax23/PoreMS/issues).
+Please submit any reproducible bugs you encounter to the [issue tracker](https://github.com/porems/PoreMS/issues).
 
 
 ## How to Cite PoreMS
