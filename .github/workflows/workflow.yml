@@ -30,4 +30,4 @@ jobs:
       uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        slug: PoreMS/PoreAna
+        slug: PoreMS/PoreMS
