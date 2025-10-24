@@ -1,4 +1,4 @@
-# v0.3.0
+# v0.4.0
 * New version due to a change of GitHub organisation.
 * Option in the 'attach' function to force molecules to be added only to single binding sites.
 
