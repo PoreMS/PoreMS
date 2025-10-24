@@ -68,10 +68,7 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Pore</a><ul>
-<li><a class="reference internal" href="#porems.pore.Pore"><code class="docutils literal notranslate"><span class="pre">Pore</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#">Pore</a></li>
 </ul>
 </ul>
 </li>
@@ -101,10 +98,7 @@
   <div class="row">
       <div class="col-md-3">
         <div id="sidebar" class="bs-sidenav" role="complementary"><ul>
-<li><a class="reference internal" href="#">Pore</a><ul>
-<li><a class="reference internal" href="#porems.pore.Pore"><code class="docutils literal notranslate"><span class="pre">Pore</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#">Pore</a></li>
 </ul>
 
 <div id="sourcelink">
@@ -125,85 +119,6 @@
   </div>
 <div class=col-md-9 content><section id="pore">
 <h1>Pore<a class="headerlink" href="#pore" title="Link to this heading">¶</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="porems.pore.Pore">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">porems.pore.</span></span><span class="sig-name descname"><span class="pre">Pore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">block</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.pore.Pore" title="Link to this definition">¶</a></dt>
-<dd><p>This class prepares and converts a given molecule block into a pore
-system.</p>
-<p>Methods are provided for preparing the surface according to procedures
-described in literature and for functionalizing the surface with any desired
-molecule objects.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>block</strong><span class="classifier">Molecule</span></dt><dd><p>Block molecule to be prepared as a pore</p>
-</dd>
-<dt><strong>matrix</strong><span class="classifier">Matrix</span></dt><dd><p>Matrix object containing all bond information of given block molecule</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="porems.pore.Pore.amorph.html#porems.pore.Pore.amorph" title="porems.pore.Pore.amorph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">amorph</span></code></a>([dist, accept, trials])</p></td>
-<td><p>Make Structure amorphous.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="porems.pore.Pore.attach.html#porems.pore.Pore.attach" title="porems.pore.Pore.attach"><code class="xref py py-obj docutils literal notranslate"><span class="pre">attach</span></code></a>(mol, mount, axis, sites, amount[, ...])</p></td>
-<td><p>Attach molecules on the surface.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="porems.pore.Pore.exterior.html#porems.pore.Pore.exterior" title="porems.pore.Pore.exterior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exterior</span></code></a>()</p></td>
-<td><p>Create an exterior surface for reservoir attachement.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="porems.pore.Pore.fill_sites.html#porems.pore.Pore.fill_sites" title="porems.pore.Pore.fill_sites"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fill_sites</span></code></a>(sites, site_type)</p></td>
-<td><p>Fill list of given sites that are empty with silanol and geminal silanol molecules, respectively.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="porems.pore.Pore.get_block.html#porems.pore.Pore.get_block" title="porems.pore.Pore.get_block"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_block</span></code></a>()</p></td>
-<td><p>Return the block molecule.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="porems.pore.Pore.get_box.html#porems.pore.Pore.get_box" title="porems.pore.Pore.get_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_box</span></code></a>()</p></td>
-<td><p>Return the box size of the pore.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="porems.pore.Pore.get_mol_dict.html#porems.pore.Pore.get_mol_dict" title="porems.pore.Pore.get_mol_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_mol_dict</span></code></a>()</p></td>
-<td><p>Return the dictionary of all molecules.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="porems.pore.Pore.get_name.html#porems.pore.Pore.get_name" title="porems.pore.Pore.get_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_name</span></code></a>()</p></td>
-<td><p>Return the pore name.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="porems.pore.Pore.get_num_in_ex.html#porems.pore.Pore.get_num_in_ex" title="porems.pore.Pore.get_num_in_ex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_num_in_ex</span></code></a>()</p></td>
-<td><p>Return the number of geminal si-binding sites that have one OH on the interior surface and on on the exterior surface.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="porems.pore.Pore.get_site_dict.html#porems.pore.Pore.get_site_dict" title="porems.pore.Pore.get_site_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_site_dict</span></code></a>()</p></td>
-<td><p>Return the molecule dictionary with site type differentiation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="porems.pore.Pore.get_sites.html#porems.pore.Pore.get_sites" title="porems.pore.Pore.get_sites"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_sites</span></code></a>()</p></td>
-<td><p>Return the binding sites dictionary.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="porems.pore.Pore.objectify.html#porems.pore.Pore.objectify" title="porems.pore.Pore.objectify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">objectify</span></code></a>(atoms)</p></td>
-<td><p>Create molecule objects of specified list of atoms.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="porems.pore.Pore.prepare.html#porems.pore.Pore.prepare" title="porems.pore.Pore.prepare"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepare</span></code></a>()</p></td>
-<td><p>For the purpose of ensuring chemical propriety, the carved out surface needs to be processed based on a set of rules as proposed by Coasne et al. (2008).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="porems.pore.Pore.reservoir.html#porems.pore.Pore.reservoir" title="porems.pore.Pore.reservoir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reservoir</span></code></a>(size)</p></td>
-<td><p>Create a reservoir with given length on each side of pore system.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="porems.pore.Pore.set_box.html#porems.pore.Pore.set_box" title="porems.pore.Pore.set_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_box</span></code></a>(box)</p></td>
-<td><p>Set the box size.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="porems.pore.Pore.set_name.html#porems.pore.Pore.set_name" title="porems.pore.Pore.set_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_name</span></code></a>(name)</p></td>
-<td><p>Set the pore name.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="porems.pore.Pore.siloxane.html#porems.pore.Pore.siloxane" title="porems.pore.Pore.siloxane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">siloxane</span></code></a>(sites, amount[, slx_dist, trials, ...])</p></td>
-<td><p>Attach siloxane bridges on the surface similar to Krishna et al. (2009).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="porems.pore.Pore.sites.html#porems.pore.Pore.sites" title="porems.pore.Pore.sites"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sites</span></code></a>()</p></td>
-<td><p>Create binding site dictionary of the format</p></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 </section>
 
 

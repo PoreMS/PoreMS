@@ -10,38 +10,35 @@ PoreAmorphCylinder
 
 .. autoclass:: PoreAmorphCylinder
 
-   
 
-   
-   .. rubric:: Methods
+  .. rubric:: Attachement
 
-   .. autosummary::
-   
-      ~PoreAmorphCylinder._normal_ex
-      ~PoreAmorphCylinder._siloxane
-      ~PoreAmorphCylinder.add_shape
-      ~PoreAmorphCylinder.allocation
-      ~PoreAmorphCylinder.attach
-      ~PoreAmorphCylinder.attach_special
-      ~PoreAmorphCylinder.box
-      ~PoreAmorphCylinder.build
-      ~PoreAmorphCylinder.centroid
-      ~PoreAmorphCylinder.diameter
-      ~PoreAmorphCylinder.exterior
-      ~PoreAmorphCylinder.finalize
-      ~PoreAmorphCylinder.prepare
-      ~PoreAmorphCylinder.reservoir
-      ~PoreAmorphCylinder.roughness
-      ~PoreAmorphCylinder.shape
-      ~PoreAmorphCylinder.shape_cone
-      ~PoreAmorphCylinder.shape_cylinder
-      ~PoreAmorphCylinder.shape_slit
-      ~PoreAmorphCylinder.shape_sphere
-      ~PoreAmorphCylinder.store
-      ~PoreAmorphCylinder.structure
-      ~PoreAmorphCylinder.surface
-      ~PoreAmorphCylinder.table
-      ~PoreAmorphCylinder.volume
-      ~PoreAmorphCylinder.yml
-   
-   
+  .. autosummary::
+
+    ~PoreAmorphCylinder.attach
+    ~PoreAmorphCylinder.attach_special
+
+
+  .. rubric:: Analysis
+
+  .. autosummary::
+
+    ~PoreAmorphCylinder.allocation
+    ~PoreAmorphCylinder.box
+    ~PoreAmorphCylinder.centroid
+    ~PoreAmorphCylinder.diameter
+    ~PoreAmorphCylinder.reservoir
+    ~PoreAmorphCylinder.roughness
+    ~PoreAmorphCylinder.shape
+    ~PoreAmorphCylinder.surface
+    ~PoreAmorphCylinder.table
+    ~PoreAmorphCylinder.volume
+
+
+  .. rubric:: Finalization
+
+  .. autosummary::
+
+    ~PoreAmorphCylinder.finalize
+    ~PoreAmorphCylinder.store
+    ~PoreAmorphCylinder.yml

@@ -5,13 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="porems",
-    version="0.3.0",
+    version="0.4.0",
     author="Hamzeh Kraus",
     author_email="kraus@itt.uni-stuttgart.de",
     description="Pore Generator for Molecular Simulations.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Ajax23/PoreMS",
+    url="https://github.com/porems/PoreMS",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

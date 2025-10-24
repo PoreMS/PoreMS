@@ -1,4 +1,9 @@
-# v0.3.0 (Upcoming)
+# v0.3.0
+* New version due to a change of GitHub organisation.
+* Option in the 'attach' function to force molecules to be added only to single binding sites.
+
+
+# v0.3.0
 * Reworked generation methodology for easier shape combination and pattern usage
 * Added new alpha-cristobalite pattern
 * Generalization of connectivity search

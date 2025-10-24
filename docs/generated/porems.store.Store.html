@@ -155,32 +155,37 @@ files can be generated like following examples</p>
 <span class="n">Store</span><span class="p">(</span><span class="n">pore</span><span class="p">,</span> <span class="s2">&quot;output&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">gro</span><span class="p">(</span><span class="s2">&quot;pore.gro&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="rubric">Methods</p>
+<p class="rubric">Structure Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="porems.store.Store.gro.html#porems.store.Store.gro" title="porems.store.Store.gro"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gro</span></code></a>([name, use_atom_names])</p></td>
+<td><p>Generate the structure file for the defined molecule in the <strong>GRO</strong> format.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="porems.store.Store.pdb.html#porems.store.Store.pdb" title="porems.store.Store.pdb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdb</span></code></a>([name, use_atom_names])</p></td>
+<td><p>Generate the structure file for the defined molecule in the <strong>PDB</strong> format.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="porems.store.Store.lmp.html#porems.store.Store.lmp" title="porems.store.Store.lmp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lmp</span></code></a>([name])</p></td>
+<td><p>Generate the structure file for the defined molecule in the LAMMPS format.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="porems.store.Store.xyz.html#porems.store.Store.xyz" title="porems.store.Store.xyz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xyz</span></code></a>([name, use_atom_names])</p></td>
+<td><p>Generate the structure file for the defined molecule in the <strong>XYZ</strong> format for running qm-simulations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="porems.store.Store.obj.html#porems.store.Store.obj" title="porems.store.Store.obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obj</span></code></a>([name])</p></td>
+<td><p>Save the molecule object or the dictionary of those using pickle.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="porems.store.Store.job.html#porems.store.Store.job" title="porems.store.Store.job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">job</span></code></a>([name, master])</p></td>
+<td><p>Create job file to run with Antechamber.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Topology Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="porems.store.Store.grid.html#porems.store.Store.grid" title="porems.store.Store.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code></a>([name, charges])</p></td>
 <td><p>Store the <strong>grid.itp</strong> file containing the necessary parameters and charges of the grid molecules.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="porems.store.Store.gro.html#porems.store.Store.gro" title="porems.store.Store.gro"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gro</span></code></a>([name, use_atom_names])</p></td>
-<td><p>Generate the structure file for the defined molecule in the <strong>GRO</strong> format.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="porems.store.Store.job.html#porems.store.Store.job" title="porems.store.Store.job"><code class="xref py py-obj docutils literal notranslate"><span class="pre">job</span></code></a>([name, master])</p></td>
-<td><p>Create job file to run with Antechamber.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="porems.store.Store.lmp.html#porems.store.Store.lmp" title="porems.store.Store.lmp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lmp</span></code></a>([name])</p></td>
-<td><p>Generate the structure file for the defined molecule in the LAMMPS format.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="porems.store.Store.obj.html#porems.store.Store.obj" title="porems.store.Store.obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obj</span></code></a>([name])</p></td>
-<td><p>Save the molecule object or the dictionary of those using pickle.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="porems.store.Store.pdb.html#porems.store.Store.pdb" title="porems.store.Store.pdb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdb</span></code></a>([name, use_atom_names])</p></td>
-<td><p>Generate the structure file for the defined molecule in the <strong>PDB</strong> format.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="porems.store.Store.top.html#porems.store.Store.top" title="porems.store.Store.top"><code class="xref py py-obj docutils literal notranslate"><span class="pre">top</span></code></a>([name])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="porems.store.Store.top.html#porems.store.Store.top" title="porems.store.Store.top"><code class="xref py py-obj docutils literal notranslate"><span class="pre">top</span></code></a>([name])</p></td>
 <td><p>Store the <strong>topology</strong> file for a pore.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="porems.store.Store.xyz.html#porems.store.Store.xyz" title="porems.store.Store.xyz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xyz</span></code></a>([name, use_atom_names])</p></td>
-<td><p>Generate the structure file for the defined molecule in the <strong>XYZ</strong> format for running qm-simulations.</p></td>
 </tr>
 </tbody>
 </table>

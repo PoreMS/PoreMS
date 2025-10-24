@@ -10,21 +10,23 @@ AlphaCristobalit
 
 .. autoclass:: AlphaCristobalit
 
-   
 
-   
-   .. rubric:: Methods
+  .. rubric:: Block Generation
 
-   .. autosummary::
-   
-      ~AlphaCristobalit._block
-      ~AlphaCristobalit._orientation
-      ~AlphaCristobalit.generate
-      ~AlphaCristobalit.get_block
-      ~AlphaCristobalit.get_gap
-      ~AlphaCristobalit.get_orient
-      ~AlphaCristobalit.get_repeat
-      ~AlphaCristobalit.get_size
-      ~AlphaCristobalit.pattern
-   
-   
+  .. autosummary::
+
+    ~AlphaCristobalit._block
+    ~AlphaCristobalit._orientation
+    ~AlphaCristobalit.generate
+    ~AlphaCristobalit.pattern
+
+
+  .. rubric:: Getter Methods
+
+  .. autosummary::
+
+    ~AlphaCristobalit.get_block
+    ~AlphaCristobalit.get_gap
+    ~AlphaCristobalit.get_orient
+    ~AlphaCristobalit.get_repeat
+    ~AlphaCristobalit.get_size

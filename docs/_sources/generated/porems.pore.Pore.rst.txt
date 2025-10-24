@@ -6,35 +6,52 @@
 Pore
 ====
 
-.. currentmodule:: porems.pore
-
 .. autoclass:: Pore
 
-   
 
-   
-   .. rubric:: Methods
+  .. rubric:: Surface preperation
 
-   .. autosummary::
-   
+  .. autosummary::
 
-      ~Pore.amorph
-      ~Pore.attach
-      ~Pore.exterior
-      ~Pore.fill_sites
-      ~Pore.get_block
-      ~Pore.get_box
-      ~Pore.get_mol_dict
-      ~Pore.get_name
-      ~Pore.get_num_in_ex
-      ~Pore.get_site_dict
-      ~Pore.get_sites
-      ~Pore.objectify
-      ~Pore.prepare
-      ~Pore.reservoir
-      ~Pore.set_box
-      ~Pore.set_name
-      ~Pore.siloxane
-      ~Pore.sites
-   
-   
+    ~Pore.amorph
+    ~Pore.exterior
+    ~Pore.prepare
+    ~Pore.sites
+
+
+  .. rubric:: Attachement
+
+  .. autosummary::
+
+    ~Pore.attach
+    ~Pore.siloxane
+    ~Pore.fill_sites
+
+
+  .. rubric:: Finalization
+
+  .. autosummary::
+
+    ~Pore.objectify
+    ~Pore.reservoir
+
+
+  .. rubric:: Setter Methods
+
+  .. autosummary::
+
+    ~Pore.set_box
+    ~Pore.set_name
+
+
+  .. rubric:: Getter Methods
+
+  .. autosummary::
+
+    ~Pore.get_block
+    ~Pore.get_box
+    ~Pore.get_name
+    ~Pore.get_num_in_ex
+    ~Pore.get_sites
+    ~Pore.get_mol_dict
+    ~Pore.get_site_dict

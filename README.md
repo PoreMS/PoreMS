@@ -2,7 +2,7 @@
 
 --------------------------------------
 
-[![PyPI Version](https://img.shields.io/badge/PyPI-0.3.0-orange)](https://pypi.org/project/porems/)
+[![PyPI Version](https://img.shields.io/badge/PyPI-0.4.0-orange)](https://pypi.org/project/porems/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/PoreMS/PoreMS/blob/main/LICENSE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14028652.svg)](https://doi.org/10.5281/zenodo.14028652)
 [![Build Status](https://github.com/PoreMS/PoreMS/actions/workflows/workflow.yml/badge.svg)](https://github.com/PoreMS/PoreMS/actions/workflows/workflow.yml)
