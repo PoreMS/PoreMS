@@ -10,22 +10,24 @@ BetaCristobalit
 
 .. autoclass:: BetaCristobalit
 
-   
 
-   
-   .. rubric:: Methods
+  .. rubric:: Block Generation
 
-   .. autosummary::
-   
-      ~BetaCristobalit._block
-      ~BetaCristobalit._hexagonal
-      ~BetaCristobalit._orientation
-      ~BetaCristobalit.generate
-      ~BetaCristobalit.get_block
-      ~BetaCristobalit.get_gap
-      ~BetaCristobalit.get_orient
-      ~BetaCristobalit.get_repeat
-      ~BetaCristobalit.get_size
-      ~BetaCristobalit.pattern
-   
-   
+  .. autosummary::
+
+    ~BetaCristobalit._block
+    ~BetaCristobalit._hexagonal
+    ~BetaCristobalit._orientation
+    ~BetaCristobalit.generate
+    ~BetaCristobalit.pattern
+
+
+  .. rubric:: Getter Methods
+
+  .. autosummary::
+
+    ~BetaCristobalit.get_block
+    ~BetaCristobalit.get_gap
+    ~BetaCristobalit.get_orient
+    ~BetaCristobalit.get_repeat
+    ~BetaCristobalit.get_size

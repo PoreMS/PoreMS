@@ -10,15 +10,16 @@ Shape
 
 .. autoclass:: Shape
 
-   
 
-   
-   .. rubric:: Methods
+  .. rubric:: Helper Methods
 
-   .. autosummary::
-   
-      ~Shape.convert
-      ~Shape.get_inp
-      ~Shape.plot
-   
-   
+  .. autosummary::
+
+    ~Shape.convert
+    ~Shape.plot
+
+  .. rubric:: Getter Methods
+
+  .. autosummary::
+
+    ~Shape.get_inp

@@ -10,17 +10,21 @@ Matrix
 
 .. autoclass:: Matrix
 
-   
 
-   
-   .. rubric:: Methods
+  .. rubric:: Management
 
-   .. autosummary::
-   
+  .. autosummary::
+
       ~Matrix.add
       ~Matrix.bound
-      ~Matrix.get_matrix
       ~Matrix.split
       ~Matrix.strip
+
+
+  .. rubric:: Getter Methods
+
+  .. autosummary::
+
+      ~Matrix.get_matrix
    
    

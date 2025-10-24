@@ -10,20 +10,22 @@ Store
 
 .. autoclass:: Store
 
-   
 
-   
-   .. rubric:: Methods
+  .. rubric:: Structure Methods
 
-   .. autosummary::
-   
-      ~Store.grid
-      ~Store.gro
-      ~Store.job
-      ~Store.lmp
-      ~Store.obj
-      ~Store.pdb
-      ~Store.top
-      ~Store.xyz
-   
-   
+  .. autosummary::
+
+    ~Store.gro
+    ~Store.pdb
+    ~Store.lmp
+    ~Store.xyz
+    ~Store.obj
+    ~Store.job
+
+
+  .. rubric:: Topology Methods
+
+  .. autosummary::
+
+    ~Store.grid
+    ~Store.top
