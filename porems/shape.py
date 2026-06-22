@@ -8,7 +8,6 @@
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits import mplot3d
 
 import porems.utils as utils
 import porems.geometry as geometry

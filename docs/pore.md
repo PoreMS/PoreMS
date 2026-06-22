@@ -1,7 +1,3 @@
----
-orphan: true
----
-
 # Generate a Pore
 
 This section illustrates how to create a cylindric pore and functionalize the surface as described in the supporting information of Kraus et al. (2020). The PoreMS package can be imported using

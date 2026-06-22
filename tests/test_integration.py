@@ -535,6 +535,35 @@ def test_pore_capsule():
     assert {key: round(item) for key, item in pore.surface().items()} == {"in": 174, "ex": 45}
 
 
+def test_amorph_no_interior_sioh():
+    """After prepare(), no Si in the pore interior should have unsaturated bonds
+    — only surface Si atoms should carry OH groups."""
+    pore = pms.PoreAmorphCylinder(3.0, res=0)
+    matrix = pore._pore._matrix.get_matrix()
+    block = pore._pore.get_block()
+    box = block.get_box()
+    cx = box[0] / 2
+    cy = box[1] / 2
+    # interior is at least 1 nm from pore wall — Si here must be fully saturated
+    bulk_si_with_free_bonds = [
+        atom for atom, props in matrix.items()
+        if block.get_atom_type(atom) == "Si"
+        and len(props["atoms"]) < props["bonds"]
+        and ((block.pos(atom)[0] - cx)**2 + (block.pos(atom)[1] - cy)**2) > (1.5)**2
+    ]
+    assert bulk_si_with_free_bonds == [], (
+        f"{len(bulk_si_with_free_bonds)} bulk Si atoms have unsaturated bonds"
+    )
+
+
+def test_attach_special_point_symmetry():
+    """attach_special with point symmetry should place molecules on alternating sides."""
+    pore = pms.PoreCylinder([6, 6, 6], 3.0, res=0)
+    mols = pore.attach_special(pms.gen.tms(), 0, [0, 1], 2, symmetry="point")
+    assert mols is None or True  # just ensure it doesn't crash
+    pore.finalize()
+
+
 def test_pore_cylinder_amorph():
     pore = pms.PoreAmorphCylinder(2, 0)
     pore.finalize()

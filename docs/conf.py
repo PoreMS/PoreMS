@@ -30,11 +30,11 @@ source_suffix = {'.md': 'myst', '.rst': 'restructuredtext'}
 master_doc = 'index'
 
 project = 'PoreMS'
-copyright = '2024, Hamzeh Kraus'
+copyright = '2026, Hamzeh Kraus'
 author = 'Hamzeh Kraus'
 
-version = '0.4'
-release = '0.4.0'
+version = '0.5'
+release = '0.5.0'
 
 language = 'en'
 
@@ -52,7 +52,10 @@ html_theme_options = {
     'dark_logo': 'logo_text.svg',
 }
 
-html_static_path = ['_static']
+html_favicon = 'favicon.ico'
+
+# _static holds favicon, style, etc.; pics holds logo SVGs (served at _static/ root after build)
+html_static_path = ['_static', 'pics']
 
 htmlhelp_basename = 'PoreMSdoc'
 

@@ -71,8 +71,11 @@ class Pore():
                     self._matrix.strip(atom)
 
         # Remove silicon atoms with three unsaturated oxygen atoms
-        while 3 in Counter(sum([self._matrix.get_matrix()[atom]["atoms"] for atom in self._matrix.bound(1)], [])).values():
-            si_count = Counter(sum([self._matrix.get_matrix()[atom]["atoms"] for atom in self._matrix.bound(1)], []))
+        while True:
+            o_list = self._matrix.bound(1)
+            si_count = Counter(sum([self._matrix.get_matrix()[o]["atoms"] for o in o_list], []))
+            if 3 not in si_count.values():
+                break
             for si, count in si_count.items():
                 if count >= 3:
                     self._matrix.strip(si)
@@ -95,26 +98,25 @@ class Pore():
         # Run through atoms that have bond partners
         for atom_id in self._matrix.bound(0, "gt"):
             # Store original position for trial displacements
-            atom_temp_pos = list(self._block.pos(atom_id))
+            orig_pos = list(self._block.pos(atom_id))
 
             # Run through trials
-            for i in range(trials):
-                # Create random displacement vector
-                disp_vec = [random.uniform(-dist, dist) for x in range(self._dim)]
-                disp_pos = [atom_temp_pos[x]+disp_vec[x] for x in range(self._dim)]
+            for _ in range(trials):
+                # Create random displacement vector and apply it tentatively
+                disp_vec = [random.uniform(-dist, dist) for _ in range(self._dim)]
+                trial_pos = [orig_pos[x] + disp_vec[x] for x in range(self._dim)]
+                self._block.put(atom_id, trial_pos)
 
-                # Calculate new bond lengths
-                is_disp = True
-                for bond in connect[atom_id]["atoms"]:
-                    bond_length = geometry.length(self._block.bond(atom_id, bond))
-                    if bond_length < accept[0] or bond_length > accept[1]:
-                        is_disp = False
-                        break
+                # Calculate new bond lengths after displacement
+                ok = all(
+                    accept[0] <= geometry.length(self._block.bond(atom_id, bond)) <= accept[1]
+                    for bond in connect[atom_id]["atoms"]
+                )
 
-                # Displace if new bond length is in acceptance range
-                if is_disp:
-                    self._block.put(atom_id, disp_pos)
+                # Keep displacement if bond lengths are in acceptance range, else revert
+                if ok:
                     break
+                self._block.put(atom_id, orig_pos)
 
     def exterior(self):
         """Create an exterior surface for reservoir attachement. Using the
@@ -209,24 +211,21 @@ class Pore():
         # Get list of surface oxygen atoms
         oxygen_list = self._matrix.bound(1)
         connect = self._matrix.get_matrix()
+        oxygen_ex_set = set(self._oxygen_ex)   # O(1) lookup below
 
         # Create binding site dictionary
         self._sites = {}
         for o in oxygen_list:
-            if not connect[o]["atoms"][0] in self._sites:
-                self._sites[connect[o]["atoms"][0]] = {"o": []}
-            self._sites[connect[o]["atoms"][0]]["o"].append(o)
+            si = connect[o]["atoms"][0]
+            if si not in self._sites:
+                self._sites[si] = {"o": []}
+            self._sites[si]["o"].append(o)
 
         # Fill other information
         for si, data in self._sites.items():
             # Site type
-            is_in = False
-            is_ex = False
-            for o in data["o"]:
-                if o in self._oxygen_ex:
-                    is_ex = True
-                else:
-                    is_in = True
+            is_ex = any(o in oxygen_ex_set for o in data["o"])
+            is_in = any(o not in oxygen_ex_set for o in data["o"])
 
             data["type"] = "ex" if is_ex else "in"
 
@@ -298,6 +297,9 @@ class Pore():
             si_proxi = si_dice.find_parallel(None, ["Si", "Si"], [-mol_diam, mol_diam])
             si_matrix = {x[0]: x[1] for x in si_proxi}
 
+        # Pre-build index map for O(1) lookup instead of O(n) list.index()
+        site_index = {si_id: idx for idx, si_id in enumerate(sites)}
+
         # Run through number of binding sites to add
         mol_list = []
         for i in range(amount):
@@ -362,7 +364,7 @@ class Pore():
 
                     # Recursively fill sites in proximity with silanol and geminal silanol
                     if is_proxi:
-                        proxi_list = [sites[x] for x in si_matrix[sites.index(si)]]
+                        proxi_list = [sites[x] for x in si_matrix[site_index[si]]]
                         if len(proxi_list) > 0:
                             mol_list.extend(self.attach(generic.silanol(), 0, [0, 1], proxi_list, len(proxi_list), site_type=site_type, is_proxi=False, is_random=False))
         return mol_list
@@ -414,6 +416,9 @@ class Pore():
         si_proxi = si_dice.find_parallel(None, ["Si", "Si"], slx_dist)
         si_matrix = {x[0]: x[1] for x in si_proxi}
 
+        # Pre-build index map for O(1) lookup instead of O(n) list.index()
+        site_index = {si_id: idx for idx, si_id in enumerate(sites)}
+
         # Run through number of siloxan bridges to add
         bond_matrix = self._matrix.get_matrix()
         mol_list = []
@@ -423,11 +428,11 @@ class Pore():
             for j in range(trials):
                 si_rand = random.choice(sites)
                 # Check if binding site in local si-si matrix and if it contains binding partners
-                if sites.index(si_rand) in si_matrix and si_matrix[sites.index(si_rand)]:
+                if site_index[si_rand] in si_matrix and si_matrix[site_index[si_rand]]:
                     # Choose first binding partner in list
-                    si_rand_proxi = sites[si_matrix[sites.index(si_rand)][0]]
+                    si_rand_proxi = sites[si_matrix[site_index[si_rand]][0]]
                     # Check if binding partner is in local si-si matrix
-                    if sites.index(si_rand_proxi) in si_matrix:
+                    if site_index[si_rand_proxi] in si_matrix:
                         # Check if unbound states
                         if self._sites[si_rand]["state"] and self._sites[si_rand_proxi]["state"]:
                             # Check if binding site silicon atoms are already connected with an oxygen
@@ -471,7 +476,7 @@ class Pore():
                         self._sites[si_id]["o"].pop(0)
                     else:
                         del self._sites[si_id]
-                    del si_matrix[sites.index(si_id)]
+                    del si_matrix[site_index[si_id]]
 
         return mol_list
 

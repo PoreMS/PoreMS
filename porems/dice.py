@@ -68,6 +68,7 @@ class Dice:
 
         self._atom_data = {atom_id: [atom.get_atom_type(), np.asarray(self._mol.pos(atom_id))] for atom_id, atom in enumerate(self._mol.get_atom_list())}
         self._mol_box = self._mol.get_box()
+        self._mol_box_arr = np.asarray(self._mol_box)
 
         # Split molecule box into cubes and fill them with atom ids
         self._split()
@@ -278,10 +279,7 @@ class Dice:
                 neighbor.append(y[i][j])
                 neighbor.append(self._right(y[i][j]))
 
-        if not is_self:
-            neighbor.pop(13)
-
-        return [n for n in neighbor if n is not None]
+        return [n for n in neighbor if n is not None and (is_self or n != cube_id)]
 
 
     ##########
@@ -325,7 +323,7 @@ class Dice:
                         if self._atom_data[atom_id_b][0] == atom_type[1] and not atom_id_a == atom_id_b:
                             # Calculate bond vector with nearest-image convention
                             bv = self._atom_data[atom_id_a][1] - self._atom_data[atom_id_b][1]
-                            mol_box = np.asarray(self._mol_box)
+                            mol_box = self._mol_box_arr
                             mask = np.abs(bv) > 3*self._size
                             bv[mask] -= mol_box[mask] * np.round(bv[mask] / mol_box[mask])
                             length = geometry.length(bv)
@@ -363,14 +361,10 @@ class Dice:
         cube_np = [cube_list[cube_num*i:] if i == self._np-1 else cube_list[cube_num*i:cube_num*(i+1)] for i in range(self._np)]
 
         # Run parallel search
-        pool = mp.Pool(processes=self._np)
-        results = [pool.apply_async(self.find_bond, args=(x, atom_type, distance)) for x in cube_np]
-        bond_list = sum([x.get() for x in results], [])
+        with mp.Pool(processes=self._np) as pool:
+            results = [pool.apply_async(self.find_bond, args=(x, atom_type, distance)) for x in cube_np]
+            bond_list = sum([x.get() for x in results], [])
 
-        # Destroy object
-        del results
-
-        # Return results
         return bond_list
 
 

@@ -171,6 +171,9 @@ class Store:
             num_a = 1
             num_m = 1
 
+            # Collect all lines for a single writelines() call
+            lines = []
+
             # Run through molecules
             for mol in self._mols:
                 atom_types = {}
@@ -216,7 +219,7 @@ class Store:
                     out_string += "%2s" % atom_type        # 78-79 (2)    Element symbol
                     out_string += "  "                     # 80-81 (2)    Charge on the atom
 
-                    file_out.write(out_string+"\n")
+                    lines.append(out_string+"\n")
 
                     # Process counter
                     num_a = num_a+1 if num_a < 99999 else 1
@@ -224,7 +227,8 @@ class Store:
                 num_m = num_m+1 if num_m < 9999 else 1
 
             # End statement
-            file_out.write("TER\nEND\n")
+            lines.append("TER\nEND\n")
+            file_out.writelines(lines)
 
     def gro(self, name="", use_atom_names=False):
         """Generate the structure file for the defined molecule in the **GRO**
@@ -244,11 +248,10 @@ class Store:
 
         # Open file
         with open(link, "w") as file_out:
-            # Set title
-            file_out.write("Molecule generated using the PoreMS package\n")
-
-            # Number of atoms
-            file_out.write("%i" % sum([x.get_num() for x in self._mols])+"\n")
+            # Collect all lines for a single writelines() call
+            lines = []
+            lines.append("Molecule generated using the PoreMS package\n")
+            lines.append("%i" % sum([x.get_num() for x in self._mols])+"\n")
 
             # Set counter
             num_a = 1
@@ -287,7 +290,7 @@ class Store:
                     for i in range(self._dim):                    # 21-44 (3*8)  Coordinates
                         out_string += "%8.3f" % pos[i]
 
-                    file_out.write(out_string+"\n")
+                    lines.append(out_string+"\n")
 
                     # Process counter
                     num_a = num_a+1 if num_a < 99999 else 0
@@ -299,8 +302,9 @@ class Store:
             for i in range(self._dim):
                 out_string += "%.3f" % self._box[i]
                 out_string += " " if i < self._dim-1 else "\n"
+            lines.append(out_string)
 
-            file_out.write(out_string)
+            file_out.writelines(lines)
 
     def xyz(self, name="", use_atom_names=False):
         """Generate the structure file for the defined molecule in the **XYZ**
@@ -350,6 +354,7 @@ class Store:
 
         # Atom types
         atom_types = list(set(sum([[x.get_atom_type(i) for i in range(x.get_num())] for x in self._mols], [])))
+        atom_type_map = {at: i + 1 for i, at in enumerate(atom_types)}
 
         # Open file
         with open(link, "w") as file_out:
@@ -391,7 +396,7 @@ class Store:
                         temp_res_id = atom.get_residue()
 
                     # Get atom type
-                    atom_type_id = atom_types.index(atom.get_atom_type())+1
+                    atom_type_id = atom_type_map[atom.get_atom_type()]
 
                     # Write atom line
                     pos = mol.pos(atom_id)

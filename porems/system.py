@@ -86,8 +86,8 @@ class PoreKit():
             Range of shape from start x,y,z-length to end x,y,z-length,
             leave empty for whole range - mainly used to assign
             silanol groups to the shapes
-        hydro : float, optional, TEMPORARY
-            Hydroxilation degree for interior surface in
+        hydro : float, optional
+            Hydroxylation degree for interior surface in
             :math:`\\frac{\\mu\\text{mol}}{\\text{m}^2}`
         """
         # Check shape type
@@ -494,9 +494,8 @@ class PoreKit():
 
             # If there are unassigned binding sites print a warning
             else:
-                print("You create a complex structure. Some SI binding sites in the inner structure can't be match to a specific shape.")
-                print("These sites will be fill with siloxane and silanol bridges.")
-                print("You can find more information in the table of the system.")
+                n = len(self.sites_shape[self._UNASSIGNED_KEY])
+                print("Warning: %i interior sites could not be assigned to a shape. They will be filled with silanol/siloxane bridges." % n)
 
             # Amount - Connect two oxygen to one siloxane
             amount = []
@@ -558,8 +557,8 @@ class PoreKit():
             Input type: **num** - Number of molecules,
             **molar** - :math:`\\frac{\\mu\\text{mol}}{\\text{m}^2}`,
             **percent** - :math:`\\%` of OH groups
-        shape : string, optional 
-            Optional is "all" this means every shape will be functionalize. 
+        shape : string, optional
+            Optional is "all" this means every shape will be functionalize.
             Otherwise specific the shape if you want to functionalize.
         pos_list : list, optional
             List of positions (Cartesian) to find nearest available binding site for
@@ -571,6 +570,8 @@ class PoreKit():
             True to fill binding sites in proximity of filled binding site
         is_rotate : bool, optional
             True to randomly rotate molecule around own axis
+        is_g : bool, optional
+            Force to add molecules only on single binding sites
         """
         # Process input
         if site_type not in ["in", "ex"]:
@@ -679,10 +680,59 @@ class PoreKit():
         for mol in mols:
             if not mol.get_short() in self._sort_list:
                 self._sort_list.append(mol.get_short())
-        
+
         # Restore unassigned-sites bucket
         if shape == "all" and _saved_unassigned is not None:
             self._pore.sites_sl_shape[self._UNASSIGNED_KEY] = _saved_unassigned
+
+    def attach_special(self, mol, mount, axis, amount, scale=1, symmetry="point", is_proxi=True, is_rotate=False):
+        """Attach molecules at geometrically symmetric positions along z-axis.
+
+        Parameters
+        ----------
+        mol : Molecule
+            Molecule to attach
+        mount : integer
+            Atom id used as mounting point
+        axis : list
+            Two atom ids defining the molecule axis
+        amount : int
+            Number of molecules to attach
+        scale : float, optional
+            Circumference scaling factor
+        symmetry : string, optional
+            ``"point"`` — alternating sides; ``"mirror"`` — same side
+        is_proxi : bool, optional
+            Fill proximity sites with silanol if True
+        is_rotate : bool, optional
+            Randomly rotate molecule around own axis if True
+        """
+        if symmetry not in ["point", "mirror"]:
+            print("attach_special: unsupported symmetry type (use 'point' or 'mirror')")
+            return
+
+        dist = self._box[2] / amount if amount > 0 else 0
+        start = dist / 2
+        diam = self.diameter()
+        radius = diam[0] / 2 if isinstance(diam, list) else diam / 2
+
+        pos_list = []
+        for i in range(amount):
+            coeff = -1 if (symmetry == "point" and i % 2 == 0) else 1
+            pos_list.append([
+                self._centroid[0] + coeff * radius,
+                self._centroid[1],
+                start + dist * i,
+            ])
+
+        mols = self._pore.attach(
+            mol, mount, axis, self._site_in, len(pos_list),
+            scale=scale, pos_list=pos_list,
+            site_type="in", is_proxi=is_proxi, is_random=False, is_rotate=is_rotate,
+        )
+        for m in mols:
+            if m.get_short() not in self._sort_list:
+                self._sort_list.append(m.get_short())
 
     ################
     # Finalization #
@@ -697,15 +747,8 @@ class PoreKit():
                 self._sort_list.append(mol.get_short())
 
         # Fill silanol on the interior surface
-        for i,sites in self._pore.sites_sl_shape.items():  
+        for i,sites in self._pore.sites_sl_shape.items():
             mols_in = self._pore.fill_sites(sites, "in") if self._site_in else []
-            # for mol in mols_in:
-            #     if mol.get_short() in self._pore.sites_attach_mol[i]:
-            #         self._pore.sites_attach_mol[i][mol.get_short()] +=1
-            #     else:
-            #         self._pore.sites_attach_mol[i][mol.get_short()] = 0
-            #         self._pore.sites_attach_mol[i][mol.get_short()] += 1
-            #         print(self._pore.sites_attach_mol[i][mol.get_short()])
             for mol in mols_in:
                 if not mol.get_short() in self._sort_list:
                     self._sort_list.append(mol.get_short())
@@ -1152,7 +1195,7 @@ class PoreKit():
         data["Interior"]["    Overall hydroxylation (mumol/m^2)"] = form%allocation["Hydro"]["in"][2]
         data["Exterior"]["    Overall hydroxylation (mumol/m^2)"] = form%allocation["Hydro"]["ex"][2]
 
-        try: 
+        try:
             self._pore.sites_attach_mol
             for i in  self._pore.sites_attach_mol:
                 if i != 20:
@@ -1181,7 +1224,7 @@ class PoreKit():
                     data["Exterior"]["    Unassigned binding sites" + " Total number of OH groups"] = " "
                     data["Interior"]["    Unassigned binding sites" + " Overall hydroxylation (mumol/m^2)"] = form%(pms.utils.mols_to_mumol_m2(self._pore.sites_attach_mol[i]["SL"]+2*self._pore.sites_attach_mol[i]["SLG"],self.surface(is_sum=False)["in"][i]))
                     data["Exterior"]["    Unassigned binding sites" + " Overall hydroxylation (mumol/m^2)"] = " "
-        except:
+        except AttributeError:
             pass
 
 
@@ -1200,11 +1243,11 @@ class PoreKit():
         data["Interior"]["    Residual hydroxylation (mumol/m^2)"] = form%allocation["OH"]["in"][2]
         data["Exterior"]["    Residual hydroxylation (mumol/m^2)"] = form%allocation["OH"]["ex"][2]
 
-        try: 
+        try:
             self._pore.sites_attach_mol
-            for i in  self._pore.sites_attach_mol:   
+            for i in  self._pore.sites_attach_mol:
                 for mol in self._pore.sites_attach_mol[i]:
-                    if (mol not in ["SL", "SLG", "SLX", "Hydro", "OH"]): 
+                    if (mol not in ["SL", "SLG", "SLX", "Hydro", "OH"]):
                         if i == 20:
                             data["Interior"]["Surface chemistry - After Functionalization (Unassigned binding sites)"] = " "
                             data["Exterior"]["Surface chemistry - After Functionalization (Unassigned binding sites)"] = " "
@@ -1219,7 +1262,7 @@ class PoreKit():
                             data["Exterior"]["    Pore " + str(i+1) + " Number of "+mol+" groups"] = " "
                             data["Interior"]["    Pore " + str(i+1) + " "+mol+" density (mumol/m^2)"] = form%(pms.utils.mols_to_mumol_m2(self._pore.sites_attach_mol[i][mol],self.surface(is_sum=False)["in"][i]))
                             data["Exterior"]["    Pore " + str(i+1) + " "+mol+" density (mumol/m^2)"] = " "
-        except:
+        except AttributeError:
             pass
         return pd.DataFrame.from_dict(data)
 
@@ -1273,57 +1316,6 @@ class PoreCylinder(PoreKit):
         self.add_shape(self.shape_cylinder(diam), hydro=hydro[0])
         self.prepare()
 
-    def attach_special(self, mol, mount, axis, amount, scale=1, symmetry="point", is_proxi=True, is_rotate=False):
-        """Special attachment of molecules on the surface.
-
-        Parameters
-        ----------
-        mol : Molecule
-            Molecule object to attach
-        mount : integer
-            Atom id of the molecule that is placed on the surface silicon atom
-        axis : list
-            List of two atom ids of the molecule that define the molecule axis
-        amount : int
-            Number of molecules to attach
-        scale : float, optional
-            Circumference scaling around the molecule position
-        symmetry : string, optional
-            Symmetry option - point, mirror
-        is_proxi : bool, optional
-            True to fill binding sites in proximity of filled binding site
-        is_rotate : bool, optional
-            True to randomly rotate molecule around own axis
-        """
-        # Process input
-        if symmetry not in ["point", "mirror"]:
-            print("Symmetry type not supported...")
-            return
-
-        # Calculate geometrical positions
-        dist = self._box[2]/amount if amount>0 else 0
-        start = dist/2
-
-        pos_list = []
-        for i in range(amount):
-            if symmetry == "point":
-                coeff = -1 if i % 2 == 0 else 1
-            elif symmetry == "mirror":
-                coeff = 1
-
-            x = self._centroid[0]+coeff*self.diameter()/2
-            y = self._centroid[1]
-            z = start+dist*i
-
-            pos_list.append([x, y, z])
-
-        # Run attachment
-        mols = self._pore.attach(mol, mount, axis, self._site_in, len(pos_list), scale, pos_list=pos_list, is_proxi=is_proxi, is_random=False, is_rotate=is_rotate)
-
-        # Add to sorting list
-        for mol in mols:
-            if not mol.get_short() in self._sort_list:
-                self._sort_list.append(mol.get_short())
 
 class PoreSlit(PoreKit):
     """This class carves a slit-pore out of a :math:`\\beta`-cristobalite block.
@@ -1371,61 +1363,6 @@ class PoreSlit(PoreKit):
         # Add pore shape
         self.add_shape(self.shape_slit(height), hydro=hydro[0])
         self.prepare()
-
-    ##############
-    # Attachment #
-    ##############
-    def attach_special(self, mol, mount, axis, amount, scale=1, symmetry="point", is_proxi=True, is_rotate=False):
-        """Special attachment of molecules on the surface.
-
-        Parameters
-        ----------
-        mol : Molecule
-            Molecule object to attach
-        mount : integer
-            Atom id of the molecule that is placed on the surface silicon atom
-        axis : list
-            List of two atom ids of the molecule that define the molecule axis
-        amount : int
-            Number of molecules to attach
-        scale : float, optional
-            Circumference scaling around the molecule position
-        symmetry : string, optional
-            Symmetry option - point, mirror
-        is_proxi : bool, optional
-            True to fill binding sites in proximity of filled binding site
-        is_rotate : bool, optional
-            True to randomly rotate molecule around own axis
-        """
-        # Process input
-        if symmetry not in ["point", "mirror"]:
-            print("Symmetry type not supported...")
-            return
-
-        # Calculate geometrical positions
-        dist = self._box[2]/amount if amount>0 else 0
-        start = dist/2
-
-        pos_list = []
-        for i in range(amount):
-            if symmetry == "point":
-                coeff = -1 if i % 2 == 0 else 1
-            elif symmetry == "mirror":
-                coeff = 1
-
-            x = self._centroid[0]+coeff*self.diameter()/2
-            y = self._centroid[1]
-            z = start+dist*i
-
-            pos_list.append([x, y, z])
-
-        # Run attachment
-        mols = self._pore.attach(mol, mount, axis, self._site_in, len(pos_list), scale, pos_list=pos_list, is_proxi=is_proxi, is_random=False, is_rotate=is_rotate)
-
-        # Add to sorting list
-        for mol in mols:
-            if not mol.get_short() in self._sort_list:
-                self._sort_list.append(mol.get_short())
 
 
 class PoreCapsule(PoreKit):
@@ -1551,62 +1488,6 @@ class PoreAmorphCylinder(PoreKit):
         self.prepare()
 
 
-    ##############
-    # Attachment #
-    ##############
-    def attach_special(self, mol, mount, axis, amount, scale=1, symmetry="point", is_proxi=True, is_rotate=False):
-        """Special attachment of molecules on the surface.
-
-        Parameters
-        ----------
-        mol : Molecule
-            Molecule object to attach
-        mount : integer
-            Atom id of the molecule that is placed on the surface silicon atom
-        axis : list
-            List of two atom ids of the molecule that define the molecule axis
-        amount : int
-            Number of molecules to attach
-        scale : float, optional
-            Circumference scaling around the molecule position
-        symmetry : string, optional
-            Symmetry option - point, mirror
-        is_proxi : bool, optional
-            True to fill binding sites in proximity of filled binding site
-        is_rotate : bool, optional
-            True to randomly rotate molecule around own axis
-        """
-        # Process input
-        if symmetry not in ["point", "mirror"]:
-            print("Symmetry type not supported...")
-            return
-
-        # Calculate geometrical positions
-        dist = self._box[2]/amount if amount>0 else 0
-        start = dist/2
-
-        pos_list = []
-        for i in range(amount):
-            if symmetry == "point":
-                coeff = -1 if i % 2 == 0 else 1
-            elif symmetry == "mirror":
-                coeff = 1
-
-            x = self._centroid[0]+coeff*self.diameter()/2
-            y = self._centroid[1]
-            z = start+dist*i
-
-            pos_list.append([x, y, z])
-
-        # Run attachment
-        mols = self._pore.attach(mol, mount, axis, self._site_in, len(pos_list), self._normal_in, scale, pos_list=pos_list, is_proxi=is_proxi, is_random=False, is_rotate=is_rotate)
-
-        # Add to sorting list
-        for mol in mols:
-            if not mol.get_short() in self._sort_list:
-                self._sort_list.append(mol.get_short())
-
-
 class PoreMultiChannel(PoreKit):
     """Convenience class that carves *N* parallel cylindrical channels into a
     :math:`\\beta`-cristobalite block.
@@ -1669,4 +1550,43 @@ class PoreMultiChannel(PoreKit):
                 hydro=hydro[0],
             )
 
+        self.prepare()
+
+
+class PoreCone(PoreKit):
+    """Convenience class that carves a conical pore into a β-cristobalite block.
+
+    The cone transitions linearly from ``diam_in`` at one end to ``diam_out``
+    at the other.  Both end diameters are on the interior surface.
+
+    Parameters
+    ----------
+    size : list
+        ``[nx, ny, nz]`` block repeat counts (nm).
+    diam_in : float
+        Diameter at the narrow end (nm).
+    diam_out : float
+        Diameter at the wide end (nm).
+    res : float, optional
+        Reservoir length on each side (nm). Default 5.
+    hydro : list, optional
+        Hydroxylation density ``[interior, exterior]`` in μmol m⁻².
+
+    Examples
+    --------
+    .. code-block:: python
+
+        import porems as pms
+
+        pore = pms.PoreCone([8, 8, 10], 2.0, 4.0, res=5)
+        pore.attach(pms.gen.tms(), 0, [0, 1], 100, "in")
+        pore.finalize()
+        pore.store("output/cone/")
+    """
+    def __init__(self, size, diam_in, diam_out, res=5, hydro=[0, 0]):
+        super(PoreCone, self).__init__()
+        self.structure(pms.BetaCristobalit().generate(size, "z"))
+        self.build()
+        self.exterior(res, hydro=hydro[1])
+        self.add_shape(self.shape_cone(diam_in, diam_out), hydro=hydro[0])
         self.prepare()

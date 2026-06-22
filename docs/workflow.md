@@ -1,7 +1,3 @@
----
-orphan: true
----
-
 # Simulation Workflow
 
 In this workflow a simply pore simulation system will be created with TMS as surface molecules. Additionally, the GROMACS simulation package will be utilized.

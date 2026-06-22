@@ -1,7 +1,3 @@
----
-orphan: true
----
-
 # Generate a Molecule
 
 This section describes the basics of creating molecule objects and their structures.

@@ -1,3 +1,4 @@
-sphinx==7.4.6
-numpydoc
-sphinx_bootstrap_theme
+sphinx>=7.4
+furo
+myst-parser
+sphinx-autoapi

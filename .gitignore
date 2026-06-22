@@ -13,3 +13,5 @@ venv
 docs/_build/
 docs/autoapi/
 docs/generated/
+tests/output/
+tests/test_temp.py
