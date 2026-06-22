@@ -993,7 +993,6 @@ class Cone(Shape):
         d_Phi_z = self.d_Phi_z(r, phi, z)
 
         # Calculate normal vector
-        return geometry.rotate(d_Phi_phi, self._inp["central"], -90, True)
         return geometry.cross_product(d_Phi_phi, d_Phi_z)
 
     def is_in(self, pos):
@@ -1109,3 +1108,229 @@ class Cone(Shape):
         r_2 = self._inp["diameter_2"]/2
         l = self._inp["length"]
         return math.pi*(r_1+r_2)*math.sqrt((r_1-r_2)**2+l**2)
+
+
+class Hourglass(Shape):
+    """Cylindrical shape whose radius varies as a cosine along the axis,
+    narrowing to a minimum at the mid-point.
+
+    Required inputs:
+
+    * **central** - Central axis unit vector
+    * **centroid** - Centroid of the block
+    * **length** - Total length along the axis
+    * **diameter_outer** - Diameter at both ends (widest)
+    * **diameter_inner** - Diameter at the mid-point (narrowest)
+
+    The radius profile is
+
+    .. math::
+
+        r(z) = r_i + (r_o - r_i)\\,\\frac{1 + \\cos\\!\\left(\\frac{2\\pi z}{l}\\right)}{2}
+
+    with outer radius :math:`r_o`, inner radius :math:`r_i` and length
+    :math:`l`.
+
+    Parameters
+    ----------
+    inp : dictionary
+        Dictionary of necessary inputs
+    """
+    def __init__(self, inp):
+        self._centroid = [0, 0, inp["length"] / 2]
+        super(Hourglass, self).__init__(inp)
+
+    def _r(self, z):
+        r_o = self._inp["diameter_outer"] / 2
+        r_i = self._inp["diameter_inner"] / 2
+        l = self._inp["length"]
+        return r_i + (r_o - r_i) * (1 + np.cos(2 * np.pi * z / l)) / 2
+
+    def _dr_dz(self, z):
+        r_o = self._inp["diameter_outer"] / 2
+        r_i = self._inp["diameter_inner"] / 2
+        l = self._inp["length"]
+        return -(r_o - r_i) * np.pi / l * np.sin(2 * np.pi * z / l)
+
+    ############
+    # Function #
+    ############
+    def Phi(self, r, phi, z):
+        """Surface parametrisation.
+
+        Parameters
+        ----------
+        r : ignored
+            Kept for interface consistency; radius is determined by ``z``.
+        phi : array-like
+            Polar angles
+        z : array-like
+            Positions along the axis
+
+        Returns
+        -------
+        pos : list
+            x, y, z arrays of the surface
+        """
+        z_arr = np.asarray(z)
+        r_arr = self._r(z_arr)
+        phi_arr = np.asarray(phi)
+
+        x = np.outer(r_arr, np.cos(phi_arr))
+        y = np.outer(r_arr, np.sin(phi_arr))
+        z_grid = np.outer(z_arr, np.ones(len(phi_arr)))
+
+        return self.convert([x, y, z_grid], False)
+
+    def d_Phi_phi(self, r, phi, z):
+        """Azimuthal tangent vector.
+
+        Parameters
+        ----------
+        r : float
+            Radius at z
+        phi : float
+            Polar angle
+        z : float
+            Position along axis
+
+        Returns
+        -------
+        tangent : list
+        """
+        return [-r * np.sin(phi), r * np.cos(phi), 0]
+
+    def d_Phi_z(self, r, phi, z):
+        """Axial tangent vector.
+
+        Parameters
+        ----------
+        r : float
+            Radius at z (unused; r'(z) is recomputed internally)
+        phi : float
+            Polar angle
+        z : float
+            Position along axis
+
+        Returns
+        -------
+        tangent : list
+        """
+        dr = self._dr_dz(z)
+        return [dr * np.cos(phi), dr * np.sin(phi), 1]
+
+    ############
+    # Features #
+    ############
+    def normal(self, pos):
+        """Outward surface normal at ``pos``.
+
+        Parameters
+        ----------
+        pos : list
+            Global position on the surface
+
+        Returns
+        -------
+        normal : list
+            Normal vector (unnormalised)
+        """
+        x, y, z = self.convert(pos)
+        r = math.sqrt(x ** 2 + y ** 2)
+        phi = geometry.angle_polar([x, y, z])
+        return geometry.cross_product(self.d_Phi_phi(r, phi, z), self.d_Phi_z(r, phi, z))
+
+    def is_in(self, pos):
+        """Return True if ``pos`` is inside the hourglass.
+
+        Parameters
+        ----------
+        pos : list
+            Global position
+
+        Returns
+        -------
+        is_in : bool
+        """
+        pos_local = self.convert(pos)
+        z = pos_local[2]
+        if z <= 0 or z >= self._inp["length"]:
+            return False
+        r = math.sqrt(pos_local[0] ** 2 + pos_local[1] ** 2)
+        return r < self._r(z)
+
+    #########
+    # Shape #
+    #########
+    def rim(self, z, num=100):
+        """Circle of surface points at axial position ``z``.
+
+        Parameters
+        ----------
+        z : float
+            Position along the axis (local frame)
+        num : int, optional
+            Number of points
+
+        Returns
+        -------
+        positions : list
+            x, y, z arrays
+        """
+        phi = np.linspace(0, 2 * np.pi, num)
+        return self.Phi(None, phi, [z])
+
+    def surf(self, num=100):
+        """Parametric surface mesh.
+
+        Parameters
+        ----------
+        num : int, optional
+            Number of points in each direction
+
+        Returns
+        -------
+        positions : list
+            x, y, z arrays
+        """
+        phi = np.linspace(0, 2 * np.pi, num)
+        z = np.linspace(0, self._inp["length"], num)
+        return self.Phi(None, phi, z)
+
+    ##############
+    # Properties #
+    ##############
+    def volume(self):
+        """Volume enclosed by the hourglass.
+
+        .. math::
+
+            V = \\pi l \\left(r_i^2 + r_i\\,\\Delta r + \\frac{3\\,\\Delta r^2}{8}\\right)
+
+        with :math:`\\Delta r = r_o - r_i`.
+
+        Returns
+        -------
+        volume : float
+        """
+        r_o = self._inp["diameter_outer"] / 2
+        r_i = self._inp["diameter_inner"] / 2
+        l = self._inp["length"]
+        dr = r_o - r_i
+        return math.pi * l * (r_i ** 2 + r_i * dr + 3 * dr ** 2 / 8)
+
+    def surface(self):
+        """Lateral surface area (numerical integration).
+
+        Returns
+        -------
+        surface : float
+        """
+        from scipy.integrate import quad
+        l = self._inp["length"]
+
+        def integrand(z):
+            return 2 * math.pi * self._r(z) * math.sqrt(1 + self._dr_dz(z) ** 2)
+
+        area, _ = quad(integrand, 0, l)
+        return area

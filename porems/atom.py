@@ -9,13 +9,12 @@ import pandas as pd
 
 
 class Atom:
-    """This class defines an atom object containing the position, the atom type
-    and optionally a specific name.
+    """This class defines an atom object containing the atom type and optionally
+    a specific name and residue index. Position data is stored in the parent
+    :class:`porems.molecule.Molecule` as a numpy-backed list.
 
     Parameters
     ----------
-    pos : list
-        Atom position
     atom_type : string
         Atom type as in the periodic table of elements
     name : string, optional
@@ -23,9 +22,7 @@ class Atom:
     residue : integer, optional
         Residue number
     """
-    def __init__(self, pos, atom_type, name="", residue=0):
-        # Initialize
-        self._pos = pos
+    def __init__(self, atom_type, name="", residue=0):
         self._atom_type = atom_type
         self._name = name
         self._residue = residue
@@ -35,37 +32,20 @@ class Atom:
     # Representation #
     ##################
     def __repr__(self):
-        """Create a pandas table of the atom data.
+        """Create a pandas table of the atom metadata.
 
         Returns
         -------
-        repr : DataFrame
-            Pandas data frame of the molecule object
+        repr : string
+            Pandas data frame string of the atom object
         """
-        # Set colums names
-        columns = ["Residue", "Name", "Type", "x", "y", "z"]
-
-        # Get data
-        data =[[self._residue, self._name, self._atom_type,
-                self._pos[0], self._pos[1], self._pos[2]]]
-
-        # Create data frame
-        return pd.DataFrame(data, columns=columns).to_string()
+        data = [[self._residue, self._name, self._atom_type]]
+        return pd.DataFrame(data, columns=["Residue", "Name", "Type"]).to_string()
 
 
     ##################
     # Setter Methods #
     ##################
-    def set_pos(self, pos):
-        """Set the atom position.
-
-        Parameters
-        ----------
-        pos : list
-            Atom position
-        """
-        self._pos = pos
-
     def set_atom_type(self, atom_type):
         """Set the atom type.
 
@@ -100,16 +80,6 @@ class Atom:
     ##################
     # Getter Methods #
     ##################
-    def get_pos(self):
-        """Return the atom position.
-
-        Returns
-        -------
-        pos : list
-            Atom position
-        """
-        return self._pos
-
     def get_atom_type(self):
         """Return the atom type.
 

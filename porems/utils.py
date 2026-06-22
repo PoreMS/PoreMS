@@ -39,7 +39,7 @@ def copy(source, target):
 
 
 def column(data):
-    """Convert given row list matrix into column list matrix
+    """Convert a row-major list matrix into a column-major list matrix.
 
     Parameters
     ----------
@@ -49,18 +49,9 @@ def column(data):
     Returns
     -------
     data_col : list
-        column data matrix
+        Column data matrix
     """
-    num_row = len(data)
-    num_col = len(data[0])
-
-    data_col = [[] for i in range(num_col)]
-
-    for i in range(num_row):
-        for j in range(num_col):
-            data_col[j].append(data[i][j])
-
-    return data_col
+    return [list(col) for col in zip(*data)]
 
 
 def tic():

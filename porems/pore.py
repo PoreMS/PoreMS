@@ -94,18 +94,14 @@ class Pore():
 
         # Run through atoms that have bond partners
         for atom_id in self._matrix.bound(0, "gt"):
-            # Create testing atom
-            atom_temp = copy.deepcopy(self._block.get_atom_list()[atom_id])
-            atom_temp_pos = atom_temp.get_pos()[:]
+            # Store original position for trial displacements
+            atom_temp_pos = list(self._block.pos(atom_id))
 
             # Run through trials
             for i in range(trials):
                 # Create random displacement vector
                 disp_vec = [random.uniform(-dist, dist) for x in range(self._dim)]
                 disp_pos = [atom_temp_pos[x]+disp_vec[x] for x in range(self._dim)]
-
-                # Displace test atom
-                atom_temp.set_pos(disp_pos)
 
                 # Calculate new bond lengths
                 is_disp = True
@@ -117,7 +113,7 @@ class Pore():
 
                 # Displace if new bond length is in acceptance range
                 if is_disp:
-                    self._block.get_atom_list()[atom_id].set_pos(disp_pos)
+                    self._block.put(atom_id, disp_pos)
                     break
 
     def exterior(self):
@@ -146,7 +142,7 @@ class Pore():
             # Run through bound oxygen atoms
             for o in bound_list[si]["atoms"]:
                 # Calculate bond vector
-                bond_vector = [atom_list[si].get_pos()[dim]-atom_list[o].get_pos()[dim] for dim in range(3)]
+                bond_vector = [self._block.pos(si)[dim]-self._block.pos(o)[dim] for dim in range(3)]
 
                 # Check if z dimension of bond - after rotation in pattern class - goes over boundary
                 if abs(bond_vector[2]) > box[2]/2:
@@ -294,8 +290,11 @@ class Pore():
         # Search for overlapping placements - Calculate diameter and add carbon VdW-raidus (Wiki)
         if is_proxi:
             mol_diam = (max(mol.get_box()[:2])+0.17)*scale
-            si_atoms = [self._block.get_atom_list()[atom] for atom in sites]
-            si_dice = Dice(Molecule(inp=si_atoms), mol_diam, True)
+            si_mol = Molecule()
+            for _a in sites:
+                si_mol._atom_list.append(self._block.get_atom_list()[_a])
+                si_mol._pos_list.append(list(self._block.pos(_a)))
+            si_dice = Dice(si_mol, mol_diam, True)
             si_proxi = si_dice.find_parallel(None, ["Si", "Si"], [-mol_diam, mol_diam])
             si_matrix = {x[0]: x[1] for x in si_proxi}
 
@@ -407,8 +406,11 @@ class Pore():
         mol.zero()
 
         # Search for silicon atoms near each other
-        si_atoms = [self._block.get_atom_list()[atom] for atom in sites]
-        si_dice = Dice(Molecule(inp=si_atoms), slx_dist[1], False)
+        si_mol = Molecule()
+        for _a in sites:
+            si_mol._atom_list.append(self._block.get_atom_list()[_a])
+            si_mol._pos_list.append(list(self._block.pos(_a)))
+        si_dice = Dice(si_mol, slx_dist[1], False)
         si_proxi = si_dice.find_parallel(None, ["Si", "Si"], slx_dist)
         si_matrix = {x[0]: x[1] for x in si_proxi}
 
@@ -524,10 +526,10 @@ class Pore():
             # Create molecule object
             if atom.get_atom_type() == "O":
                 mol = Molecule("om", "OM")
-                mol.add("O", atom.get_pos(), name="OM1")
+                mol.add("O", self._block.pos(atom_id), name="OM1")
             elif atom.get_atom_type() == "Si":
                 mol = Molecule("si", "SI")
-                mol.add("Si", atom.get_pos(), name="SI1")
+                mol.add("Si", self._block.pos(atom_id), name="SI1")
 
             # Add to molecule list and global dictionary
             mol_list.append(mol)

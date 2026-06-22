@@ -8,6 +8,7 @@
 import math
 import multiprocessing as mp
 
+import numpy as np
 import porems.geometry as geometry
 
 
@@ -65,7 +66,7 @@ class Dice:
         self._size = size
         self._is_pbc = is_pbc
 
-        self._atom_data = {atom_id: [atom.get_atom_type(), atom.get_pos()] for atom_id, atom in enumerate(self._mol.get_atom_list())}
+        self._atom_data = {atom_id: [atom.get_atom_type(), np.asarray(self._mol.pos(atom_id))] for atom_id, atom in enumerate(self._mol.get_atom_list())}
         self._mol_box = self._mol.get_box()
 
         # Split molecule box into cubes and fill them with atom ids
@@ -122,8 +123,8 @@ class Dice:
         """Based on their coordinates, the atom ids, as defined in the molecule
         object, are filled into the cubes.
         """
-        for atom_id, atom in enumerate(self._mol.get_atom_list()):
-            self._pointer[self._pos_to_index(atom.get_pos())].append(atom_id)
+        for atom_id in range(self._mol.get_num()):
+            self._pointer[self._pos_to_index(self._mol.pos(atom_id))].append(atom_id)
 
 
     ############
@@ -322,15 +323,12 @@ class Dice:
                     # Search in all surrounding cubes for partners
                     for atom_id_b in atoms:
                         if self._atom_data[atom_id_b][0] == atom_type[1] and not atom_id_a == atom_id_b:
-                            # Calculate bond vector
-                            bond_vector = [0, 0, 0]
-                            for dim in range(self._dim):
-                                # Nearest image convention
-                                bond_vector[dim] = self._atom_data[atom_id_a][1][dim]-self._atom_data[atom_id_b][1][dim]
-                                if abs(bond_vector[dim]) > 3*self._size:
-                                    bond_vector[dim] -= self._mol_box[dim]*round(bond_vector[dim]/self._mol_box[dim])
-                            # Calculate bond length
-                            length = geometry.length(bond_vector)
+                            # Calculate bond vector with nearest-image convention
+                            bv = self._atom_data[atom_id_a][1] - self._atom_data[atom_id_b][1]
+                            mol_box = np.asarray(self._mol_box)
+                            mask = np.abs(bv) > 3*self._size
+                            bv[mask] -= mol_box[mask] * np.round(bv[mask] / mol_box[mask])
+                            length = geometry.length(bv)
                             # Check if bond distance is within error
                             if length >= distance[0] and length <= distance[1]:
                                 entry[1].append(atom_id_b)

@@ -176,7 +176,7 @@ class Store:
                 atom_types = {}
                 temp_res_id = 0
                 # Run through atoms
-                for atom in mol.get_atom_list():
+                for atom_id, atom in enumerate(mol.get_atom_list()):
                     # Process residue index
                     if not atom.get_residue() == temp_res_id:
                         num_m = num_m+1 if num_m < 9999 else 1
@@ -196,6 +196,7 @@ class Store:
                         atom_name = atom_type+str(atom_types[atom_type])
 
                     # Write file
+                    pos = mol.pos(atom_id)
                     out_string = "HETATM"                  #  1- 6 (6)    Record name
                     out_string += "%5i" % num_a            #  7-11 (5)    Atom serial number
                     out_string += " "                      # 12    (1)    -
@@ -208,7 +209,7 @@ class Store:
                     out_string += " "                      # 27    (1)    Code for insertion of residues
                     out_string += "   "                    # 28-30 (3)    -
                     for i in range(self._dim):             # 31-54 (3*8)  Coordinates
-                        out_string += "%8.3f" % (atom.get_pos()[i]*10)
+                        out_string += "%8.3f" % (pos[i]*10)
                     out_string += "%6.2f" % 1              # 55-60 (6)    Occupancy
                     out_string += "%6.2f" % 0              # 61-66 (6)    Temperature factor
                     out_string += "           "            # 67-77 (11)   -
@@ -258,7 +259,7 @@ class Store:
                 atom_types = {}
                 temp_res_id = 0
                 # Run through atoms
-                for atom in mol.get_atom_list():
+                for atom_id, atom in enumerate(mol.get_atom_list()):
                     # Process residue index
                     if not atom.get_residue() == temp_res_id:
                         num_m = num_m+1 if num_m < 99999 else 0
@@ -278,12 +279,13 @@ class Store:
                         atom_name = atom_type+str(atom_types[atom_type])
 
                     # Write file
+                    pos = mol.pos(atom_id)
                     out_string = "%5i" % num_m              #  1- 5 (5)    Residue number
                     out_string += "%-5s" % mol.get_short()  #  6-10 (5)    Residue short name
                     out_string += "%5s" % atom_name         # 11-15 (5)    Atom name
                     out_string += "%5i" % num_a             # 16-20 (5)    Atom number
                     for i in range(self._dim):                    # 21-44 (3*8)  Coordinates
-                        out_string += "%8.3f" % atom.get_pos()[i]
+                        out_string += "%8.3f" % pos[i]
 
                     file_out.write(out_string+"\n")
 
@@ -324,11 +326,12 @@ class Store:
             # Run through molecules
             for mol in self._mols:
                 # Run through atoms
-                for atom in mol.get_atom_list():
+                for atom_id, atom in enumerate(mol.get_atom_list()):
                     # Write file
+                    pos = mol.pos(atom_id)
                     out_string = "%-2s" % atom.get_atom_type()  # 1- 2 (2)     Atom name
                     for i in range(self._dim):                  # 3-41 (3*13)  Coordinates
-                        out_string += "%13.7f" % (atom.get_pos()[i]*10)
+                        out_string += "%13.7f" % (pos[i]*10)
 
                     file_out.write(out_string+"\n")
 
@@ -381,7 +384,7 @@ class Store:
             for mol in self._mols:
                 temp_res_id = 0
                 # Run through atoms
-                for atom in mol.get_atom_list():
+                for atom_id, atom in enumerate(mol.get_atom_list()):
                     # Process residue index
                     if not atom.get_residue() == temp_res_id:
                         num_m = num_m+1
@@ -391,12 +394,13 @@ class Store:
                     atom_type_id = atom_types.index(atom.get_atom_type())+1
 
                     # Write atom line
+                    pos = mol.pos(atom_id)
                     out_string  = "%5i" % num_a + " "        #  Atom number
                     out_string += "%5i" % num_m + " "        #  Residue number
                     out_string += "%3i" % atom_type_id + " " #  Atom type
                     out_string += "%5i" % 0 + " "            #  Charge
                     for i in range(self._dim):               #  Coordinates
-                        out_string += "%8.3f" % (atom.get_pos()[i]*10)
+                        out_string += "%8.3f" % (pos[i]*10)
                         out_string += " " if i<self._dim-1 else ""
                     file_out.write(out_string+"\n")
 
