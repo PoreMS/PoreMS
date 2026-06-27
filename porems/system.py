@@ -1201,28 +1201,34 @@ class PoreKit():
                 if i != 20:
                     data["Interior"]["Surface chemistry - Before Functionalization (Pore " + str(i+1) +")"] = " "
                     data["Exterior"]["Surface chemistry - Before Functionalization (Pore " + str(i+1) +")"] = " "
-                    data["Interior"]["    Pore " + str(i+1) + " Number of single silanol groups"] = "%i"%self._pore.sites_attach_mol[i]["SL"]
+                    sl = self._pore.sites_attach_mol[i].get("SL", 0)
+                    slg = self._pore.sites_attach_mol[i].get("SLG", 0)
+                    slx = self._pore.sites_attach_mol[i].get("SLX", 0)
+                    data["Interior"]["    Pore " + str(i+1) + " Number of single silanol groups"] = "%i" % sl
                     data["Exterior"]["    Pore " + str(i+1) + " Number of single silanol groups"] = " "
-                    data["Interior"]["    Pore " + str(i+1) + " Number of geminal silanol groups"] = "%i"%self._pore.sites_attach_mol[i]["SLG"]
+                    data["Interior"]["    Pore " + str(i+1) + " Number of geminal silanol groups"] = "%i" % slg
                     data["Exterior"]["    Pore " + str(i+1) + " Number of geminal silanol groups"] = " "
-                    data["Interior"]["    Pore " + str(i+1) + " Number of siloxane bridges"] = "%i"%self._pore.sites_attach_mol[i]["SLX"] if "SLX" in self._pore.sites_attach_mol[i] else "0"
+                    data["Interior"]["    Pore " + str(i+1) + " Number of siloxane bridges"] = "%i" % slx
                     data["Exterior"]["    Pore " + str(i+1) + " Number of siloxane bridges"] = " "
-                    data["Interior"]["    Pore " + str(i+1) + " Total number of OH groups"] = "%i"%(self._pore.sites_attach_mol[i]["SL"]+2*self._pore.sites_attach_mol[i]["SLG"])
+                    data["Interior"]["    Pore " + str(i+1) + " Total number of OH groups"] = "%i" % (sl + 2*slg)
                     data["Exterior"]["    Pore " + str(i+1) + " Total number of OH groups"] = " "
-                    data["Interior"]["    Pore " + str(i+1) + " Overall hydroxylation (mumol/m^2)"] = form%(pms.utils.mols_to_mumol_m2(self._pore.sites_attach_mol[i]["SL"]+2*self._pore.sites_attach_mol[i]["SLG"],self.surface(is_sum=False)["in"][i]))
+                    data["Interior"]["    Pore " + str(i+1) + " Overall hydroxylation (mumol/m^2)"] = form % (pms.utils.mols_to_mumol_m2(sl + 2*slg, self.surface(is_sum=False)["in"][i]))
                     data["Exterior"]["    Pore " + str(i+1) + " Overall hydroxylation (mumol/m^2)"] = " "
                 elif i == 20:
+                    sl = self._pore.sites_attach_mol[i].get("SL", 0)
+                    slg = self._pore.sites_attach_mol[i].get("SLG", 0)
+                    slx = self._pore.sites_attach_mol[i].get("SLX", 0)
                     data["Interior"]["Surface chemistry - Before Functionalization (Unassigned binding sites)"] = " "
                     data["Exterior"]["Surface chemistry - Before Functionalization (Unassigned binding sites)"] = " "
-                    data["Interior"]["    Unassigned binding sites" + " Number of single silanol groups"] = "%i"%self._pore.sites_attach_mol[i]["SL"]
+                    data["Interior"]["    Unassigned binding sites" + " Number of single silanol groups"] = "%i" % sl
                     data["Exterior"]["    Unassigned binding sites" + " Number of single silanol groups"] = " "
-                    data["Interior"]["    Unassigned binding sites" + " Number of geminal silanol groups"] = "%i"%self._pore.sites_attach_mol[i]["SLG"]
+                    data["Interior"]["    Unassigned binding sites" + " Number of geminal silanol groups"] = "%i" % slg
                     data["Exterior"]["    Unassigned binding sites" + " Number of geminal silanol groups"] = " "
-                    data["Interior"]["    Unassigned binding sites" + " Number of siloxane bridges"] = "%i"%self._pore.sites_attach_mol[i]["SLX"] if "SLX" in self._pore.sites_attach_mol[i] else "0"
+                    data["Interior"]["    Unassigned binding sites" + " Number of siloxane bridges"] = "%i" % slx
                     data["Exterior"]["    Unassigned binding sites" + " Number of siloxane bridges"] = " "
-                    data["Interior"]["    Unassigned binding sites" + " Total number of OH groups"] = "%i"%(self._pore.sites_attach_mol[i]["SL"]+2*self._pore.sites_attach_mol[i]["SLG"])
+                    data["Interior"]["    Unassigned binding sites" + " Total number of OH groups"] = "%i" % (sl + 2*slg)
                     data["Exterior"]["    Unassigned binding sites" + " Total number of OH groups"] = " "
-                    data["Interior"]["    Unassigned binding sites" + " Overall hydroxylation (mumol/m^2)"] = form%(pms.utils.mols_to_mumol_m2(self._pore.sites_attach_mol[i]["SL"]+2*self._pore.sites_attach_mol[i]["SLG"],self.surface(is_sum=False)["in"][i]))
+                    data["Interior"]["    Unassigned binding sites" + " Overall hydroxylation (mumol/m^2)"] = "n/a"
                     data["Exterior"]["    Unassigned binding sites" + " Overall hydroxylation (mumol/m^2)"] = " "
         except AttributeError:
             pass

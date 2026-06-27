@@ -5,6 +5,7 @@
 ################################################################################
 
 
+import math
 import numpy as np
 
 
@@ -31,7 +32,7 @@ def dot_product(vec_a, vec_b):
     dot : float
         Dot product value
     """
-    return float(np.dot(vec_a, vec_b))
+    return sum(ai*bi for ai, bi in zip(vec_a, vec_b))
 
 
 def length(vec):
@@ -53,7 +54,7 @@ def length(vec):
     length : float
         Vector length
     """
-    return float(np.linalg.norm(vec))
+    return math.sqrt(sum(x*x for x in vec))
 
 
 def vector(pos_a, pos_b):
@@ -74,17 +75,13 @@ def vector(pos_a, pos_b):
 
     Returns
     -------
-    vector : numpy.ndarray
+    vector : list
         Bond vector
     """
-    a = np.asarray(pos_a)
-    b = np.asarray(pos_b)
-
-    if a.shape != b.shape:
+    if len(pos_a) != len(pos_b):
         print("Vector: Wrong dimensions...")
         return None
-
-    return b - a
+    return [b - a for a, b in zip(pos_a, pos_b)]
 
 
 def unit(vec):
@@ -103,12 +100,13 @@ def unit(vec):
 
     Returns
     -------
-    vec : numpy.ndarray
+    vec : list
         Unit vector
     """
-    v = np.asarray(vec, dtype=float)
-    n = np.linalg.norm(v)
-    return v / n if n != 0 else v
+    n = math.sqrt(sum(x*x for x in vec))
+    if n == 0:
+        return [0.0] * len(vec)
+    return [x/n for x in vec]
 
 
 def cross_product(vec_a, vec_b):
@@ -119,7 +117,7 @@ def cross_product(vec_a, vec_b):
 
         \text{cross}(\boldsymbol{a},\boldsymbol{b})=\begin{pmatrix}
         a_2\cdot b_3-a_3\cdot b_2\\
-        a_3\cdot b_1-a_1\cdot b_4\\
+        a_3\cdot b_1-a_1\cdot b_3\\
         a_1\cdot b_2-a_2\cdot b_1
         \end{pmatrix}
 
@@ -132,10 +130,13 @@ def cross_product(vec_a, vec_b):
 
     Returns
     -------
-    vec : numpy.ndarray
+    vec : list
         Cross product vector
     """
-    return np.cross(vec_a, vec_b)
+    a, b = vec_a, vec_b
+    return [a[1]*b[2] - a[2]*b[1],
+            a[2]*b[0] - a[0]*b[2],
+            a[0]*b[1] - a[1]*b[0]]
 
 
 def angle(vec_a, vec_b, is_deg=True):
@@ -161,9 +162,12 @@ def angle(vec_a, vec_b, is_deg=True):
     angle : float
         Angle
     """
-    cos_val = np.dot(vec_a, vec_b) / (np.linalg.norm(vec_a) * np.linalg.norm(vec_b))
-    a = np.arccos(np.clip(cos_val, -1.0, 1.0))
-    return float(np.degrees(a)) if is_deg else float(a)
+    dot = sum(ai*bi for ai, bi in zip(vec_a, vec_b))
+    la = math.sqrt(sum(x*x for x in vec_a))
+    lb = math.sqrt(sum(x*x for x in vec_b))
+    cos_val = max(-1.0, min(1.0, dot / (la * lb)))
+    a_rad = math.acos(cos_val)
+    return math.degrees(a_rad) if is_deg else a_rad
 
 
 def angle_polar(pos, is_deg=False):
@@ -198,8 +202,8 @@ def angle_polar(pos, is_deg=False):
     angle : float
         Polar angle
     """
-    a = np.arctan2(pos[1], pos[0])
-    return float(np.degrees(a)) if is_deg else float(a)
+    a = math.atan2(pos[1], pos[0])
+    return math.degrees(a) if is_deg else a
 
 
 def angle_azi(pos, is_deg=False):
@@ -226,9 +230,10 @@ def angle_azi(pos, is_deg=False):
     angle : float
         Azimuthal angle
     """
-    n = float(np.linalg.norm(pos))
-    a = np.arccos(pos[2] / n) if n != 0 else np.arccos(0)
-    return float(np.degrees(a)) if is_deg else float(a)
+    v = pos
+    n = math.sqrt(sum(x*x for x in v))
+    a = math.acos(max(-1.0, min(1.0, v[2] / n))) if n != 0 else math.acos(0)
+    return math.degrees(a) if is_deg else a
 
 
 def main_axis(inp, dim=3):
@@ -248,25 +253,25 @@ def main_axis(inp, dim=3):
 
     Returns
     -------
-    vec : numpy.ndarray
+    vec : list
         Unit vector
     """
     axis_error = "Wrong axis definition..."
 
     if isinstance(inp, str):
-        mapping = {"x": 1, "y": 2, "z": 3}
+        mapping = {"x": 0, "y": 1, "z": 2}
         if inp not in mapping:
             return axis_error
-        axis = mapping[inp]
+        idx = mapping[inp]
     elif isinstance(inp, int):
         if inp not in (1, 2, 3):
             return axis_error
-        axis = inp
+        idx = inp - 1
     else:
         return axis_error
 
-    v = np.zeros(dim)
-    v[axis - 1] = 1.0
+    v = [0.0] * dim
+    v[idx] = 1.0
     return v
 
 
@@ -308,23 +313,26 @@ def rotate(data, axis, angle, is_deg, dim=3):
 
     Returns
     -------
-    coord : numpy.ndarray
-        Vector c as the result of the rotation
+    coord : list or numpy.ndarray
+        Vector c as the result of the rotation (list for single 3D vectors,
+        numpy array for multi-dimensional data)
     """
-    angle = np.radians(angle) if is_deg else float(angle)
+    angle = math.radians(angle) if is_deg else float(angle)
 
     if isinstance(axis, np.ndarray):
-        # Already a vector — use directly
-        n = axis.astype(float)
+        nx, ny, nz = float(axis[0]), float(axis[1]), float(axis[2])
+        nn = math.sqrt(nx*nx + ny*ny + nz*nz)
+        if nn > 0:
+            nx, ny, nz = nx/nn, ny/nn, nz/nn
     elif isinstance(axis, list):
         if len(axis) == dim:
-            n = np.asarray(axis, dtype=float)
+            n = axis
+            nn = math.sqrt(n[0]**2 + n[1]**2 + n[2]**2)
+            nx, ny, nz = (n[0]/nn, n[1]/nn, n[2]/nn) if nn > 0 else (n[0], n[1], n[2])
         elif len(axis) == 2:
             v = vector(axis[0], axis[1])
-            if v is None:
-                print("Rotate: Wrong vector dimensions.")
-                return None
-            n = np.asarray(v, dtype=float)
+            nn = math.sqrt(v[0]**2 + v[1]**2 + v[2]**2)
+            nx, ny, nz = (v[0]/nn, v[1]/nn, v[2]/nn) if nn > 0 else (v[0], v[1], v[2])
         else:
             print("Rotate: Wrong vector dimensions.")
             return None
@@ -333,24 +341,32 @@ def rotate(data, axis, angle, is_deg, dim=3):
         if isinstance(n, str):
             print("Rotate: " + n)
             return None
-        n = np.asarray(n, dtype=float)
+        nx, ny, nz = n[0], n[1], n[2]
 
-    n_norm = np.linalg.norm(n)
-    if n_norm > 0:
-        n = n / n_norm
-    n1, n2, n3 = n[0], n[1], n[2]
-    c = np.cos(angle)
-    s = np.sin(angle)
+    c = math.cos(angle)
+    s = math.sin(angle)
+    ic = 1.0 - c
 
-    R = np.array([
-        [n1*n1*(1-c)+c,    n1*n2*(1-c)-n3*s, n1*n3*(1-c)+n2*s],
-        [n2*n1*(1-c)+n3*s, n2*n2*(1-c)+c,    n2*n3*(1-c)-n1*s],
-        [n3*n1*(1-c)-n2*s, n3*n2*(1-c)+n1*s, n3*n3*(1-c)+c   ]
-    ])
+    # Inline rotation matrix coefficients
+    r00 = nx*nx*ic + c;    r01 = nx*ny*ic - nz*s; r02 = nx*nz*ic + ny*s
+    r10 = ny*nx*ic + nz*s; r11 = ny*ny*ic + c;    r12 = ny*nz*ic - nx*s
+    r20 = nz*nx*ic - ny*s; r21 = nz*ny*ic + nx*s; r22 = nz*nz*ic + c
 
-    # For homogeneous arrays use einsum (fast, handles (3,) and (3,N,M))
-    # For inhomogeneous plotting data fall back to element-wise broadcasting
+    # Fast path: single 3D vector (most common in pore generation)
+    if isinstance(data, (list, tuple)) and len(data) == dim:
+        d0, d1, d2 = data[0], data[1], data[2]
+        return [r00*d0 + r01*d1 + r02*d2,
+                r10*d0 + r11*d1 + r12*d2,
+                r20*d0 + r21*d1 + r22*d2]
+
+    # Array path: shape plotting data
+    R = np.array([[r00, r01, r02],
+                  [r10, r11, r12],
+                  [r20, r21, r22]])
     try:
         return np.einsum("ij,j...->i...", R, np.asarray(data, dtype=float))
     except (ValueError, TypeError):
-        return [R[i, 0]*data[0] + R[i, 1]*data[1] + R[i, 2]*data[2] for i in range(3)]
+        d = data
+        return [r00*d[0] + r01*d[1] + r02*d[2],
+                r10*d[0] + r11*d[1] + r12*d[2],
+                r20*d[0] + r21*d[1] + r22*d[2]]

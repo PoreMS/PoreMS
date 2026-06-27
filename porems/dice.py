@@ -12,6 +12,65 @@ import numpy as np
 import porems.geometry as geometry
 
 
+def _neighbor_ids(cube_id, count, size, is_pbc):
+    """Return valid neighboring cube ids for *cube_id* (module-level for pickling)."""
+    def step(idx, dim, delta):
+        idx = list(idx)
+        idx[dim] += delta
+        if idx[dim] >= count[dim]:
+            idx[dim] = 0 if is_pbc else None
+        elif idx[dim] < 0:
+            idx[dim] = count[dim] - 1 if is_pbc else None
+        return None if None in idx else tuple(idx)
+
+    neighbors = []
+    for dz in (-1, 0, 1):
+        nz = step(cube_id, 2, dz)
+        if nz is None:
+            continue
+        for dy in (-1, 0, 1):
+            ny = step(nz, 1, dy)
+            if ny is None:
+                continue
+            for dx in (-1, 0, 1):
+                nx = step(ny, 0, dx)
+                if nx is not None:
+                    neighbors.append(nx)
+    return neighbors
+
+
+def _find_bond_task(cube_list, atom_data, pointer, count, size, is_pbc, mol_box_arr, atom_type, distance):
+    """Module-level worker for parallel bond search.
+
+    Accepts only the minimal data needed to avoid pickling the full Molecule object.
+    """
+    d_lo, d_hi = distance
+    t0, t1 = atom_type
+    bond_list = []
+
+    for cube_id in cube_list:
+        neighbors = _neighbor_ids(cube_id, count, size, is_pbc)
+        atoms = [aid for nb in neighbors for aid in pointer[nb]]
+
+        for atom_id_a in pointer[cube_id]:
+            if atom_data[atom_id_a][0] != t0:
+                continue
+            entry = [atom_id_a, []]
+            pos_a = atom_data[atom_id_a][1]
+            for atom_id_b in atoms:
+                if atom_data[atom_id_b][0] != t1 or atom_id_a == atom_id_b:
+                    continue
+                bv = pos_a - atom_data[atom_id_b][1]
+                mask = np.abs(bv) > 3 * size
+                bv[mask] -= mol_box_arr[mask] * np.round(bv[mask] / mol_box_arr[mask])
+                length = math.sqrt(bv[0]*bv[0] + bv[1]*bv[1] + bv[2]*bv[2])
+                if d_lo <= length <= d_hi:
+                    entry[1].append(atom_id_b)
+            bond_list.append(entry)
+
+    return bond_list
+
+
 class Dice:
     """This class splits the molecule into smaller sub boxes and provides
     parallelized functions for pair-search.
@@ -327,7 +386,7 @@ class Dice:
                             mask = np.abs(bv) > 3*self._size
                             bv[mask] -= mol_box[mask] * np.round(bv[mask] / mol_box[mask])
                             length = geometry.length(bv)
-                            # Check if bond distance is within error
+                            # Check if bond distance is within range
                             if length >= distance[0] and length <= distance[1]:
                                 entry[1].append(atom_id_b)
 
@@ -360,10 +419,26 @@ class Dice:
         cube_num = math.floor(len(cube_list)/self._np)
         cube_np = [cube_list[cube_num*i:] if i == self._np-1 else cube_list[cube_num*i:cube_num*(i+1)] for i in range(self._np)]
 
-        # Run parallel search
-        with mp.Pool(processes=self._np) as pool:
-            results = [pool.apply_async(self.find_bond, args=(x, atom_type, distance)) for x in cube_np]
-            bond_list = sum([x.get() for x in results], [])
+        # Pass only the essential data to workers (avoids pickling the full Molecule)
+        task_data = (self._atom_data, self._pointer, self._count, self._size,
+                     self._is_pbc, self._mol_box_arr, atom_type, distance)
+        tasks = [(cube_chunk,) + task_data for cube_chunk in cube_np]
+
+        # fork context inherits parent memory (copy-on-write) — avoids pickling
+        # molecule data entirely. Use spawn on Windows (no fork support), during
+        # testing (pytest adds OS threads not visible to threading.active_count()),
+        # and in any explicitly multi-threaded process.
+        import sys, threading
+        _in_test = "_pytest" in sys.modules or "pytest" in sys.modules
+        if sys.platform == "win32" or threading.active_count() > 1 or _in_test:
+            _start = "spawn"
+        else:
+            _start = "fork"
+        ctx = mp.get_context(_start)
+        pool = ctx.Pool(processes=self._np)
+        results = pool.starmap(_find_bond_task, tasks)
+        pool.terminate()
+        bond_list = sum(results, [])
 
         return bond_list
 
