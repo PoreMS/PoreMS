@@ -345,18 +345,21 @@ class Dice:
     # Search #
     ##########
     def find_bond(self, cube_list, atom_type, distance):
-        """Search for a bond in the given cubes. This function searches for
-        atom-pairs that fulfill the distance requirements within the given cube
-        and all 26 surrounding ones.
+        """Single-threaded bond search used as a reference implementation.
+
+        Searches for atom-pairs that fulfill the distance requirements within the
+        given cube and all 26 surrounding ones. For parallel execution see
+        :func:`find_parallel`, which calls the module-level :func:`_find_bond_task`
+        to avoid pickling the full :class:`Molecule` object.
 
         Parameters
         ----------
         cube_list : list
             List of cube indices to search in, use an empty list for all cubes
         atom_type : list
-            List of two atom types
+            List of two atom types, e.g. ``["Si", "O"]``
         distance : list
-            Bounds of allowed distance [lower, upper]
+            Bounds of allowed distance ``[lower, upper]`` in nm
 
         Returns
         -------
@@ -396,16 +399,24 @@ class Dice:
         return bond_list
 
     def find_parallel(self, cube_list, atom_type, distance):
-        """Parallelized bond search of function :func:`find_bond`.
+        """Parallelized bond search using :func:`_find_bond_task`.
+
+        Divides the cube list across ``cpu_count()`` workers. Workers receive only
+        the atom-data and pointer dicts rather than the full
+        :class:`~porems.Molecule`, reducing IPC overhead. On single-threaded
+        Unix processes a ``fork`` start-context is used so workers inherit the
+        parent's memory via copy-on-write (zero-copy). ``spawn`` is used on
+        Windows and inside multi-threaded processes (e.g. test runners) where
+        ``fork`` risks deadlocks.
 
         Parameters
         ----------
         cube_list : list
             List of cube indices to search in, use an empty list for all cubes
         atom_type : list
-            List of two atom types
+            List of two atom types, e.g. ``["Si", "O"]``
         distance : list
-            Bounds of allowed distance [lower, upper]
+            Bounds of allowed distance ``[lower, upper]`` in nm
 
         Returns
         -------

@@ -44,6 +44,12 @@ Or download the repository and install in the top directory via:
     pytest tests/test_integration.py   # full integration tests (slow)
     pytest tests/test_bench.py         # generation speed benchmarks
 
+To compare generation speed against a specific PyPI release:
+
+    python tests/bench_compare.py              # local build vs latest PyPI (0.3.0)
+    python tests/bench_compare.py --pypi 0.3.0  # pin a specific PyPI version
+    python tests/bench_compare.py --quick       # smaller subset, faster run
+
 
 ## Development
 

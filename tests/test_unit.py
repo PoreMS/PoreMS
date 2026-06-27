@@ -35,16 +35,17 @@ def test_geometry():
     vec_a = [1, 1, 2]
     vec_b = [0, 3, 2]
 
+    # Correctness
     assert round(pms.geom.dot_product(vec_a, vec_b), 4) == 7
     assert round(pms.geom.length(vec_a), 4) == 2.4495
     assert [round(x, 4) for x in pms.geom.vector(vec_a, vec_b)] == [-1, 2, 0]
-    assert pms.geom.vector([0, 1], [0, 0, 0]) is None
+    assert pms.geom.vector([0, 1], [0, 0, 0]) is None          # dimension mismatch → None
     assert [round(x, 4) for x in pms.geom.unit(vec_a)] == [0.4082, 0.4082, 0.8165]
     assert [round(x, 4) for x in pms.geom.cross_product(vec_a, vec_b)] == [-4, -2, 3]
     assert round(pms.geom.angle(vec_a, vec_b), 4) == 37.5714
     assert round(pms.geom.angle_polar(vec_a), 4) == 0.7854
     assert round(pms.geom.angle_azi(vec_b), 4) == 0.9828
-    assert round(pms.geom.angle_azi([0, 0, 0]), 4) == 1.5708
+    assert round(pms.geom.angle_azi([0, 0, 0]), 4) == 1.5708   # zero-length → π/2
     assert [round(x, 4) for x in pms.geom.main_axis(1)] == [1, 0, 0]
     assert [round(x, 4) for x in pms.geom.main_axis(2)] == [0, 1, 0]
     assert [round(x, 4) for x in pms.geom.main_axis(3)] == [0, 0, 1]
@@ -57,6 +58,23 @@ def test_geometry():
     assert [round(x, 4) for x in pms.geom.rotate(vec_a, "x", 90, True)] == [1.0, -2.0, 1.0]
     assert pms.geom.rotate(vec_a, [0, 1, 2, 3], 90, True) is None
     assert pms.geom.rotate(vec_a, "h", 90, True) is None
+
+    # Return types: all scalar functions return plain Python types (not numpy)
+    import math as _math
+    assert isinstance(pms.geom.dot_product(vec_a, vec_b), (int, float))
+    assert isinstance(pms.geom.length(vec_a), float)
+    assert isinstance(pms.geom.vector(vec_a, vec_b), list)
+    assert isinstance(pms.geom.unit(vec_a), list)
+    assert isinstance(pms.geom.cross_product(vec_a, vec_b), list)
+    assert isinstance(pms.geom.angle(vec_a, vec_b), float)
+    # rotate: list for single vector, ndarray for array data
+    import numpy as _np
+    assert isinstance(pms.geom.rotate(vec_a, "z", 0, True), list)
+    assert isinstance(pms.geom.rotate(_np.tile(vec_a, (4, 1)).T, "z", 0, True), _np.ndarray)
+
+    # Dimension-generic: length and vector work for 2D inputs
+    assert round(pms.geom.length([3, 4]), 4) == 5.0
+    assert pms.geom.vector([1, 2], [4, 6]) == [3, 4]
 
 
 def test_database():
