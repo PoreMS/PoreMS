@@ -1,11 +1,27 @@
 # v0.5.0
 
 ### Performance
-* `Molecule`: positions stored as a NumPy array; bulk operations avoid per-atom Python loops
+
+Benchmarked on a 16-core macOS machine, local v0.5.0 vs PyPI v0.3.0
+(`python tests/bench_compare.py`):
+
+| Benchmark | v0.5.0 | v0.3.0 | Speedup |
+|---|---|---|---|
+| BetaCristobalit pattern 4³ | 0.033 s | 0.046 s | **1.4×** |
+| BetaCristobalit pattern 8³ | 0.137 s | 0.160 s | **1.2×** |
+| PoreCylinder 4 nm | 0.213 s | 1.131 s | **5.3×** |
+| PoreCylinder 6 nm | 0.686 s | 1.441 s | **2.1×** |
+| PoreCylinder 8 nm | 1.398 s | 1.967 s | **1.4×** |
+| PoreSlit 6 nm | 0.676 s | 1.458 s | **2.2×** |
+| **Geometric mean** | | | **~2×** |
+
+Key changes driving the speedup:
+
 * `geometry.py`: scalar functions (`cross_product`, `length`, `dot_product`, `unit`, `angle`, `rotate`) rewritten with `math` module and manual formulas — eliminates NumPy Python-layer overhead (`normalize_axis_tuple`, `moveaxis`) for 3D vectors called ~16k times per pore; `rotate()` uses a fast list path for single vectors and NumPy `einsum` for arrays
-* `Dice.find_parallel()`: replaced bound-method `apply_async(self.find_bond, ...)` with module-level `_find_bond_task()` and `starmap()` to avoid pickling the full `Molecule` object per worker; uses `fork` context on single-threaded Unix processes (zero-copy via copy-on-write) with `spawn` fallback on Windows and in test environments — **~2× geometric mean speedup vs 0.3.0 (up to 5× for small pores)**
+* `Dice.find_parallel()`: replaced bound-method `apply_async(self.find_bond, ...)` with module-level `_find_bond_task()` and `starmap()` to avoid pickling the full `Molecule` object per worker; uses `fork` context on single-threaded Unix processes (zero-copy via copy-on-write) with `spawn` fallback on Windows and in test environments
 * `Dice.find_bond()`: vectorized pairwise distance check with NumPy broadcasting; pre-computed `mol_box` array moved to constructor
 * `Dice.neighbor()`: replaced fragile `pop(13)` magic index with explicit `n != cube_id` filter
+* `Molecule`: positions stored as a NumPy array; bulk operations avoid per-atom Python loops
 * `Molecule.overlap()`: replaced O(n²) loop with SciPy `KDTree` (Chebyshev metric)
 * `Store.gro()`, `Store.pdb()`: replaced per-atom string concatenation with list + `writelines`
 * `Store.lmp()`: replaced `list.index()` per atom with pre-built dict for O(1) atom-type lookup
