@@ -1132,18 +1132,147 @@ class PoreKit():
     #########
     # Table #
     #########
-    def table(self, decimals=3):
-        """Create properties as pandas table for easy viewing.
+    # ------------------------------------------------------------------
+    # Table helpers
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _table_label_plain(label):
+        """Convert raw label string to a human-readable plain-text label."""
+        label = label.strip()
+        label = label.replace("mumol/m^2", "μmol/m²")
+        label = label.replace("nm^3", "nm³")
+        label = label.replace("nm^2", "nm²")
+        label = label.replace("xyz-dimensions", "dimensions")
+        return label
+
+    @staticmethod
+    def _table_label_latex(label):
+        """Convert raw label string to a LaTeX-safe label."""
+        label = label.strip()
+        label = label.replace("&", r"\&")
+        label = label.replace("%", r"\%")
+        label = label.replace("mumol/m^2", r"$\mu$mol/m$^{2}$")
+        label = label.replace("nm^3", r"nm$^{3}$")
+        label = label.replace("nm^2", r"nm$^{2}$")
+        label = label.replace("xyz-dimensions", "dimensions")
+        return label
+
+    @staticmethod
+    def _table_value_latex(val):
+        """Escape special characters in a table cell value."""
+        val = str(val).replace("&", r"\&").replace("%", r"\%").replace("_", r"\_")
+        val = val.replace("mumol/m^2", r"$\mu$mol/m$^{2}$")
+        return val
+
+    @staticmethod
+    def _section_prefix(section_key):
+        """Return the redundant prefix that sub-rows inside *section_key* carry."""
+        import re
+        m = re.search(r"\(Pore (\d+)\)", section_key)
+        if m:
+            return f"Pore {m.group(1)} "
+        if "Unassigned" in section_key:
+            return "Unassigned binding sites "
+        return ""
+
+    def _table_plain(self, data):
+        """Render *data* dict as a styled plain-text string."""
+        col_w = 46
+        val_w = 18
+        sep   = "─" * (col_w + 2 * val_w + 4)
+        heavy = "━" * len(sep)
+
+        lines = [heavy,
+                 f"{'Property':<{col_w}}  {'Interior':>{val_w}}  {'Exterior':>{val_w}}",
+                 heavy]
+
+        prefix = ""
+        for key in data["Interior"]:
+            iv = str(data["Interior"][key])
+            ev = str(data["Exterior"][key])
+            is_section = iv.strip() == "" and ev.strip() == ""
+            is_indented = key.startswith("    ")
+            label = self._table_label_plain(key)
+
+            if is_section:
+                prefix = self._section_prefix(key)
+                lines.append(sep)
+                lines.append(f"  {label}")
+                lines.append(sep)
+            elif is_indented:
+                if prefix and label.startswith(prefix):
+                    label = label[len(prefix):]
+                lines.append(f"    {label:<{col_w}}  {iv:>{val_w}}  {ev:>{val_w}}")
+            else:
+                lines.append(f"  {label:<{col_w + 2}}  {iv:>{val_w}}  {ev:>{val_w}}")
+
+        lines.append(heavy)
+        return "\n".join(lines)
+
+    def _table_latex(self, data):
+        """Render *data* dict as a LaTeX ``longtable`` (booktabs style)."""
+        lines = [
+            r"\begin{longtable}{p{8cm}ll}",
+            r"\toprule",
+            r"Property & Interior & Exterior \\",
+            r"\midrule",
+            r"\endfirsthead",
+            r"\toprule",
+            r"Property & Interior & Exterior \\",
+            r"\midrule",
+            r"\endhead",
+            r"\midrule",
+            r"\multicolumn{3}{r}{\textit{continued\ldots}} \\",
+            r"\endfoot",
+            r"\bottomrule",
+            r"\endlastfoot",
+        ]
+
+        prefix = ""
+        for key in data["Interior"]:
+            iv = self._table_value_latex(data["Interior"][key])
+            ev = self._table_value_latex(data["Exterior"][key])
+            is_section = iv.strip() == "" and ev.strip() == ""
+            label = self._table_label_latex(key)
+
+            if is_section:
+                prefix = self._section_prefix(key)
+                lines.append(r"\midrule")
+                lines.append(r"\multicolumn{3}{l}{\textit{" + label + r"}} \\")
+                lines.append(r"\midrule")
+            else:
+                if key.startswith("    "):
+                    if prefix and label.startswith(prefix):
+                        label = label[len(prefix):]
+                    lines.append(r"\quad " + f"{label} & {iv} & {ev} \\\\")
+                else:
+                    lines.append(f"{label} & {iv} & {ev} \\\\")
+
+        lines.append(r"\end{longtable}")
+        return "\n".join(lines)
+
+    # ------------------------------------------------------------------
+
+    def table(self, decimals=3, fmt=None):
+        """Create a properties table for the pore system.
 
         Parameters
         ----------
         decimals : integer, optional
-            Number of decimals to be rounded to
+            Number of decimal places
+        fmt : None | "plain" | "latex", optional
+            Output format.  ``None`` (default) returns a
+            :class:`pandas.DataFrame` for programmatic use.
+            ``"plain"`` returns a formatted string suitable for
+            printing to a terminal.  ``"latex"`` returns a
+            ``longtable`` LaTeX environment (requires the *booktabs*
+            and *longtable* packages).
 
         Returns
         -------
-        tables : DataFrame
-            Pandas table of all properties
+        table : DataFrame | str
+            Pore properties in the requested format
         """
         # Initialize
         form = "%."+str(decimals)+"f"
@@ -1162,7 +1291,7 @@ class PoreKit():
         data["Exterior"]["Silica block xyz-dimensions (nm)"] = "["+form%self.box()[0]+", "+form%self.box()[1]+", "+form%(self.box()[2]-2*self.reservoir())+"]"
         data["Interior"]["Simulation box xyz-dimensions (nm)"] = " "
         data["Exterior"]["Simulation box xyz-dimensions (nm)"] = "["+form%self.box()[0]+", "+form%self.box()[1]+", "+form%self.box()[2]+"]"
-        data["Interior"]["Surface roughness (nm)"] = [form%val for val in roughness["in"]] if "in" in roughness else form%0
+        data["Interior"]["Surface roughness (nm)"] = ", ".join(form%val for val in roughness["in"]) if "in" in roughness else form%0
         data["Exterior"]["Surface roughness (nm)"] = form%roughness["ex"] if "ex" in roughness else form%0
         for i, val in enumerate(self.diameter()):
             data["Interior"]["Pore "+ str(i+1) +" diameter (nm)"] = form%val
@@ -1270,6 +1399,10 @@ class PoreKit():
                             data["Exterior"]["    Pore " + str(i+1) + " "+mol+" density (mumol/m^2)"] = " "
         except AttributeError:
             pass
+        if fmt == "plain":
+            return self._table_plain(data)
+        elif fmt == "latex":
+            return self._table_latex(data)
         return pd.DataFrame.from_dict(data)
 
 
