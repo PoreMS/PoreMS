@@ -592,3 +592,35 @@ def test_pore_cylinder_amorph():
     assert round(pore.roughness()["ex"], 1) == 0.3
     assert round(pore.volume()) == 121
     assert {key: round(item) for key, item in pore.surface().items()} == {"in": 121, "ex": 159}
+
+
+def test_table_formats():
+    """table() fmt parameter: plain returns a styled string, latex returns LaTeX markup,
+    default returns a DataFrame."""
+    import pandas as pd
+
+    pore = pms.PoreCylinder([4, 4, 4], 2.0, res=0)
+    pore.finalize()
+
+    # Default: DataFrame
+    df = pore.table()
+    assert isinstance(df, pd.DataFrame)
+    assert "Interior" in df.columns and "Exterior" in df.columns
+
+    # Plain: styled string
+    plain = pore.table(fmt="plain")
+    assert isinstance(plain, str)
+    assert "━" in plain                     # heavy rule present
+    assert "μmol/m²" in plain               # Unicode units
+    assert "nm³" in plain                   # superscript cube
+
+    # LaTeX: longtable environment
+    latex = pore.table(fmt="latex")
+    assert isinstance(latex, str)
+    assert r"\begin{longtable}" in latex
+    assert r"\toprule" in latex
+    assert r"\midrule" in latex
+    assert r"\bottomrule" in latex
+    assert r"$\mu$mol/m$^{2}$" in latex     # LaTeX units
+    assert r"\quad" in latex                 # indented sub-rows
+    assert latex.count("\\\\") >= 5         # at least 5 data rows

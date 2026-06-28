@@ -1,11 +1,11 @@
-# v0.5.0
+# v1.0.0
 
 ### Performance
 
-Benchmarked on a 16-core macOS machine, local v0.5.0 vs PyPI v0.3.0
+Benchmarked on a 16-core macOS machine, v1.0.0 vs PyPI v0.3.0
 (`python tests/bench_compare.py`):
 
-| Benchmark | v0.5.0 | v0.3.0 | Speedup |
+| Benchmark | v1.0.0 | v0.3.0 | Speedup |
 |---|---|---|---|
 | BetaCristobalit pattern 4³ | 0.033 s | 0.046 s | **1.4×** |
 | BetaCristobalit pattern 8³ | 0.137 s | 0.160 s | **1.2×** |
@@ -39,6 +39,7 @@ Key changes driving the speedup:
 * `PoreCone`: convenience class for conical pores (linearly varying diameter)
 * `attach_special()` moved to `PoreKit` base class — removed identical duplicate methods from `PoreCylinder`, `PoreSlit`, and `PoreAmorphCylinder`
 * `Hourglass` shape class added to `shape.py` with correct `is_in()` and `normal()` implementations
+* `PoreKit.table()`: new `fmt` parameter — `fmt="plain"` returns a Unicode-box styled string (μmol/m², nm³ units; section headers; aligned columns), `fmt="latex"` returns a `longtable` environment (booktabs rules, `\quad`-indented sub-rows, LaTeX math units) suitable for direct inclusion in papers
 
 ### CI / tooling
 * GitHub Actions: added ruff linting workflow (`lint.yml`)
@@ -53,8 +54,10 @@ Key changes driving the speedup:
 * Copyright year updated to 2026
 
 ### Administrative
-* `setup.py`: version 0.5.0, `python_requires='>=3.10'`, author email updated
-* README: fixed `docsrc/` → `docs/` image paths, updated Python version, added testing commands
+* `setup.py`: version 1.0.0, `python_requires='>=3.10'`, author email updated
+* README: fixed `docsrc/` → `docs/` image paths, updated Python version, added testing and benchmarking commands
+* `tests/bench_compare.py`: standalone script comparing generation speed of the local build vs any PyPI release
+* `tests/test_bench.py`: benchmark time limits tightened to reflect real performance; `POREMS_BENCH_SCALE` env var allows scaling limits on slow machines
 
 
 # v0.4.0
