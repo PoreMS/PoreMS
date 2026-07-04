@@ -24,7 +24,7 @@ Check out an exemplary [workflow](workflow.html) for using the PoreMS package to
 and run molecular dynamics simulation using [Gromacs](http://www.gromacs.org/).
 
 To see the code, report a bug or contribute, please visit the
-[GitHub repository](https://github.com/Ajax23/PoreMS).
+[GitHub repository](https://github.com/PoreMS/PoreMS).
 
 ## API Reference
 
