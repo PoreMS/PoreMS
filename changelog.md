@@ -56,7 +56,7 @@ Key changes driving the speedup:
 * Copyright year updated to 2026
 
 ### Administrative
-* `setup.py`: version 1.0.0, `python_requires='>=3.12'`, author email updated
+* `pyproject.toml`: version 1.0.0, `requires-python = ">=3.12"`, author email updated; `[project.optional-dependencies]` dev group added (`pytest`, `pytest-cov`)
 * README: fixed `docsrc/` → `docs/` image paths, updated Python version, added testing and benchmarking commands
 * `tests/bench_compare.py`: standalone script comparing generation speed of the local build vs any PyPI release
 * `tests/test_bench.py`: benchmark time limits tightened to reflect real performance; `POREMS_BENCH_SCALE` env var allows scaling limits on slow machines
