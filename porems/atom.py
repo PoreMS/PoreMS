@@ -4,7 +4,6 @@
 """All necessary function for creating and editing atoms."""
 ################################################################################
 
-
 import pandas as pd
 
 
@@ -22,11 +21,11 @@ class Atom:
     residue : integer, optional
         Residue number
     """
+
     def __init__(self, atom_type, name="", residue=0):
         self._atom_type = atom_type
         self._name = name
         self._residue = residue
-
 
     ##################
     # Representation #
@@ -41,7 +40,6 @@ class Atom:
         """
         data = [[self._residue, self._name, self._atom_type]]
         return pd.DataFrame(data, columns=["Residue", "Name", "Type"]).to_string()
-
 
     ##################
     # Setter Methods #
@@ -75,7 +73,6 @@ class Atom:
             Residue index
         """
         self._residue = residue
-
 
     ##################
     # Getter Methods #

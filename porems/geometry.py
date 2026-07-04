@@ -4,8 +4,8 @@
 """Here basic geometric functions are noted."""
 ################################################################################
 
-
 import math
+
 import numpy as np
 
 
@@ -32,7 +32,7 @@ def dot_product(vec_a, vec_b):
     dot : float
         Dot product value
     """
-    return sum(ai*bi for ai, bi in zip(vec_a, vec_b))
+    return sum(ai * bi for ai, bi in zip(vec_a, vec_b))
 
 
 def length(vec):
@@ -54,7 +54,7 @@ def length(vec):
     length : float
         Vector length
     """
-    return math.sqrt(sum(x*x for x in vec))
+    return math.sqrt(sum(x * x for x in vec))
 
 
 def vector(pos_a, pos_b):
@@ -103,10 +103,10 @@ def unit(vec):
     vec : list
         Unit vector
     """
-    n = math.sqrt(sum(x*x for x in vec))
+    n = math.sqrt(sum(x * x for x in vec))
     if n == 0:
         return [0.0] * len(vec)
-    return [x/n for x in vec]
+    return [x / n for x in vec]
 
 
 def cross_product(vec_a, vec_b):
@@ -134,9 +134,11 @@ def cross_product(vec_a, vec_b):
         Cross product vector
     """
     a, b = vec_a, vec_b
-    return [a[1]*b[2] - a[2]*b[1],
-            a[2]*b[0] - a[0]*b[2],
-            a[0]*b[1] - a[1]*b[0]]
+    return [
+        a[1] * b[2] - a[2] * b[1],
+        a[2] * b[0] - a[0] * b[2],
+        a[0] * b[1] - a[1] * b[0],
+    ]
 
 
 def angle(vec_a, vec_b, is_deg=True):
@@ -162,9 +164,9 @@ def angle(vec_a, vec_b, is_deg=True):
     angle : float
         Angle
     """
-    dot = sum(ai*bi for ai, bi in zip(vec_a, vec_b))
-    la = math.sqrt(sum(x*x for x in vec_a))
-    lb = math.sqrt(sum(x*x for x in vec_b))
+    dot = sum(ai * bi for ai, bi in zip(vec_a, vec_b))
+    la = math.sqrt(sum(x * x for x in vec_a))
+    lb = math.sqrt(sum(x * x for x in vec_b))
     cos_val = max(-1.0, min(1.0, dot / (la * lb)))
     a_rad = math.acos(cos_val)
     return math.degrees(a_rad) if is_deg else a_rad
@@ -231,7 +233,7 @@ def angle_azi(pos, is_deg=False):
         Azimuthal angle
     """
     v = pos
-    n = math.sqrt(sum(x*x for x in v))
+    n = math.sqrt(sum(x * x for x in v))
     a = math.acos(max(-1.0, min(1.0, v[2] / n))) if n != 0 else math.acos(0)
     return math.degrees(a) if is_deg else a
 
@@ -321,18 +323,22 @@ def rotate(data, axis, angle, is_deg, dim=3):
 
     if isinstance(axis, np.ndarray):
         nx, ny, nz = float(axis[0]), float(axis[1]), float(axis[2])
-        nn = math.sqrt(nx*nx + ny*ny + nz*nz)
+        nn = math.sqrt(nx * nx + ny * ny + nz * nz)
         if nn > 0:
-            nx, ny, nz = nx/nn, ny/nn, nz/nn
+            nx, ny, nz = nx / nn, ny / nn, nz / nn
     elif isinstance(axis, list):
         if len(axis) == dim:
             n = axis
-            nn = math.sqrt(n[0]**2 + n[1]**2 + n[2]**2)
-            nx, ny, nz = (n[0]/nn, n[1]/nn, n[2]/nn) if nn > 0 else (n[0], n[1], n[2])
+            nn = math.sqrt(n[0] ** 2 + n[1] ** 2 + n[2] ** 2)
+            nx, ny, nz = (
+                (n[0] / nn, n[1] / nn, n[2] / nn) if nn > 0 else (n[0], n[1], n[2])
+            )
         elif len(axis) == 2:
             v = vector(axis[0], axis[1])
-            nn = math.sqrt(v[0]**2 + v[1]**2 + v[2]**2)
-            nx, ny, nz = (v[0]/nn, v[1]/nn, v[2]/nn) if nn > 0 else (v[0], v[1], v[2])
+            nn = math.sqrt(v[0] ** 2 + v[1] ** 2 + v[2] ** 2)
+            nx, ny, nz = (
+                (v[0] / nn, v[1] / nn, v[2] / nn) if nn > 0 else (v[0], v[1], v[2])
+            )
         else:
             print("Rotate: Wrong vector dimensions.")
             return None
@@ -348,25 +354,33 @@ def rotate(data, axis, angle, is_deg, dim=3):
     ic = 1.0 - c
 
     # Inline rotation matrix coefficients
-    r00 = nx*nx*ic + c;    r01 = nx*ny*ic - nz*s; r02 = nx*nz*ic + ny*s
-    r10 = ny*nx*ic + nz*s; r11 = ny*ny*ic + c;    r12 = ny*nz*ic - nx*s
-    r20 = nz*nx*ic - ny*s; r21 = nz*ny*ic + nx*s; r22 = nz*nz*ic + c
+    r00 = nx * nx * ic + c
+    r01 = nx * ny * ic - nz * s
+    r02 = nx * nz * ic + ny * s
+    r10 = ny * nx * ic + nz * s
+    r11 = ny * ny * ic + c
+    r12 = ny * nz * ic - nx * s
+    r20 = nz * nx * ic - ny * s
+    r21 = nz * ny * ic + nx * s
+    r22 = nz * nz * ic + c
 
     # Fast path: single 3D vector (most common in pore generation)
     if isinstance(data, (list, tuple)) and len(data) == dim:
         d0, d1, d2 = data[0], data[1], data[2]
-        return [r00*d0 + r01*d1 + r02*d2,
-                r10*d0 + r11*d1 + r12*d2,
-                r20*d0 + r21*d1 + r22*d2]
+        return [
+            r00 * d0 + r01 * d1 + r02 * d2,
+            r10 * d0 + r11 * d1 + r12 * d2,
+            r20 * d0 + r21 * d1 + r22 * d2,
+        ]
 
     # Array path: shape plotting data
-    R = np.array([[r00, r01, r02],
-                  [r10, r11, r12],
-                  [r20, r21, r22]])
+    R = np.array([[r00, r01, r02], [r10, r11, r12], [r20, r21, r22]])
     try:
         return np.einsum("ij,j...->i...", R, np.asarray(data, dtype=float))
     except (ValueError, TypeError):
         d = data
-        return [r00*d[0] + r01*d[1] + r02*d[2],
-                r10*d[0] + r11*d[1] + r12*d[2],
-                r20*d[0] + r21*d[1] + r22*d[2]]
+        return [
+            r00 * d[0] + r01 * d[1] + r02 * d[2],
+            r10 * d[0] + r11 * d[1] + r12 * d[2],
+            r20 * d[0] + r21 * d[1] + r22 * d[2],
+        ]

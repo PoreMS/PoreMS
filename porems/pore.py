@@ -4,20 +4,17 @@
 """Function for editing a pore surface."""
 ################################################################################
 
-
 import copy
 import random
-
 from collections import Counter
 
-import porems.geometry as geometry
 import porems.generic as generic
-
+import porems.geometry as geometry
 from porems.dice import Dice
 from porems.molecule import Molecule
 
 
-class Pore():
+class Pore:
     """This class prepares and converts a given molecule block into a pore
     system.
 
@@ -32,6 +29,7 @@ class Pore():
     matrix : Matrix
         Matrix object containing all bond information of given block molecule
     """
+
     def __init__(self, block, matrix):
         # Initialize
         self._dim = 3
@@ -46,7 +44,6 @@ class Pore():
         self._oxygen_ex = []
 
         self._mol_dict = {"block": {}, "in": {}, "ex": {}}
-
 
     ###########
     # Surface #
@@ -66,14 +63,16 @@ class Pore():
         """
         # Remove unsaturated silicon atoms
         for atom, props in self._matrix.get_matrix().items():
-            if self._block.get_atom_type(atom)=="Si":
+            if self._block.get_atom_type(atom) == "Si":
                 if len(props["atoms"]) < props["bonds"]:
                     self._matrix.strip(atom)
 
         # Remove silicon atoms with three unsaturated oxygen atoms
         while True:
             o_list = self._matrix.bound(1)
-            si_count = Counter(sum([self._matrix.get_matrix()[o]["atoms"] for o in o_list], []))
+            si_count = Counter(
+                sum([self._matrix.get_matrix()[o]["atoms"] for o in o_list], [])
+            )
             if 3 not in si_count.values():
                 break
             for si, count in si_count.items():
@@ -109,7 +108,9 @@ class Pore():
 
                 # Calculate new bond lengths after displacement
                 ok = all(
-                    accept[0] <= geometry.length(self._block.bond(atom_id, bond)) <= accept[1]
+                    accept[0]
+                    <= geometry.length(self._block.bond(atom_id, bond))
+                    <= accept[1]
                     for bond in connect[atom_id]["atoms"]
                 )
 
@@ -128,14 +129,17 @@ class Pore():
         """
         # Initialize
         box = self._block.get_box()
-        atom_list = self._block.get_atom_list()
         bound_list = self._matrix.get_matrix()
 
         # Get gap
-        gap = [-2*x for x in self._block.zero()]
+        gap = [-2 * x for x in self._block.zero()]
 
         # Get list of all si atoms
-        si_list = [atom_id for atom_id, atom in enumerate(self._block.get_atom_list()) if atom.get_atom_type()=="Si"]
+        si_list = [
+            atom_id
+            for atom_id, atom in enumerate(self._block.get_atom_list())
+            if atom.get_atom_type() == "Si"
+        ]
 
         # Run through silicon atoms
         add_list = []
@@ -144,23 +148,26 @@ class Pore():
             # Run through bound oxygen atoms
             for o in bound_list[si]["atoms"]:
                 # Calculate bond vector
-                bond_vector = [self._block.pos(si)[dim]-self._block.pos(o)[dim] for dim in range(3)]
+                bond_vector = [
+                    self._block.pos(si)[dim] - self._block.pos(o)[dim]
+                    for dim in range(3)
+                ]
 
                 # Check if z dimension of bond - after rotation in pattern class - goes over boundary
-                if abs(bond_vector[2]) > box[2]/2:
+                if abs(bond_vector[2]) > box[2] / 2:
                     # Get bond direction
                     r = -0.155 if bond_vector[2] < 0 else 0.155
 
                     # Get bond angle
                     theta = geometry.angle_azi(bond_vector, is_deg=True)
                     phi = geometry.angle_polar(bond_vector, is_deg=True)
-                    theta = theta-180 if r < 0 else theta
+                    theta = theta - 180 if r < 0 else theta
 
                     # Add new oxygen atom
                     self._block.add("O", si, r=r, theta=theta, phi=phi)
 
                     # Add list for new atoms
-                    add_list.append([si, self._block.get_num()-1])
+                    add_list.append([si, self._block.get_num() - 1])
 
                     # Add to break bond list
                     break_list.append([si, o])
@@ -211,7 +218,7 @@ class Pore():
         # Get list of surface oxygen atoms
         oxygen_list = self._matrix.bound(1)
         connect = self._matrix.get_matrix()
-        oxygen_ex_set = set(self._oxygen_ex)   # O(1) lookup below
+        oxygen_ex_set = set(self._oxygen_ex)  # O(1) lookup below
 
         # Create binding site dictionary
         self._sites = {}
@@ -235,11 +242,25 @@ class Pore():
             # State
             data["state"] = True
 
-
     #######################
     # Molecule Attachment #
     #######################
-    def attach(self, mol, mount, axis, sites, amount, scale=1, trials=1000, pos_list=None, site_type="in", is_proxi=True, is_random=True, is_rotate=False, is_g=True):
+    def attach(
+        self,
+        mol,
+        mount,
+        axis,
+        sites,
+        amount,
+        scale=1,
+        trials=1000,
+        pos_list=None,
+        site_type="in",
+        is_proxi=True,
+        is_random=True,
+        is_rotate=False,
+        is_g=True,
+    ):
         """Attach molecules on the surface.
 
         Parameters
@@ -277,18 +298,21 @@ class Pore():
             List of molecule objects that are attached on the surface
         """
         # Check site type input
-        if not site_type in ["in", "ex"]:
+        if site_type not in ["in", "ex"]:
             print("Pore - Wrong attachement site-type...")
             return
 
         # Rotate molecule towards z-axis
         mol_axis = mol.bond(*axis)
-        mol.rotate(geometry.cross_product(mol_axis, [0, 0, 1]), geometry.angle(mol_axis, [0, 0, 1]))
+        mol.rotate(
+            geometry.cross_product(mol_axis, [0, 0, 1]),
+            geometry.angle(mol_axis, [0, 0, 1]),
+        )
         mol.zero()
 
         # Search for overlapping placements - Calculate diameter and add carbon VdW-raidus (Wiki)
         if is_proxi:
-            mol_diam = (max(mol.get_box()[:2])+0.17)*scale
+            mol_diam = (max(mol.get_box()[:2]) + 0.17) * scale
             si_mol = Molecule()
             for _a in sites:
                 si_mol._atom_list.append(self._block.get_atom_list()[_a])
@@ -310,7 +334,9 @@ class Pore():
                 min_dist = 100000000
                 for site in sites:
                     if self._sites[site]["state"]:
-                        length = geometry.length(geometry.vector(self._block.pos(site), pos))
+                        length = geometry.length(
+                            geometry.vector(self._block.pos(site), pos)
+                        )
                         if length < min_dist:
                             si = site
                             min_dist = length
@@ -319,57 +345,78 @@ class Pore():
                 for j in range(trials):
                     si_rand = random.choice(sites)
                     if self._sites[si_rand]["state"]:
-                        if (is_g==False and len(self._sites[si_rand]["o"])==2):
-                            pass  
-                        else: 
-                            si = si_rand                  
+                        if not is_g and len(self._sites[si_rand]["o"]) == 2:
+                            pass
+                        else:
+                            si = si_rand
                             break
             # Or use next binding site in given list
             else:
-                si = sites[i] if i<len(sites) else None
+                si = sites[i] if i < len(sites) else None
 
             # Place molecule on surface
-            if si is not None and self._sites[si]["state"]: 
-                if (is_g==False and len(self._sites[si]["o"])==2):
+            if si is not None and self._sites[si]["state"]:
+                if not is_g and len(self._sites[si]["o"]) == 2:
                     pass
                 else:
                     # Disable binding site
                     self._sites[si]["state"] = False
-                
+
                     # Create a copy of the molecule
                     mol_temp = copy.deepcopy(mol)
 
                     # Check if geminal
-                    if len(self._sites[si]["o"])==2:
+                    if len(self._sites[si]["o"]) == 2:
                         mol_temp.add("O", mount, r=0.164, theta=45)
-                        mol_temp.add("H", mol_temp.get_num()-1, r=0.098)
-                        mol_temp.set_name(mol.get_name()+"g")
-                        mol_temp.set_short(mol.get_short()+"G")
+                        mol_temp.add("H", mol_temp.get_num() - 1, r=0.098)
+                        mol_temp.set_name(mol.get_name() + "g")
+                        mol_temp.set_short(mol.get_short() + "G")
 
                     # Rotate molecule towards surface normal vector
                     surf_axis = self._sites[si]["normal"](self._block.pos(si))
-                    mol_temp.rotate(geometry.cross_product([0, 0, 1], surf_axis), -geometry.angle([0, 0, 1], surf_axis))
+                    mol_temp.rotate(
+                        geometry.cross_product([0, 0, 1], surf_axis),
+                        -geometry.angle([0, 0, 1], surf_axis),
+                    )
 
                     # Move molecule to mounting position
                     mol_temp.move(mount, self._block.pos(si))
 
                     # Add molecule to molecule list and global dictionary
                     mol_list.append(mol_temp)
-                    if not mol_temp.get_short() in self._mol_dict[site_type]:
+                    if mol_temp.get_short() not in self._mol_dict[site_type]:
                         self._mol_dict[site_type][mol_temp.get_short()] = []
                     self._mol_dict[site_type][mol_temp.get_short()].append(mol_temp)
 
                     # Remove bonds of occupied binding site
-                    self._matrix.strip([si]+self._sites[si]["o"])
+                    self._matrix.strip([si] + self._sites[si]["o"])
 
                     # Recursively fill sites in proximity with silanol and geminal silanol
                     if is_proxi:
                         proxi_list = [sites[x] for x in si_matrix[site_index[si]]]
                         if len(proxi_list) > 0:
-                            mol_list.extend(self.attach(generic.silanol(), 0, [0, 1], proxi_list, len(proxi_list), site_type=site_type, is_proxi=False, is_random=False))
+                            mol_list.extend(
+                                self.attach(
+                                    generic.silanol(),
+                                    0,
+                                    [0, 1],
+                                    proxi_list,
+                                    len(proxi_list),
+                                    site_type=site_type,
+                                    is_proxi=False,
+                                    is_random=False,
+                                )
+                            )
         return mol_list
 
-    def siloxane(self, sites, amount, slx_dist=[0.507-1e-2, 0.507+1e-2], trials=1000, site_type="in"):
+    def siloxane(
+        self,
+        sites,
+        amount,
+        slx_dist=[0.507 - 1e-2, 0.507 + 1e-2],
+        trials=1000,
+        site_type="in",
+    ):
         """Attach siloxane bridges on the surface similar to Krishna et al.
         (2009). Here silicon atoms of silanol groups wich are at least 0.31 nm
         near each other can be converted to siloxan bridges, by removing one
@@ -391,7 +438,7 @@ class Pore():
             Site type - interior **in**, exterior **ex**
         """
         # Check site type input
-        if not site_type in ["in", "ex"]:
+        if site_type not in ["in", "ex"]:
             print("Pore - Wrong attachement site-type...")
             return
 
@@ -404,7 +451,10 @@ class Pore():
 
         # Rotate molecule towards z-axis
         mol_axis = mol.bond(*axis)
-        mol.rotate(geometry.cross_product(mol_axis, [0, 0, 1]), geometry.angle(mol_axis, [0, 0, 1]))
+        mol.rotate(
+            geometry.cross_product(mol_axis, [0, 0, 1]),
+            geometry.angle(mol_axis, [0, 0, 1]),
+        )
         mol.zero()
 
         # Search for silicon atoms near each other
@@ -434,7 +484,10 @@ class Pore():
                     # Check if binding partner is in local si-si matrix
                     if site_index[si_rand_proxi] in si_matrix:
                         # Check if unbound states
-                        if self._sites[si_rand]["state"] and self._sites[si_rand_proxi]["state"]:
+                        if (
+                            self._sites[si_rand]["state"]
+                            and self._sites[si_rand_proxi]["state"]
+                        ):
                             # Check if binding site silicon atoms are already connected with an oxygen
                             is_connected = False
                             for atom_o in bond_matrix[si_rand]["atoms"]:
@@ -452,12 +505,23 @@ class Pore():
                 mol_temp = copy.deepcopy(mol)
 
                 # Calculate center position
-                pos_vec_halve = [x/2 for x in geometry.vector(self._block.pos(si[0]), self._block.pos(si[1]))]
-                center_pos = [pos_vec_halve[x]+self._block.pos(si[0])[x] for x in range(self._dim)]
+                pos_vec_halve = [
+                    x / 2
+                    for x in geometry.vector(
+                        self._block.pos(si[0]), self._block.pos(si[1])
+                    )
+                ]
+                center_pos = [
+                    pos_vec_halve[x] + self._block.pos(si[0])[x]
+                    for x in range(self._dim)
+                ]
 
                 # Rotate molecule towards surface normal vector
                 surf_axis = self._sites[si[0]]["normal"](center_pos)
-                mol_temp.rotate(geometry.cross_product([0, 0, 1], surf_axis), -geometry.angle([0, 0, 1], surf_axis))
+                mol_temp.rotate(
+                    geometry.cross_product([0, 0, 1], surf_axis),
+                    -geometry.angle([0, 0, 1], surf_axis),
+                )
 
                 # Move molecule to mounting position and remove temporary atom
                 mol_temp.move(mount, center_pos)
@@ -465,14 +529,14 @@ class Pore():
 
                 # Add molecule to molecule list and global dictionary
                 mol_list.append(mol_temp)
-                if not mol_temp.get_short() in self._mol_dict[site_type]:
+                if mol_temp.get_short() not in self._mol_dict[site_type]:
                     self._mol_dict[site_type][mol_temp.get_short()] = []
                 self._mol_dict[site_type][mol_temp.get_short()].append(mol_temp)
 
                 # Remove oxygen atom and if not geminal delete site
                 for si_id in si:
                     self._matrix.strip(self._sites[si_id]["o"][0])
-                    if len(self._sites[si_id]["o"])==2:
+                    if len(self._sites[si_id]["o"]) == 2:
                         self._sites[si_id]["o"].pop(0)
                     else:
                         del self._sites[si_id]
@@ -499,10 +563,18 @@ class Pore():
         mol_list : list
             List of molecule objects that are attached on the surface
         """
-        mol_list = self.attach(generic.silanol(), 0, [0, 1], sites, len(sites), site_type=site_type, is_proxi=False, is_random=False)
-        
-        return mol_list
+        mol_list = self.attach(
+            generic.silanol(),
+            0,
+            [0, 1],
+            sites,
+            len(sites),
+            site_type=site_type,
+            is_proxi=False,
+            is_random=False,
+        )
 
+        return mol_list
 
     ###############
     # Final Edits #
@@ -538,7 +610,7 @@ class Pore():
 
             # Add to molecule list and global dictionary
             mol_list.append(mol)
-            if not mol.get_short() in self._mol_dict["block"]:
+            if mol.get_short() not in self._mol_dict["block"]:
                 self._mol_dict["block"][mol.get_short()] = []
             self._mol_dict["block"][mol.get_short()].append(mol)
 
@@ -566,12 +638,11 @@ class Pore():
 
         # Translate all molecules
         for mol in mol_list:
-            mol.translate([0, 0, -min_z+size])
+            mol.translate([0, 0, -min_z + size])
 
         # Set new box size
         box = self._block.get_box()
-        self.set_box([box[0], box[1], max_z-min_z+2*size])
-
+        self.set_box([box[0], box[1], max_z - min_z + 2 * size])
 
     ##################
     # Setter Methods #
@@ -595,7 +666,6 @@ class Pore():
             Box size in all dimensions
         """
         self._box = box
-
 
     ##################
     # Getter Methods #
@@ -651,7 +721,7 @@ class Pore():
         mol_dict = {}
         for site_type in self._mol_dict.keys():
             for key, item in self._mol_dict[site_type].items():
-                if not key in mol_dict.keys():
+                if key not in mol_dict.keys():
                     mol_dict[key] = []
                 mol_dict[key].extend(item)
 

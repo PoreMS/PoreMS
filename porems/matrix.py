@@ -51,6 +51,7 @@ class Matrix:
         List of all pairwise bonds in the grid with only two different atom
         types
     """
+
     def __init__(self, bonds):
         # Create bond dictionary
         self._matrix = {}
@@ -59,11 +60,10 @@ class Matrix:
             self._matrix[bond[0]] = {"atoms": bond[1], "bonds": len(bond[1])}
             # Fill reverse bonds
             for atom_b in bond[1]:
-                if not atom_b in self._matrix:
+                if atom_b not in self._matrix:
                     self._matrix[atom_b] = {"atoms": [], "bonds": 0}
                 self._matrix[atom_b]["atoms"].append(bond[0])
                 self._matrix[atom_b]["bonds"] += 1
-
 
     ###########
     # Editing #
@@ -140,16 +140,27 @@ class Matrix:
         atoms : list
             List of atom ids with the number of specified bonds
         """
-        if logic=="eq":
-            return [atom for atom in self._matrix if len(self._matrix[atom]["atoms"])==num_bonds]
-        elif logic=="lt":
-            return [atom for atom in self._matrix if len(self._matrix[atom]["atoms"])<num_bonds]
-        elif logic=="gt":
-            return [atom for atom in self._matrix if len(self._matrix[atom]["atoms"])>num_bonds]
+        if logic == "eq":
+            return [
+                atom
+                for atom in self._matrix
+                if len(self._matrix[atom]["atoms"]) == num_bonds
+            ]
+        elif logic == "lt":
+            return [
+                atom
+                for atom in self._matrix
+                if len(self._matrix[atom]["atoms"]) < num_bonds
+            ]
+        elif logic == "gt":
+            return [
+                atom
+                for atom in self._matrix
+                if len(self._matrix[atom]["atoms"]) > num_bonds
+            ]
         else:
             print("Matrix: Wrong logic statement...")
             return
-
 
     ##################
     # Getter Methods #

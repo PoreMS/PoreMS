@@ -5,24 +5,23 @@
 creating pore structures."""
 ################################################################################
 
-
-import math
 import copy
+import math
+
 import numpy as np
 
 import porems.geometry as geometry
-
 from porems.molecule import Molecule
 
 
-class Pattern():
+class Pattern:
     """This class is a container for individual pattern classes."""
+
     def __init__(self):
         self._dim = 3
         self._repeat = [0, 0, 0]
         self._gap = [0, 0, 0]
         self._size = [0, 0, 0]
-
 
     ##############
     # Generation #
@@ -44,10 +43,13 @@ class Pattern():
 
             for i in range(self._num[dim]):
                 temp = copy.deepcopy(block)
-                vec = [(i+1)*self._repeat[dim] if j == dim else 0 for j in range(self._dim)]
+                vec = [
+                    (i + 1) * self._repeat[dim] if j == dim else 0
+                    for j in range(self._dim)
+                ]
                 temp.translate(vec)
                 p.append(temp)
-            self._block(dim+1, Molecule(inp=p))
+            self._block(dim + 1, Molecule(inp=p))
         else:
             self._structure = block
 
@@ -87,8 +89,8 @@ class Pattern():
             Full block structure
         """
         # Calculate repetition and size
-        self._num = [round(size[i]/self._repeat[i]) for i in range(self._dim)]
-        self._size = [self._repeat[i]*self._num[i] for i in range(self._dim)]
+        self._num = [round(size[i] / self._repeat[i]) for i in range(self._dim)]
+        self._size = [self._repeat[i] * self._num[i] for i in range(self._dim)]
 
         # Generate block
         self._block(0, self.pattern())
@@ -98,11 +100,10 @@ class Pattern():
 
         # Translate gap
         self._structure.zero()
-        self._structure.translate([x/2 for x in self._gap])
+        self._structure.translate([x / 2 for x in self._gap])
         self._structure.set_box(self._size)
 
         return self._structure
-
 
     ##################
     # Getter Methods #
@@ -162,18 +163,18 @@ class Pattern():
 class BetaCristobalit(Pattern):
     """This class defines the minimal structure of a :math:`\\beta`-cristobalite
     molecule."""
+
     def __init__(self):
         # Call super class
         super().__init__()
 
         # Set bond length si-o and bond angle si-o-si
         self._b = 0.155
-        self._a = 2*math.atan(math.sqrt(2))*180/math.pi
+        self._a = 2 * math.atan(math.sqrt(2)) * 180 / math.pi
 
         # Set repetition distances and gap towards the box edge
         self._repeat = [0.506, 0.877, 1.240]
         self._gap = [0.126, 0.073, 0.155]
-
 
     ############
     # Building #
@@ -189,17 +190,17 @@ class BetaCristobalit(Pattern):
         hex = Molecule()
 
         hex.add("Si", [0, 0, 0])
-        hex.add("O",   0, r= self._b, theta=self._a, phi=60)
-        hex.add("Si",  1, r= self._b, bond=[0, 1])
-        hex.add("O",   2, r= self._b, theta=180,  phi=0)
-        hex.add("Si",  3, r= self._b, bond=[2, 3])
-        hex.add("O",   4, r= self._b, theta=self._a, phi=300)
-        hex.add("Si",  5, r= self._b, bond=[4, 5])
-        hex.add("O",   6, r=-self._b, theta=self._a, phi=60)
-        hex.add("Si",  7, r= self._b, bond=[6, 7])
-        hex.add("O",   8, r=-self._b, theta=180,  phi=0)
-        hex.add("Si",  9, r= self._b, bond=[8, 9])
-        hex.add("O",  10, r=-self._b, theta=self._a, phi=300)
+        hex.add("O", 0, r=self._b, theta=self._a, phi=60)
+        hex.add("Si", 1, r=self._b, bond=[0, 1])
+        hex.add("O", 2, r=self._b, theta=180, phi=0)
+        hex.add("Si", 3, r=self._b, bond=[2, 3])
+        hex.add("O", 4, r=self._b, theta=self._a, phi=300)
+        hex.add("Si", 5, r=self._b, bond=[4, 5])
+        hex.add("O", 6, r=-self._b, theta=self._a, phi=60)
+        hex.add("Si", 7, r=self._b, bond=[6, 7])
+        hex.add("O", 8, r=-self._b, theta=180, phi=0)
+        hex.add("Si", 9, r=self._b, bond=[8, 9])
+        hex.add("O", 10, r=-self._b, theta=self._a, phi=300)
 
         hex.rotate("y", 90)
         hex.rotate("z", 90)
@@ -221,8 +222,8 @@ class BetaCristobalit(Pattern):
         mols = [self._hexagonal() for x in range(3)]
 
         # Combine three hexagonal molecules
-        mols[0].add("O",  2, r=self._b)
-        mols[0].add("O",  6, r=self._b)
+        mols[0].add("O", 2, r=self._b)
+        mols[0].add("O", 6, r=self._b)
         mols[0].add("O", 10, r=self._b)
 
         mols[1].move(0, mols[0].pos(12))
@@ -240,7 +241,7 @@ class BetaCristobalit(Pattern):
 
         block[1].rotate("x", 180)
         block[1].move(18, block[0].pos(18))
-        block[1].translate([0, 0, self._b*2])
+        block[1].translate([0, 0, self._b * 2])
         block[1].add("O", block[0].pos(18), r=self._b)
 
         block[2].rotate("x", 180)
@@ -272,7 +273,13 @@ class BetaCristobalit(Pattern):
                 block = Molecule(inp=[block])
                 mol_repeat = copy.deepcopy(block)
                 mol_repeat.translate(translate)
-                block.delete([x for x in  Molecule(inp=[block, mol_repeat]).overlap() if x < block.get_num()])
+                block.delete(
+                    [
+                        x
+                        for x in Molecule(inp=[block, mol_repeat]).overlap()
+                        if x < block.get_num()
+                    ]
+                )
 
         # Move to zero
         block.zero()
@@ -287,11 +294,12 @@ class AlphaCristobalit(Pattern):
     * http://aflowlib.org/prototype-encyclopedia/A2B_tP12_92_b_a.html
     * https://www.atomic-scale-physics.de/lattice/struk/acrist.html
     """
+
     def __init__(self):
         # Call super class
         super().__init__()
 
-        self._repeat = [.4978, .4978, .6948]
+        self._repeat = [0.4978, 0.4978, 0.6948]
 
     def pattern(self):
         """Construct minimal block structure.
@@ -305,9 +313,9 @@ class AlphaCristobalit(Pattern):
         block = Molecule()
 
         # Primitive Vectors
-        a1 = np.array([1, 0, 0])*self._repeat[0]
-        a2 = np.array([0, 1, 0])*self._repeat[1]
-        a3 = np.array([0, 0, 1])*self._repeat[2]
+        a1 = np.array([1, 0, 0]) * self._repeat[0]
+        a2 = np.array([0, 1, 0]) * self._repeat[1]
+        a3 = np.array([0, 0, 1]) * self._repeat[2]
 
         # lattice coordinate Si
         x1 = 0.30004000
@@ -318,18 +326,18 @@ class AlphaCristobalit(Pattern):
         z2 = 0.17844000
 
         # Lattice vectors
-        block.add("Si",  x1*a1+x1*a2)
-        block.add("Si", -x1*a1-x1*a2+1/2*a3)
-        block.add("Si", (1/2-x1)*a1+(1/2+x1)*a2+1/4*a3)
-        block.add("Si", (1/2+x1)*a1+(1/2-x1)*a2+3/4*a3)
+        block.add("Si", x1 * a1 + x1 * a2)
+        block.add("Si", -x1 * a1 - x1 * a2 + 1 / 2 * a3)
+        block.add("Si", (1 / 2 - x1) * a1 + (1 / 2 + x1) * a2 + 1 / 4 * a3)
+        block.add("Si", (1 / 2 + x1) * a1 + (1 / 2 - x1) * a2 + 3 / 4 * a3)
 
-        block.add("O",   x2*a1+y2*a2+z2*a3)
-        block.add("O",  -x2*a1-y2*a2+(1/2+z2)*a3)
-        block.add("O",  (1/2-y2)*a1+(1/2+x2)*a2+(1/4+z2)*a3)
-        block.add("O",  (1/2+y2)*a1+(1/2-x2)*a2+(3/4+z2)*a3)
-        block.add("O",   y2*a1+x2*a2-z2*a3)
-        block.add("O",  -y2*a1-x2*a2+(1/2-z2)*a3)
-        block.add("O",  (1/2-x2)*a1+(1/2+y2)*a2+(1/4-z2)*a3)
-        block.add("O",  (1/2+x2)*a1+(1/2-y2)*a2+(3/4-z2)*a3)
+        block.add("O", x2 * a1 + y2 * a2 + z2 * a3)
+        block.add("O", -x2 * a1 - y2 * a2 + (1 / 2 + z2) * a3)
+        block.add("O", (1 / 2 - y2) * a1 + (1 / 2 + x2) * a2 + (1 / 4 + z2) * a3)
+        block.add("O", (1 / 2 + y2) * a1 + (1 / 2 - x2) * a2 + (3 / 4 + z2) * a3)
+        block.add("O", y2 * a1 + x2 * a2 - z2 * a3)
+        block.add("O", -y2 * a1 - x2 * a2 + (1 / 2 - z2) * a3)
+        block.add("O", (1 / 2 - x2) * a1 + (1 / 2 + y2) * a2 + (1 / 4 - z2) * a3)
+        block.add("O", (1 / 2 + x2) * a1 + (1 / 2 - y2) * a2 + (3 / 4 - z2) * a3)
 
         return block

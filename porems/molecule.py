@@ -4,13 +4,11 @@
 """All necessary function for creating and editing molecules."""
 ################################################################################
 
-
 import numpy as np
 import pandas as pd
 
 import porems.database as db
 import porems.geometry as geometry
-
 from porems.atom import Atom
 
 
@@ -50,6 +48,7 @@ class Molecule:
         mol.add("C", 4, r=0.1375, theta=300)
 
     """
+
     def __init__(self, name="molecule", short="MOL", inp=None):
         # Initialize
         self._dim = 3
@@ -63,7 +62,7 @@ class Molecule:
         self._mass = 0
 
         self._atom_list = []
-        self._pos_list = []   # list of [x, y, z] — fast to append, vectorised on bulk ops
+        self._pos_list = []  # list of [x, y, z] — fast to append, vectorised on bulk ops
 
         # Check data input
         if inp is None:
@@ -77,7 +76,6 @@ class Molecule:
             elif isinstance(inp[0], Atom):
                 self._atom_list = list(inp)
                 self._pos_list = [[0.0, 0.0, 0.0] for _ in inp]
-
 
     ##################
     # Representation #
@@ -94,10 +92,17 @@ class Molecule:
         data = []
         for i, atom in enumerate(self._atom_list):
             p = self._pos_list[i]
-            data.append([atom.get_residue(), atom.get_name(), atom.get_atom_type(),
-                         p[0], p[1], p[2]])
+            data.append(
+                [
+                    atom.get_residue(),
+                    atom.get_name(),
+                    atom.get_atom_type(),
+                    p[0],
+                    p[1],
+                    p[2],
+                ]
+            )
         return pd.DataFrame(data, columns=columns).to_string()
-
 
     ##############
     # Management #
@@ -128,17 +133,17 @@ class Molecule:
                 # Gro file
                 if file_type == "GRO":
                     if line_idx > 0 and len(line_val) > 3:
-                        residue = int(line[0:5])-1
-                        pos = [float(line_val[i]) for i in range(3, 5+1)]
+                        residue = int(line[0:5]) - 1
+                        pos = [float(line_val[i]) for i in range(3, 5 + 1)]
                         name = line_val[1]
-                        atom_type = ''.join([i for i in line_val[1] if not i.isdigit()])
+                        atom_type = "".join([i for i in line_val[1] if not i.isdigit()])
                         is_add = True
 
                 # Pdb file
                 elif file_type == "PDB":
                     if line_val[0] in ["ATOM", "HETATM"]:
-                        residue = int(line[22:26])-1
-                        pos = [float(line_val[i])/10 for i in range(6, 8+1)]
+                        residue = int(line[22:26]) - 1
+                        pos = [float(line_val[i]) / 10 for i in range(6, 8 + 1)]
                         name = line_val[11]
                         atom_type = line_val[11]
                         is_add = True
@@ -147,9 +152,9 @@ class Molecule:
                 elif file_type == "MOL2":
                     if len(line_val) > 8:
                         residue = 0
-                        pos = [float(line_val[i])/10 for i in range(2, 4+1)]
+                        pos = [float(line_val[i]) / 10 for i in range(2, 4 + 1)]
                         name = line_val[1]
-                        atom_type = ''.join([i for i in line_val[1] if not i.isdigit()])
+                        atom_type = "".join([i for i in line_val[1] if not i.isdigit()])
                         is_add = True
 
                 if is_add:
@@ -236,7 +241,6 @@ class Molecule:
             return [[], [], []]
         return np.array(self._pos_list).T.tolist()
 
-
     ############
     # Geometry #
     ############
@@ -260,7 +264,10 @@ class Molecule:
         if isinstance(pos_a, int) and isinstance(pos_b, int):
             pos_a = self.pos(pos_a)
             pos_b = self.pos(pos_b)
-        elif not (isinstance(pos_a, (list, np.ndarray)) and isinstance(pos_b, (list, np.ndarray))):
+        elif not (
+            isinstance(pos_a, (list, np.ndarray))
+            and isinstance(pos_b, (list, np.ndarray))
+        ):
             print("Vector: Wrong input...")
             return None
 
@@ -282,7 +289,6 @@ class Molecule:
             return [0.001] * self._dim
         maxes = np.array(self._pos_list).max(axis=0)
         return [float(m) if float(m) > 0 else 0.001 for m in maxes]
-
 
     ##############
     # Properties #
@@ -349,7 +355,6 @@ class Molecule:
         arr = np.array(self._pos_list, dtype=float)
         masses = np.array(self.get_masses(), dtype=float)
         return ((arr * masses[:, np.newaxis]).sum(axis=0) / masses.sum()).tolist()
-
 
     #################
     # Basic Editing #
@@ -432,7 +437,6 @@ class Molecule:
         """
         self._pos_list[atom] = list(pos)
 
-
     ####################
     # Advanced Editing #
     ####################
@@ -458,7 +462,7 @@ class Molecule:
 
         if not vec:
             vec = self._vector(bond[0], bond[1])
-        vec = [v*length for v in geometry.unit(vec)]
+        vec = [v * length for v in geometry.unit(vec)]
 
         temp.translate(vec)
         self._writeback_temp(temp, indices)
@@ -508,7 +512,9 @@ class Molecule:
 
         if len(bond_a) == len(bond_b):
             if len(bond_a) == 2:
-                vec = geometry.cross_product(self._vector(*bond_a), self._vector(*bond_b))
+                vec = geometry.cross_product(
+                    self._vector(*bond_a), self._vector(*bond_b)
+                )
             elif len(bond_a) == self._dim:
                 vec = geometry.cross_product(bond_a, bond_b)
             else:
@@ -521,11 +527,21 @@ class Molecule:
         temp.rotate(vec, angle)
         self._writeback_temp(temp, indices)
 
-
     #########
     # Atoms #
     #########
-    def add(self, atom_type, pos, bond=None, r=0, theta=0, phi=0, is_deg=True, name="", residue=0):
+    def add(
+        self,
+        atom_type,
+        pos,
+        bond=None,
+        r=0,
+        theta=0,
+        phi=0,
+        is_deg=True,
+        name="",
+        residue=0,
+    ):
         """Add a new atom in polar coordinates. The ``pos`` input is either
         an atom id that determines the bond-start, or a vector for a specific
         position.
@@ -565,15 +581,15 @@ class Molecule:
         phi += geometry.angle_polar(vec, is_deg)
         theta += geometry.angle_azi(vec, is_deg)
 
-        phi *= np.pi/180 if is_deg else 1
-        theta *= np.pi/180 if is_deg else 1
+        phi *= np.pi / 180 if is_deg else 1
+        theta *= np.pi / 180 if is_deg else 1
 
         x = r * np.sin(theta) * np.cos(phi)
         y = r * np.sin(theta) * np.sin(phi)
         z = r * np.cos(theta)
 
         self._atom_list.append(Atom(atom_type, name, residue))
-        self._pos_list.append([float(pos[0]+x), float(pos[1]+y), float(pos[2]+z)])
+        self._pos_list.append([float(pos[0] + x), float(pos[1] + y), float(pos[2] + z)])
 
     def delete(self, atoms):
         """Delete specified atoms from the molecule.
@@ -603,6 +619,7 @@ class Molecule:
             atoms that overlap with it
         """
         from scipy.spatial import KDTree
+
         if not self._pos_list:
             return {}
         arr = np.array(self._pos_list)
@@ -629,8 +646,14 @@ class Molecule:
         atom_b : integer
             Second atom id
         """
-        self._atom_list[atom_a], self._atom_list[atom_b] = self._atom_list[atom_b], self._atom_list[atom_a]
-        self._pos_list[atom_a], self._pos_list[atom_b] = self._pos_list[atom_b], self._pos_list[atom_a]
+        self._atom_list[atom_a], self._atom_list[atom_b] = (
+            self._atom_list[atom_b],
+            self._atom_list[atom_a],
+        )
+        self._pos_list[atom_a], self._pos_list[atom_b] = (
+            self._pos_list[atom_b],
+            self._pos_list[atom_a],
+        )
 
     def set_atom_type(self, atom, atom_type):
         """Change the atom type of a specified atom.
@@ -693,7 +716,6 @@ class Molecule:
         """
         return self._atom_list
 
-
     ##################
     # Setter Methods #
     ##################
@@ -745,7 +767,11 @@ class Molecule:
         masses : list, optional
             List of molar masses in g/mol
         """
-        self._masses = masses if masses else [db.get_mass(atom.get_atom_type()) for atom in self._atom_list]
+        self._masses = (
+            masses
+            if masses
+            else [db.get_mass(atom.get_atom_type()) for atom in self._atom_list]
+        )
 
     def set_mass(self, mass=0):
         """Set the molar mass of the molecule.
@@ -756,7 +782,6 @@ class Molecule:
             Molar mass in g/mol
         """
         self._mass = mass if mass else sum(self.get_masses())
-
 
     ##################
     # Getter Methods #

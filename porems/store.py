@@ -4,13 +4,11 @@
 """Contains function for creating simulation files."""
 ################################################################################
 
-
 import os
 import shutil
 
-import porems.utils as utils
 import porems.database as db
-
+import porems.utils as utils
 from porems.molecule import Molecule
 from porems.pore import Pore
 
@@ -46,10 +44,11 @@ class Store:
         Store(mol).pdb()
         Store(pore, "output").gro("pore.gro")
     """
+
     def __init__(self, inp, link="./", sort_list=None):
         # Initialize
         self._dim = 3
-        self._link = link if link[-1] == "/" else link+"/"
+        self._link = link if link[-1] == "/" else link + "/"
         self._inp = inp
 
         # Process input
@@ -77,7 +76,6 @@ class Store:
         # Create output folder
         utils.mkdirp(link)
 
-
     ###############
     # Antechamber #
     ###############
@@ -102,18 +100,18 @@ class Store:
         name = name if name else self._name
 
         # Template directory
-        package_dir = os.path.split(__file__)[0]+"/"
+        package_dir = os.path.split(__file__)[0] + "/"
 
         # Job file
-        file_in = package_dir+"templates/antechamber.job"
-        file_out = link+name+".job"
+        file_in = package_dir + "templates/antechamber.job"
+        file_out = link + name + ".job"
         shutil.copy(file_in, file_out)
 
         utils.replace(file_out, "MOLNAME", mol_name)
 
         # Tleap file
-        file_in = package_dir+"templates/antechamber.tleap"
-        file_out = link+name+".tleap"
+        file_in = package_dir + "templates/antechamber.tleap"
+        file_out = link + name + ".tleap"
         shutil.copy(file_in, file_out)
 
         utils.replace(file_out, "MOLSHORTLOWER", mol_name)
@@ -122,14 +120,13 @@ class Store:
 
         # Add to master run
         if master:
-            fileMaster = open(link+master, "a")
-            fileMaster.write("cd "+mol_name+" #\n")
-            fileMaster.write("sh "+mol_name+".job #\n")
+            fileMaster = open(link + master, "a")
+            fileMaster.write("cd " + mol_name + " #\n")
+            fileMaster.write("sh " + mol_name + ".job #\n")
             fileMaster.write("cd .. #\n")
-            fileMaster.write("echo \"Finished "+mol_name+"...\"\n")
+            fileMaster.write('echo "Finished ' + mol_name + '..."\n')
             fileMaster.write("#\n")
             fileMaster.close()
-
 
     #############
     # Structure #
@@ -144,7 +141,7 @@ class Store:
         """
         # Initialize
         link = self._link
-        link += name if name else self._name+".obj"
+        link += name if name else self._name + ".obj"
 
         # Save object
         utils.save(self._inp, link)
@@ -163,7 +160,7 @@ class Store:
         """
         # Initialize
         link = self._link
-        link += name if name else self._name+".pdb"
+        link += name if name else self._name + ".pdb"
 
         # Open file
         with open(link, "w") as file_out:
@@ -182,7 +179,7 @@ class Store:
                 for atom_id, atom in enumerate(mol.get_atom_list()):
                     # Process residue index
                     if not atom.get_residue() == temp_res_id:
-                        num_m = num_m+1 if num_m < 9999 else 1
+                        num_m = num_m + 1 if num_m < 9999 else 1
                         temp_res_id = atom.get_residue()
 
                     # Get atom type
@@ -196,35 +193,37 @@ class Store:
                     if use_atom_names and atom.get_name():
                         atom_name = atom.get_name()
                     else:
-                        atom_name = atom_type+str(atom_types[atom_type])
+                        atom_name = atom_type + str(atom_types[atom_type])
 
                     # Write file
                     pos = mol.pos(atom_id)
-                    out_string = "HETATM"                  #  1- 6 (6)    Record name
-                    out_string += "%5i" % num_a            #  7-11 (5)    Atom serial number
-                    out_string += " "                      # 12    (1)    -
-                    out_string += "%4s" % atom_name        # 13-16 (4)    Atom name
-                    out_string += " "                      # 17    (1)    Alternate location indicator
+                    out_string = "HETATM"  #  1- 6 (6)    Record name
+                    out_string += "%5i" % num_a  #  7-11 (5)    Atom serial number
+                    out_string += " "  # 12    (1)    -
+                    out_string += "%4s" % atom_name  # 13-16 (4)    Atom name
+                    out_string += " "  # 17    (1)    Alternate location indicator
                     out_string += "%3s" % mol.get_short()  # 18-20 (3)    Residue name
-                    out_string += " "                      # 21    (1)    -
-                    out_string += "%1s" % "A"              # 22    (1)    Chain identifier
-                    out_string += "%4i" % num_m            # 23-26 (4)    Residue sequence number
-                    out_string += " "                      # 27    (1)    Code for insertion of residues
-                    out_string += "   "                    # 28-30 (3)    -
-                    for i in range(self._dim):             # 31-54 (3*8)  Coordinates
-                        out_string += "%8.3f" % (pos[i]*10)
-                    out_string += "%6.2f" % 1              # 55-60 (6)    Occupancy
-                    out_string += "%6.2f" % 0              # 61-66 (6)    Temperature factor
-                    out_string += "           "            # 67-77 (11)   -
-                    out_string += "%2s" % atom_type        # 78-79 (2)    Element symbol
-                    out_string += "  "                     # 80-81 (2)    Charge on the atom
+                    out_string += " "  # 21    (1)    -
+                    out_string += "%1s" % "A"  # 22    (1)    Chain identifier
+                    out_string += "%4i" % num_m  # 23-26 (4)    Residue sequence number
+                    out_string += " "  # 27    (1)    Code for insertion of residues
+                    out_string += "   "  # 28-30 (3)    -
+                    for i in range(self._dim):  # 31-54 (3*8)  Coordinates
+                        out_string += "%8.3f" % (pos[i] * 10)
+                    out_string += "%6.2f" % 1  # 55-60 (6)    Occupancy
+                    out_string += "%6.2f" % 0  # 61-66 (6)    Temperature factor
+                    out_string += "           "  # 67-77 (11)   -
+                    out_string += "%2s" % atom_type  # 78-79 (2)    Element symbol
+                    out_string += "  "  # 80-81 (2)    Charge on the atom
 
-                    lines.append(out_string+"\n")
+                    lines.append(out_string + "\n")
 
                     # Process counter
-                    num_a = num_a+1 if num_a < 99999 else 1
-                    atom_types[atom_type] = atom_types[atom_type]+1 if atom_types[atom_type] < 99 else 1
-                num_m = num_m+1 if num_m < 9999 else 1
+                    num_a = num_a + 1 if num_a < 99999 else 1
+                    atom_types[atom_type] = (
+                        atom_types[atom_type] + 1 if atom_types[atom_type] < 99 else 1
+                    )
+                num_m = num_m + 1 if num_m < 9999 else 1
 
             # End statement
             lines.append("TER\nEND\n")
@@ -244,14 +243,14 @@ class Store:
         """
         # Initialize
         link = self._link
-        link += name if name else self._name+".gro"
+        link += name if name else self._name + ".gro"
 
         # Open file
         with open(link, "w") as file_out:
             # Collect all lines for a single writelines() call
             lines = []
             lines.append("Molecule generated using the PoreMS package\n")
-            lines.append("%i" % sum([x.get_num() for x in self._mols])+"\n")
+            lines.append("%i" % sum([x.get_num() for x in self._mols]) + "\n")
 
             # Set counter
             num_a = 1
@@ -265,7 +264,7 @@ class Store:
                 for atom_id, atom in enumerate(mol.get_atom_list()):
                     # Process residue index
                     if not atom.get_residue() == temp_res_id:
-                        num_m = num_m+1 if num_m < 99999 else 0
+                        num_m = num_m + 1 if num_m < 99999 else 0
                         temp_res_id = atom.get_residue()
 
                     # Get atom type
@@ -279,29 +278,33 @@ class Store:
                     if use_atom_names and atom.get_name():
                         atom_name = atom.get_name()
                     else:
-                        atom_name = atom_type+str(atom_types[atom_type])
+                        atom_name = atom_type + str(atom_types[atom_type])
 
                     # Write file
                     pos = mol.pos(atom_id)
-                    out_string = "%5i" % num_m              #  1- 5 (5)    Residue number
-                    out_string += "%-5s" % mol.get_short()  #  6-10 (5)    Residue short name
-                    out_string += "%5s" % atom_name         # 11-15 (5)    Atom name
-                    out_string += "%5i" % num_a             # 16-20 (5)    Atom number
-                    for i in range(self._dim):                    # 21-44 (3*8)  Coordinates
+                    out_string = "%5i" % num_m  #  1- 5 (5)    Residue number
+                    out_string += (
+                        "%-5s" % mol.get_short()
+                    )  #  6-10 (5)    Residue short name
+                    out_string += "%5s" % atom_name  # 11-15 (5)    Atom name
+                    out_string += "%5i" % num_a  # 16-20 (5)    Atom number
+                    for i in range(self._dim):  # 21-44 (3*8)  Coordinates
                         out_string += "%8.3f" % pos[i]
 
-                    lines.append(out_string+"\n")
+                    lines.append(out_string + "\n")
 
                     # Process counter
-                    num_a = num_a+1 if num_a < 99999 else 0
-                    atom_types[atom_type] = atom_types[atom_type]+1 if atom_types[atom_type] < 999 else 0
-                num_m = num_m+1 if num_m < 99999 else 0
+                    num_a = num_a + 1 if num_a < 99999 else 0
+                    atom_types[atom_type] = (
+                        atom_types[atom_type] + 1 if atom_types[atom_type] < 999 else 0
+                    )
+                num_m = num_m + 1 if num_m < 99999 else 0
 
             # Box
             out_string = ""
             for i in range(self._dim):
                 out_string += "%.3f" % self._box[i]
-                out_string += " " if i < self._dim-1 else "\n"
+                out_string += " " if i < self._dim - 1 else "\n"
             lines.append(out_string)
 
             file_out.writelines(lines)
@@ -320,12 +323,14 @@ class Store:
         """
         # Initialize
         link = self._link
-        link += name if name else self._name+".xyz"
+        link += name if name else self._name + ".xyz"
 
         # Open output file and set title
         with open(link, "w") as file_out:
             # Header
-            file_out.write("%i" % sum([x.get_num() for x in self._mols])+"\n"+"Energy = \n")
+            file_out.write(
+                "%i" % sum([x.get_num() for x in self._mols]) + "\n" + "Energy = \n"
+            )
 
             # Run through molecules
             for mol in self._mols:
@@ -334,10 +339,10 @@ class Store:
                     # Write file
                     pos = mol.pos(atom_id)
                     out_string = "%-2s" % atom.get_atom_type()  # 1- 2 (2)     Atom name
-                    for i in range(self._dim):                  # 3-41 (3*13)  Coordinates
-                        out_string += "%13.7f" % (pos[i]*10)
+                    for i in range(self._dim):  # 3-41 (3*13)  Coordinates
+                        out_string += "%13.7f" % (pos[i] * 10)
 
-                    file_out.write(out_string+"\n")
+                    file_out.write(out_string + "\n")
 
     def lmp(self, name=""):
         """Generate the structure file for the defined molecule in the LAMMPS
@@ -350,10 +355,20 @@ class Store:
         """
         # Initialize
         link = self._link
-        link += name if name else self._name+".lmp"
+        link += name if name else self._name + ".lmp"
 
         # Atom types
-        atom_types = list(set(sum([[x.get_atom_type(i) for i in range(x.get_num())] for x in self._mols], [])))
+        atom_types = list(
+            set(
+                sum(
+                    [
+                        [x.get_atom_type(i) for i in range(x.get_num())]
+                        for x in self._mols
+                    ],
+                    [],
+                )
+            )
+        )
         atom_type_map = {at: i + 1 for i, at in enumerate(atom_types)}
 
         # Open file
@@ -362,20 +377,20 @@ class Store:
             file_out.write("Molecule generated using the PoreMS package\n\n")
 
             # Porperties section
-            file_out.write("%i" % sum([x.get_num() for x in self._mols])+" atoms\n")
-            file_out.write("%i" % len(atom_types)+" atom types\n")
+            file_out.write("%i" % sum([x.get_num() for x in self._mols]) + " atoms\n")
+            file_out.write("%i" % len(atom_types) + " atom types\n")
             file_out.write("\n")
 
             # Box size - Periodic boundary conditions
-            file_out.write("0.000 "+"%.3f" % (self._box[0]*10)+" xlo xhi\n")
-            file_out.write("0.000 "+"%.3f" % (self._box[1]*10)+" ylo yhi\n")
-            file_out.write("0.000 "+"%.3f" % (self._box[2]*10)+" zlo zhi\n")
+            file_out.write("0.000 " + "%.3f" % (self._box[0] * 10) + " xlo xhi\n")
+            file_out.write("0.000 " + "%.3f" % (self._box[1] * 10) + " ylo yhi\n")
+            file_out.write("0.000 " + "%.3f" % (self._box[2] * 10) + " zlo zhi\n")
             file_out.write("\n")
 
             # Masses
             file_out.write("Masses\n\n")
             for i, at in enumerate(atom_types):
-                file_out.write("%i"%(i+1)+" "+"%8.3f"%db.get_mass(at)+"\n")
+                file_out.write("%i" % (i + 1) + " " + "%8.3f" % db.get_mass(at) + "\n")
             file_out.write("\n")
 
             # Atoms
@@ -392,7 +407,7 @@ class Store:
                 for atom_id, atom in enumerate(mol.get_atom_list()):
                     # Process residue index
                     if not atom.get_residue() == temp_res_id:
-                        num_m = num_m+1
+                        num_m = num_m + 1
                         temp_res_id = atom.get_residue()
 
                     # Get atom type
@@ -400,19 +415,18 @@ class Store:
 
                     # Write atom line
                     pos = mol.pos(atom_id)
-                    out_string  = "%5i" % num_a + " "        #  Atom number
-                    out_string += "%5i" % num_m + " "        #  Residue number
-                    out_string += "%3i" % atom_type_id + " " #  Atom type
-                    out_string += "%5i" % 0 + " "            #  Charge
-                    for i in range(self._dim):               #  Coordinates
-                        out_string += "%8.3f" % (pos[i]*10)
-                        out_string += " " if i<self._dim-1 else ""
-                    file_out.write(out_string+"\n")
+                    out_string = "%5i" % num_a + " "  #  Atom number
+                    out_string += "%5i" % num_m + " "  #  Residue number
+                    out_string += "%3i" % atom_type_id + " "  #  Atom type
+                    out_string += "%5i" % 0 + " "  #  Charge
+                    for i in range(self._dim):  #  Coordinates
+                        out_string += "%8.3f" % (pos[i] * 10)
+                        out_string += " " if i < self._dim - 1 else ""
+                    file_out.write(out_string + "\n")
 
                     # Process counter
-                    num_a = num_a+1
-                num_m = num_m+1
-
+                    num_a = num_a + 1
+                num_m = num_m + 1
 
     ############
     # Topology #
@@ -434,17 +448,17 @@ class Store:
 
         # Initialize
         link = self._link
-        link += name if name else self._name+".top"
+        link += name if name else self._name + ".top"
 
         # Copy master topology file
-        utils.copy(os.path.split(__file__)[0]+"/templates/topol.top", link)
+        utils.copy(os.path.split(__file__)[0] + "/templates/topol.top", link)
 
         # Open file
         with open(link, "a") as file_out:
             # Include topology
             for mol_short in self._short_list:
                 if mol_short not in ["SI", "OM", "SL", "SLG", "SLX"]:
-                    file_out.write("#include \""+mol_short+".itp\"\n")
+                    file_out.write('#include "' + mol_short + '.itp"\n')
 
             file_out.write("\n")
             file_out.write("[ system ]\n")
@@ -455,7 +469,12 @@ class Store:
 
             # Number of atoms
             for mol_short in self._short_list:
-                file_out.write(mol_short+" "+str(len(self._inp.get_mol_dict()[mol_short]))+"\n")
+                file_out.write(
+                    mol_short
+                    + " "
+                    + str(len(self._inp.get_mol_dict()[mol_short]))
+                    + "\n"
+                )
 
     def grid(self, name="", charges={"si": 1.28, "om": -0.64}):
         """Store the **grid.itp** file containing the necessary parameters and
@@ -473,7 +492,7 @@ class Store:
         link += name if name else "grid.itp"
 
         # Copy grid file
-        utils.copy(os.path.split(__file__)[0]+"/templates/grid.itp", link)
+        utils.copy(os.path.split(__file__)[0] + "/templates/grid.itp", link)
 
         # Replace charges
         utils.replace(link, "CHARGEO", "%8.6f" % charges["om"])
