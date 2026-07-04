@@ -47,6 +47,7 @@ Key changes driving the speedup:
 * GitHub Actions: publishing handled via existing `python-publish.yml` (manually triggered)
 * Dependabot configuration added for automated dependency updates
 * Python version matrix updated: 3.12–3.13; `python_requires` bumped to `>=3.12`
+* Migrated from `setup.py` + `MANIFEST.in` + `pytest.ini` to a single `pyproject.toml` (PEP 517/621)
 
 ### Documentation
 * RST source files migrated to MyST Markdown
