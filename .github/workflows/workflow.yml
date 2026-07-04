@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: uv pip install --system pytest pytest-cov .
+        run: uv pip install --system ".[dev]"
       - name: Run unit tests
         run: pytest tests/test_unit.py --cov=porems -q
       - name: Upload coverage
