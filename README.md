@@ -40,6 +40,12 @@ Or download the repository and install in the top directory via:
 
 ## Testing
 
+Install in editable mode with test dependencies:
+
+    pip install -e ".[dev]"
+
+Then run the tests:
+
     pytest tests/test_unit.py          # fast unit tests
     pytest tests/test_integration.py   # full integration tests (slow)
     pytest tests/test_bench.py         # generation speed benchmarks
