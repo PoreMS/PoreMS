@@ -436,7 +436,7 @@ class Molecule:
     ####################
     # Advanced Editing #
     ####################
-    def part_move(self, bond, atoms, length, vec=[]):
+    def part_move(self, bond, atoms, length, vec=None):
         """Change the length of a specified bond by translating a subset of atoms.
 
         Parameters
@@ -525,7 +525,7 @@ class Molecule:
     #########
     # Atoms #
     #########
-    def add(self, atom_type, pos, bond=[], r=0, theta=0, phi=0, is_deg=True, name="", residue=0):
+    def add(self, atom_type, pos, bond=None, r=0, theta=0, phi=0, is_deg=True, name="", residue=0):
         """Add a new atom in polar coordinates. The ``pos`` input is either
         an atom id that determines the bond-start, or a vector for a specific
         position.
@@ -737,7 +737,7 @@ class Molecule:
         """
         self._charge = charge
 
-    def set_masses(self, masses=[]):
+    def set_masses(self, masses=None):
         """Set the molar masses of the atoms.
 
         Parameters

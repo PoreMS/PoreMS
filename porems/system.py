@@ -75,7 +75,7 @@ class PoreKit():
         self._hydro["ex"] = hydro
         self._res = res
 
-    def add_shape(self, shape, section={"x": [], "y": [], "z": []}, hydro=0):
+    def add_shape(self, shape, section=None, hydro=0):
         """Add shape to pore system for drilling.
 
         Parameters
@@ -90,6 +90,9 @@ class PoreKit():
             Hydroxylation degree for interior surface in
             :math:`\\frac{\\mu\\text{mol}}{\\text{m}^2}`
         """
+        if section is None:
+            section = {"x": [], "y": [], "z": []}
+
         # Check shape type
         if shape[0] not in ["CYLINDER", "SLIT", "SPHERE", "CONE"]:
             print("Wrong shape type...")
@@ -106,7 +109,7 @@ class PoreKit():
         shape.append(ranges)
         self._shapes.append(shape)
 
-    def shape_cylinder(self, diam, length=0, centroid=[], central=[0, 0, 1]):
+    def shape_cylinder(self, diam, length=0, centroid=None, central=None):
         """Add cylindrical shape
 
         Parameters
@@ -127,6 +130,7 @@ class PoreKit():
         """
         # Process user input
         centroid = centroid if centroid else self.centroid()
+        central = central if central is not None else [0, 0, 1]
         length = length if length else self._box[2]
 
         # Define shape
@@ -134,7 +138,7 @@ class PoreKit():
 
         return ["CYLINDER", cylinder]
 
-    def shape_slit(self, height, length=0, centroid=[], central=[0, 0, 1]):
+    def shape_slit(self, height, length=0, centroid=None, central=None):
         """Add slit shape
 
         Parameters
@@ -155,6 +159,7 @@ class PoreKit():
         """
         # Process user input
         centroid = centroid if centroid else self.centroid()
+        central = central if central is not None else [0, 0, 1]
         length = length if length else self._box[2]
 
         # Define shape
@@ -162,7 +167,7 @@ class PoreKit():
 
         return ["SLIT", cuboid]
 
-    def shape_sphere(self, diameter, centroid=[], central=[0, 0, 1]):
+    def shape_sphere(self, diameter, centroid=None, central=None):
         """Add sphere shape
 
         Parameters
@@ -181,13 +186,14 @@ class PoreKit():
         """
         # Process user input
         centroid = centroid if centroid else self.centroid()
+        central = central if central is not None else [0, 0, 1]
 
         # Define shape
         sphere = pms.Sphere({"centroid": centroid, "central": central, "diameter": diameter})
 
         return ["SPHERE", sphere]
 
-    def shape_cone(self, diam_1, diam_2, length=0, centroid=[], central=[0, 0, 1]):
+    def shape_cone(self, diam_1, diam_2, length=0, centroid=None, central=None):
         """Add cone shape
 
         Parameters
@@ -210,6 +216,7 @@ class PoreKit():
         """
         # Process user input
         centroid = centroid if centroid else self.centroid()
+        central = central if central is not None else [0, 0, 1]
         length = length if length else self._box[2]
 
         # Define shape
@@ -538,7 +545,7 @@ class PoreKit():
                         self._sort_list.append(mol.get_short())
                         
 
-    def attach(self, mol, mount, axis, amount, site_type="in", inp="num", shape="all", pos_list=[], scale=1, trials=1000, is_proxi=True, is_rotate=False, is_g=True):
+    def attach(self, mol, mount, axis, amount, site_type="in", inp="num", shape="all", pos_list=None, scale=1, trials=1000, is_proxi=True, is_rotate=False, is_g=True):
         """Attach molecule on the surface.
 
         Parameters
@@ -756,7 +763,7 @@ class PoreKit():
         # Create reservoir
         self._pore.reservoir(self._res)
 
-    def store(self, link="./", sort_list=[]):
+    def store(self, link="./", sort_list=None):
         """Store pore system and all necessary files for simulation at given
         link.
 
@@ -1440,9 +1447,11 @@ class PoreCylinder(PoreKit):
 
         pore.store("output/")
     """
-    def __init__(self, size, diam, res=5, hydro=[0, 0]):
+    def __init__(self, size, diam, res=5, hydro=None):
+        if hydro is None:
+            hydro = [0, 0]
         # Call super class
-        super(PoreCylinder, self).__init__()
+        super().__init__()
 
         # Create structure
         self.structure(pms.BetaCristobalit().generate(size, "z"))
@@ -1488,9 +1497,11 @@ class PoreSlit(PoreKit):
 
         pore.store("output/")
     """
-    def __init__(self, size, height, res=0, hydro=[0, 0]):
+    def __init__(self, size, height, res=0, hydro=None):
+        if hydro is None:
+            hydro = [0, 0]
         # Call super class
-        super(PoreSlit, self).__init__()
+        super().__init__()
 
         # Create structure
         self.structure(pms.BetaCristobalit().generate(size, "z"))
@@ -1541,9 +1552,11 @@ class PoreCapsule(PoreKit):
 
         pore.store("output/")
     """
-    def __init__(self, size, diam, sep, res=5, hydro=[0, 0]):
+    def __init__(self, size, diam, sep, res=5, hydro=None):
+        if hydro is None:
+            hydro = [0, 0]
         # Call super class
-        super(PoreCapsule, self).__init__()
+        super().__init__()
 
         # Create structure
         self.structure(pms.BetaCristobalit().generate(size, "z"))
@@ -1610,9 +1623,11 @@ class PoreAmorphCylinder(PoreKit):
 
         pore.store("output/")
     """
-    def __init__(self, diam, res=5, hydro=[0, 0]):
+    def __init__(self, diam, res=5, hydro=None):
+        if hydro is None:
+            hydro = [0, 0]
         # Call super class
-        super(PoreAmorphCylinder, self).__init__()
+        super().__init__()
 
         # Create structure
         self.structure(pms.Molecule(inp=os.path.split(__file__)[0]+"/templates/amorph.gro"))
@@ -1662,8 +1677,10 @@ class PoreMultiChannel(PoreKit):
         pore.finalize()
         pore.store("output/multi/")
     """
-    def __init__(self, size, n_channels, diam, spacing=None, res=5, hydro=[0, 0]):
-        super(PoreMultiChannel, self).__init__()
+    def __init__(self, size, n_channels, diam, spacing=None, res=5, hydro=None):
+        if hydro is None:
+            hydro = [0, 0]
+        super().__init__()
 
         if spacing is None:
             spacing = diam + 0.5
@@ -1722,8 +1739,10 @@ class PoreCone(PoreKit):
         pore.finalize()
         pore.store("output/cone/")
     """
-    def __init__(self, size, diam_in, diam_out, res=5, hydro=[0, 0]):
-        super(PoreCone, self).__init__()
+    def __init__(self, size, diam_in, diam_out, res=5, hydro=None):
+        if hydro is None:
+            hydro = [0, 0]
+        super().__init__()
         self.structure(pms.BetaCristobalit().generate(size, "z"))
         self.build()
         self.exterior(res, hydro=hydro[1])

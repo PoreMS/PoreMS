@@ -164,7 +164,7 @@ class BetaCristobalit(Pattern):
     molecule."""
     def __init__(self):
         # Call super class
-        super(BetaCristobalit, self).__init__()
+        super().__init__()
 
         # Set bond length si-o and bond angle si-o-si
         self._b = 0.155
@@ -289,7 +289,7 @@ class AlphaCristobalit(Pattern):
     """
     def __init__(self):
         # Call super class
-        super(AlphaCristobalit, self).__init__()
+        super().__init__()
 
         self._repeat = [.4978, .4978, .6948]
 

@@ -46,7 +46,7 @@ class Store:
         Store(mol).pdb()
         Store(pore, "output").gro("pore.gro")
     """
-    def __init__(self, inp, link="./", sort_list=[]):
+    def __init__(self, inp, link="./", sort_list=None):
         # Initialize
         self._dim = 3
         self._link = link if link[-1] == "/" else link+"/"

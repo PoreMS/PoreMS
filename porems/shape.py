@@ -62,7 +62,7 @@ class Shape():
 
         return data
 
-    def plot(self, inp=0, num=100, vec=[]):
+    def plot(self, inp=0, num=100, vec=None):
         """Plot surface and rim.
 
         Parameters
@@ -123,7 +123,7 @@ class Cylinder(Shape):
         self._centroid = [0, 0, inp["length"]/2]
 
         # Call super class
-        super(Cylinder, self).__init__(inp)
+        super().__init__(inp)
 
 
     ############
@@ -379,7 +379,7 @@ class Sphere(Shape):
         self._centroid = [0, 0, 0]
 
         # Call super class
-        super(Sphere, self).__init__(inp)
+        super().__init__(inp)
 
 
     ############
@@ -644,7 +644,7 @@ class Cuboid(Shape):
         self._centroid = [inp["width"]/2, inp["height"]/2, inp["length"]/2]
 
         # Call super class
-        super(Cuboid, self).__init__(inp)
+        super().__init__(inp)
 
 
     ############
@@ -815,7 +815,7 @@ class Cone(Shape):
         self._centroid = [0, 0, inp["length"]/2]
 
         # Call super class
-        super(Cone, self).__init__(inp)
+        super().__init__(inp)
 
 
     ############
@@ -1137,7 +1137,7 @@ class Hourglass(Shape):
     """
     def __init__(self, inp):
         self._centroid = [0, 0, inp["length"] / 2]
-        super(Hourglass, self).__init__(inp)
+        super().__init__(inp)
 
     def _r(self, z):
         r_o = self._inp["diameter_outer"] / 2
