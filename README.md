@@ -18,7 +18,7 @@ The docs include tutorials for generating [molecules](https://porems.github.io/P
 
 ## Dependencies
 
-PoreMS requires Python 3.10+.
+PoreMS requires Python 3.12+.
 
 Installation requires [numpy](https://numpy.org/), [scipy](https://scipy.org/), [pandas](https://pandas.pydata.org/), [seaborn](https://seaborn.pydata.org/), and [pyyaml](https://pyyaml.org/).
 
