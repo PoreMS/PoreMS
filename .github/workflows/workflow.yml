@@ -20,9 +20,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: uv pip install --system ".[dev]"
+        run: uv pip install ".[dev]"
       - name: Run unit tests
-        run: pytest tests/test_unit.py --cov=porems -q
+        run: uv run pytest tests/test_unit.py --cov=porems -q
       - name: Upload coverage
         uses: codecov/codecov-action@v5
         with:
@@ -40,9 +40,9 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: uv pip install --system pytest .
+        run: uv pip install pytest .
       - name: Run integration tests
-        run: pytest tests/test_integration.py -m slow -q
+        run: uv run pytest tests/test_integration.py -m slow -q
 
   docs:
     name: Build and deploy docs
@@ -54,11 +54,11 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: uv pip install --system -r docs/requirements.txt .
+        run: uv pip install -r docs/requirements.txt .
       - name: Build Sphinx docs
         run: |
           cd docs
-          make html
+          uv run make html
           cp -r v0.3 _build/html/v0.3
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main'
