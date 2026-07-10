@@ -861,7 +861,7 @@ class Cone(Shape):
             r_1 = self._inp["diameter_1"] / 2
             r_2 = self._inp["diameter_2"] / 2
             length = self._inp["length"]
-            return r_1 + (r_2 - r_1) / (length - 1) * (z - 1)
+            return r_1 + (r_2 - r_1) / length * z
 
         x = np.outer(r(z), np.cos(phi))
         y = np.outer(r(z), np.sin(phi))
@@ -904,7 +904,7 @@ class Cone(Shape):
             r_1 = self._inp["diameter_1"] / 2
             r_2 = self._inp["diameter_2"] / 2
             length = self._inp["length"]
-            return r_1 + (r_2 - r_1) / (length - 1) * (z - 1)
+            return r_1 + (r_2 - r_1) / length * z
 
         x = -r(z) * np.sin(phi)
         y = r(z) * np.cos(phi)
@@ -1018,7 +1018,7 @@ class Cone(Shape):
             r_1 = self._inp["diameter_1"] / 2
             r_2 = self._inp["diameter_2"] / 2
             length = self._inp["length"]
-            return r_1 + (r_2 - r_1) / (length - 1) * (z - 1)
+            return r_1 + (r_2 - r_1) / length * z
 
         # Check if within shape
         pos_zero = self.convert(pos)
