@@ -60,7 +60,6 @@ jobs:
         run: |
           cd docs
           uv run make html
-          cp -r v0.3 _build/html/v0.3
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4

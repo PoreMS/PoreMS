@@ -23,6 +23,3 @@ help:
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-	@if [ "$@" = "html" ] && [ -d v0.3 ]; then \
-		cp -r v0.3 $(BUILDDIR)/html/v0.3; \
-	fi

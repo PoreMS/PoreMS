@@ -25,6 +25,8 @@ autoapi_options = [
 autoapi_root = 'autoapi'
 autoapi_keep_files = True
 
+myst_enable_extensions = ["colon_fence"]
+
 source_suffix = {'.md': 'myst', '.rst': 'restructuredtext'}
 
 master_doc = 'index'
@@ -55,7 +57,9 @@ html_theme_options = {
 html_favicon = 'favicon.ico'
 
 # _static holds favicon, style, etc.; pics holds logo SVGs (served at _static/ root after build)
+templates_path = ['_templates']
 html_static_path = ['_static', 'pics']
+html_css_files = ['style.css']
 
 htmlhelp_basename = 'PoreMSdoc'
 
