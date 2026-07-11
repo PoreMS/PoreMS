@@ -16,6 +16,11 @@ Online documentation is available at [porems.github.io/PoreMS](https://porems.gi
 
 The docs include tutorials for generating [molecules](https://porems.github.io/PoreMS/molecule.html) and [pores](https://porems.github.io/PoreMS/pore.html), and a full [API reference](https://porems.github.io/PoreMS/autoapi/index.html). Visit [workflow](https://porems.github.io/PoreMS/workflow.html) for an example simulation setup with GROMACS.
 
+## PoreMS App
+
+A browser-based interface for PoreMS is available at [github.com/PoreMS/PoreMS-App](https://github.com/PoreMS/PoreMS-App).
+It provides a step-by-step wizard for configuring pore geometry, attaching surface molecules, and downloading a GROMACS-ready structure — no Python scripting required.
+
 ## Dependencies
 
 PoreMS requires Python 3.12+.
