@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "porems"
+version = "1.0.0"
+description = "Pore Generator for Molecular Simulations."
+readme = "README.md"
+license = { text = "GPL-3.0-or-later" }
+authors = [{ name = "Hamzeh Kraus", email = "kraus@itt.uni-stuttgart.de" }]
+requires-python = ">=3.12"
+dependencies = ["numpy", "scipy", "pandas", "seaborn", "pyyaml"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov"]
+
+[project.urls]
+Homepage = "https://github.com/PoreMS/PoreMS"
+
+[tool.setuptools.package-data]
+porems = ["templates/*"]
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "W", "I"]
+
+[tool.pytest.ini_options]
+markers = ["slow: marks tests as slow integration tests (deselect with '-m \"not slow\"')"]
+testpaths = ["tests"]

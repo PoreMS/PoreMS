@@ -4,11 +4,74 @@
 """Separation of a molecule object into smaller cubes for pair-search."""
 ################################################################################
 
-
 import math
 import multiprocessing as mp
 
+import numpy as np
+
 import porems.geometry as geometry
+
+
+def _neighbor_ids(cube_id, count, size, is_pbc):
+    """Return valid neighboring cube ids for *cube_id* (module-level for pickling)."""
+
+    def step(idx, dim, delta):
+        idx = list(idx)
+        idx[dim] += delta
+        if idx[dim] >= count[dim]:
+            idx[dim] = 0 if is_pbc else None
+        elif idx[dim] < 0:
+            idx[dim] = count[dim] - 1 if is_pbc else None
+        return None if None in idx else tuple(idx)
+
+    neighbors = []
+    for dz in (-1, 0, 1):
+        nz = step(cube_id, 2, dz)
+        if nz is None:
+            continue
+        for dy in (-1, 0, 1):
+            ny = step(nz, 1, dy)
+            if ny is None:
+                continue
+            for dx in (-1, 0, 1):
+                nx = step(ny, 0, dx)
+                if nx is not None:
+                    neighbors.append(nx)
+    return neighbors
+
+
+def _find_bond_task(
+    cube_list, atom_data, pointer, count, size, is_pbc, mol_box_arr, atom_type, distance
+):
+    """Module-level worker for parallel bond search.
+
+    Accepts only the minimal data needed to avoid pickling the full Molecule object.
+    """
+    d_lo, d_hi = distance
+    t0, t1 = atom_type
+    bond_list = []
+
+    for cube_id in cube_list:
+        neighbors = _neighbor_ids(cube_id, count, size, is_pbc)
+        atoms = [aid for nb in neighbors for aid in pointer[nb]]
+
+        for atom_id_a in pointer[cube_id]:
+            if atom_data[atom_id_a][0] != t0:
+                continue
+            entry = [atom_id_a, []]
+            pos_a = atom_data[atom_id_a][1]
+            for atom_id_b in atoms:
+                if atom_data[atom_id_b][0] != t1 or atom_id_a == atom_id_b:
+                    continue
+                bv = pos_a - atom_data[atom_id_b][1]
+                mask = np.abs(bv) > 3 * size
+                bv[mask] -= mol_box_arr[mask] * np.round(bv[mask] / mol_box_arr[mask])
+                length = math.sqrt(bv[0] * bv[0] + bv[1] * bv[1] + bv[2] * bv[2])
+                if d_lo <= length <= d_hi:
+                    entry[1].append(atom_id_b)
+            bond_list.append(entry)
+
+    return bond_list
 
 
 class Dice:
@@ -56,6 +119,7 @@ class Dice:
     is_pbc : bool
         True if periodic boundary conditions are needed
     """
+
     def __init__(self, mol, size, is_pbc):
         # Initialize
         self._dim = 3
@@ -65,13 +129,16 @@ class Dice:
         self._size = size
         self._is_pbc = is_pbc
 
-        self._atom_data = {atom_id: [atom.get_atom_type(), atom.get_pos()] for atom_id, atom in enumerate(self._mol.get_atom_list())}
+        self._atom_data = {
+            atom_id: [atom.get_atom_type(), np.asarray(self._mol.pos(atom_id))]
+            for atom_id, atom in enumerate(self._mol.get_atom_list())
+        }
         self._mol_box = self._mol.get_box()
+        self._mol_box_arr = np.asarray(self._mol_box)
 
         # Split molecule box into cubes and fill them with atom ids
         self._split()
         self._fill()
-
 
     ##############
     # Management #
@@ -92,7 +159,7 @@ class Dice:
             \\text{id}=\\begin{pmatrix}x&y&z\\end{pmatrix}.
         """
         # Calculate number of cubes in each dimension
-        self._count = [math.floor(box/self._size) for box in self._mol_box]
+        self._count = [math.floor(box / self._size) for box in self._mol_box]
 
         # Fill cube origins
         self._origin = {}
@@ -100,7 +167,7 @@ class Dice:
         for i in range(self._count[0]):
             for j in range(self._count[1]):
                 for k in range(self._count[2]):
-                    self._origin[(i, j, k)] = [self._size*x for x in [i, j, k]]
+                    self._origin[(i, j, k)] = [self._size * x for x in [i, j, k]]
                     self._pointer[(i, j, k)] = []
 
     def _pos_to_index(self, position):
@@ -116,15 +183,21 @@ class Dice:
         index : tuple
             Cube index
         """
-        return tuple([math.floor(pos/self._size) if math.floor(pos/self._size)<self._count[dim] else self._count[dim]-1 for dim, pos in enumerate(position)])
+        return tuple(
+            [
+                math.floor(pos / self._size)
+                if math.floor(pos / self._size) < self._count[dim]
+                else self._count[dim] - 1
+                for dim, pos in enumerate(position)
+            ]
+        )
 
     def _fill(self):
         """Based on their coordinates, the atom ids, as defined in the molecule
         object, are filled into the cubes.
         """
-        for atom_id, atom in enumerate(self._mol.get_atom_list()):
-            self._pointer[self._pos_to_index(atom.get_pos())].append(atom_id)
-
+        for atom_id in range(self._mol.get_num()):
+            self._pointer[self._pos_to_index(self._mol.pos(atom_id))].append(atom_id)
 
     ############
     # Iterator #
@@ -155,7 +228,7 @@ class Dice:
         if index[dim] >= self._count[dim]:
             index[dim] = 0 if self._is_pbc else None
         elif index[dim] < 0:
-            index[dim] = self._count[dim]-1 if self._is_pbc else None
+            index[dim] = self._count[dim] - 1 if self._is_pbc else None
 
         return tuple(index)
 
@@ -277,28 +350,27 @@ class Dice:
                 neighbor.append(y[i][j])
                 neighbor.append(self._right(y[i][j]))
 
-        if not is_self:
-            neighbor.pop(13)
-
-        return [n for n in neighbor if n is not None]
-
+        return [n for n in neighbor if n is not None and (is_self or n != cube_id)]
 
     ##########
     # Search #
     ##########
     def find_bond(self, cube_list, atom_type, distance):
-        """Search for a bond in the given cubes. This function searches for
-        atom-pairs that fulfill the distance requirements within the given cube
-        and all 26 surrounding ones.
+        """Single-threaded bond search used as a reference implementation.
+
+        Searches for atom-pairs that fulfill the distance requirements within the
+        given cube and all 26 surrounding ones. For parallel execution see
+        :func:`find_parallel`, which calls the module-level :func:`_find_bond_task`
+        to avoid pickling the full :class:`Molecule` object.
 
         Parameters
         ----------
         cube_list : list
             List of cube indices to search in, use an empty list for all cubes
         atom_type : list
-            List of two atom types
+            List of two atom types, e.g. ``["Si", "O"]``
         distance : list
-            Bounds of allowed distance [lower, upper]
+            Bounds of allowed distance ``[lower, upper]`` in nm
 
         Returns
         -------
@@ -312,7 +384,9 @@ class Dice:
         bond_list = []
         for cube_id in cube_list:
             # Get atom ids of surrounding cubes
-            atoms = sum([self._pointer[x] for x in self.neighbor(cube_id) if None not in x], [])
+            atoms = sum(
+                [self._pointer[x] for x in self.neighbor(cube_id) if None not in x], []
+            )
 
             # Run through atoms in the main cube
             for atom_id_a in self._pointer[cube_id]:
@@ -321,17 +395,22 @@ class Dice:
                     entry = [atom_id_a, []]
                     # Search in all surrounding cubes for partners
                     for atom_id_b in atoms:
-                        if self._atom_data[atom_id_b][0] == atom_type[1] and not atom_id_a == atom_id_b:
-                            # Calculate bond vector
-                            bond_vector = [0, 0, 0]
-                            for dim in range(self._dim):
-                                # Nearest image convention
-                                bond_vector[dim] = self._atom_data[atom_id_a][1][dim]-self._atom_data[atom_id_b][1][dim]
-                                if abs(bond_vector[dim]) > 3*self._size:
-                                    bond_vector[dim] -= self._mol_box[dim]*round(bond_vector[dim]/self._mol_box[dim])
-                            # Calculate bond length
-                            length = geometry.length(bond_vector)
-                            # Check if bond distance is within error
+                        if (
+                            self._atom_data[atom_id_b][0] == atom_type[1]
+                            and not atom_id_a == atom_id_b
+                        ):
+                            # Calculate bond vector with nearest-image convention
+                            bv = (
+                                self._atom_data[atom_id_a][1]
+                                - self._atom_data[atom_id_b][1]
+                            )
+                            mol_box = self._mol_box_arr
+                            mask = np.abs(bv) > 3 * self._size
+                            bv[mask] -= mol_box[mask] * np.round(
+                                bv[mask] / mol_box[mask]
+                            )
+                            length = geometry.length(bv)
+                            # Check if bond distance is within range
                             if length >= distance[0] and length <= distance[1]:
                                 entry[1].append(atom_id_b)
 
@@ -341,16 +420,24 @@ class Dice:
         return bond_list
 
     def find_parallel(self, cube_list, atom_type, distance):
-        """Parallelized bond search of function :func:`find_bond`.
+        """Parallelized bond search using :func:`_find_bond_task`.
+
+        Divides the cube list across ``cpu_count()`` workers. Workers receive only
+        the atom-data and pointer dicts rather than the full
+        :class:`~porems.Molecule`, reducing IPC overhead. On single-threaded
+        Unix processes a ``fork`` start-context is used so workers inherit the
+        parent's memory via copy-on-write (zero-copy). ``spawn`` is used on
+        Windows and inside multi-threaded processes (e.g. test runners) where
+        ``fork`` risks deadlocks.
 
         Parameters
         ----------
         cube_list : list
             List of cube indices to search in, use an empty list for all cubes
         atom_type : list
-            List of two atom types
+            List of two atom types, e.g. ``["Si", "O"]``
         distance : list
-            Bounds of allowed distance [lower, upper]
+            Bounds of allowed distance ``[lower, upper]`` in nm
 
         Returns
         -------
@@ -361,20 +448,46 @@ class Dice:
         cube_list = cube_list if cube_list else list(self._pointer.keys())
 
         # Divide cubes on processors
-        cube_num = math.floor(len(cube_list)/self._np)
-        cube_np = [cube_list[cube_num*i:] if i == self._np-1 else cube_list[cube_num*i:cube_num*(i+1)] for i in range(self._np)]
+        cube_num = math.floor(len(cube_list) / self._np)
+        cube_np = [
+            cube_list[cube_num * i :]
+            if i == self._np - 1
+            else cube_list[cube_num * i : cube_num * (i + 1)]
+            for i in range(self._np)
+        ]
 
-        # Run parallel search
-        pool = mp.Pool(processes=self._np)
-        results = [pool.apply_async(self.find_bond, args=(x, atom_type, distance)) for x in cube_np]
-        bond_list = sum([x.get() for x in results], [])
+        # Pass only the essential data to workers (avoids pickling the full Molecule)
+        task_data = (
+            self._atom_data,
+            self._pointer,
+            self._count,
+            self._size,
+            self._is_pbc,
+            self._mol_box_arr,
+            atom_type,
+            distance,
+        )
+        tasks = [(cube_chunk,) + task_data for cube_chunk in cube_np]
 
-        # Destroy object
-        del results
+        # fork context inherits parent memory (copy-on-write) — avoids pickling
+        # molecule data entirely. Use spawn on Windows (no fork support), during
+        # testing (pytest adds OS threads not visible to threading.active_count()),
+        # and in any explicitly multi-threaded process.
+        import sys
+        import threading
 
-        # Return results
+        _in_test = "_pytest" in sys.modules or "pytest" in sys.modules
+        if sys.platform == "win32" or threading.active_count() > 1 or _in_test:
+            _start = "spawn"
+        else:
+            _start = "fork"
+        ctx = mp.get_context(_start)
+        pool = ctx.Pool(processes=self._np)
+        results = pool.starmap(_find_bond_task, tasks)
+        pool.terminate()
+        bond_list = sum(results, [])
+
         return bond_list
-
 
     ##################
     # Setter methods #
@@ -388,7 +501,6 @@ class Dice:
             True to turn on periodic boundary conditions
         """
         self._is_pbc = pbc
-
 
     ##################
     # Getter methods #

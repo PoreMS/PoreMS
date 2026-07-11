@@ -4,12 +4,10 @@
 """Here popular basic methods are noted."""
 ################################################################################
 
-
-import os
-import time
-import pickle
 import fileinput
-
+import os
+import pickle
+import time
 from shutil import copyfile
 
 
@@ -39,7 +37,7 @@ def copy(source, target):
 
 
 def column(data):
-    """Convert given row list matrix into column list matrix
+    """Convert a row-major list matrix into a column-major list matrix.
 
     Parameters
     ----------
@@ -49,18 +47,9 @@ def column(data):
     Returns
     -------
     data_col : list
-        column data matrix
+        Column data matrix
     """
-    num_row = len(data)
-    num_col = len(data[0])
-
-    data_col = [[] for i in range(num_col)]
-
-    for i in range(num_row):
-        for j in range(num_col):
-            data_col[j].append(data[i][j])
-
-    return data_col
+    return [list(col) for col in zip(*data)]
 
 
 def tic():
@@ -95,10 +84,10 @@ def toc(t, message="", is_print=True):
     if message:
         message += " - runtime = "
 
-    t_diff = time.time()-t
+    t_diff = time.time() - t
 
     if is_print:
-        print(message+"%6.3f" % t_diff+" s")
+        print(message + "%6.3f" % t_diff + " s")
 
     return t_diff
 
@@ -146,7 +135,7 @@ def load(link):
     obj : Object
         Loaded object
     """
-    with open(link, 'rb') as f:
+    with open(link, "rb") as f:
         return pickle.load(f)
 
 
@@ -188,7 +177,7 @@ def mumol_m2_to_mols(c, A):
     N : float
         Number of molecules
     """
-    return 0.6022*c*A
+    return 0.6022 * c * A
 
 
 def mols_to_mumol_m2(N, A):
@@ -228,7 +217,7 @@ def mols_to_mumol_m2(N, A):
     c : float
         Concentration in :math:`\\frac{\\mu\\text{mol}}{\\text{m}^2}`
     """
-    return N/0.6022/A
+    return N / 0.6022 / A
 
 
 def mmol_g_to_mumol_m2(c, SBET):
@@ -254,7 +243,7 @@ def mmol_g_to_mumol_m2(c, SBET):
     c : float
         Concentration in :math:`\\frac{\\mu\\text{mol}}{\\text{m}^2}`
     """
-    return c/SBET*1e3
+    return c / SBET * 1e3
 
 
 def mmol_l_to_mols(c, V):
@@ -294,7 +283,7 @@ def mmol_l_to_mols(c, V):
     N : float
         Number of molecules
     """
-    return 6.022e-4*c*V
+    return 6.022e-4 * c * V
 
 
 def mols_to_mmol_l(N, V):
@@ -333,4 +322,4 @@ def mols_to_mmol_l(N, V):
     c : float
         Concentration in :math:`\\frac{\\text{mmol}}{\\text{l}}`
     """
-    return N/6.022e-4/V
+    return N / 6.022e-4 / V

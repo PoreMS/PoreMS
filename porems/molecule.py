@@ -4,21 +4,19 @@
 """All necessary function for creating and editing molecules."""
 ################################################################################
 
-
-import math
+import numpy as np
 import pandas as pd
 
-import porems.utils as utils
 import porems.database as db
 import porems.geometry as geometry
-
 from porems.atom import Atom
 
 
 class Molecule:
     """This class defines a molecule object, which is basically a list of Atom
-    objects. Each atom object has a specific cartesian position and atom type,
-    creating the construct of a molecule.
+    objects combined with a numpy-backed positions list. Each atom object carries
+    the atom type, name and residue; positions are stored separately for
+    vectorised bulk operations.
 
     Functions have been provided for editing, moving and transforming the
     atom objects, either as a collective or specific part of the molecule.
@@ -31,8 +29,7 @@ class Molecule:
         Molecule short name
     inp : None, string, list, optional
         None for empty Molecule, string to read a molecule from a
-        specified file link or a list of either molecules to concatenate these
-        into one object, or a list of atom objects
+        specified file link, or a list of Molecule objects to concatenate.
 
     Examples
     --------
@@ -51,6 +48,7 @@ class Molecule:
         mol.add("C", 4, r=0.1375, theta=300)
 
     """
+
     def __init__(self, name="molecule", short="MOL", inp=None):
         # Initialize
         self._dim = 3
@@ -63,22 +61,21 @@ class Molecule:
         self._masses = []
         self._mass = 0
 
+        self._atom_list = []
+        self._pos_list = []  # list of [x, y, z] — fast to append, vectorised on bulk ops
+
         # Check data input
         if inp is None:
-            self._atom_list = []
-        else:
-            # Read from file
-            if isinstance(inp, str):
-                self._atom_list = self._read(inp, inp.split(".")[-1].upper())
-            # Concat multiple molecules
-            elif isinstance(inp, list):
-                # Atom list is provided
-                if(isinstance(inp[0], Atom)):
-                    self._atom_list = inp
-                # List of molecules is provided
-                else:
-                    self._atom_list = self._concat(inp)
-
+            pass
+        elif isinstance(inp, str):
+            self._read(inp, inp.split(".")[-1].upper())
+        elif isinstance(inp, list) and inp:
+            if isinstance(inp[0], Molecule):
+                self._concat(inp)
+            # Legacy: list of Atom objects (positions are lost — use Molecule(inp=[mol]) instead)
+            elif isinstance(inp[0], Atom):
+                self._atom_list = list(inp)
+                self._pos_list = [[0.0, 0.0, 0.0] for _ in inp]
 
     ##################
     # Representation #
@@ -88,21 +85,24 @@ class Molecule:
 
         Returns
         -------
-        repr : DataFrame
-            Pandas data frame of the molecule object
+        repr : string
+            Pandas data frame string of the molecule object
         """
-        # Set colums names
         columns = ["Residue", "Name", "Type", "x", "y", "z"]
-
-        # Get data
-        data =[]
-        for atom in self._atom_list:
-            data.append([atom.get_residue(), atom.get_name(), atom.get_atom_type(),
-                         atom.get_pos()[0], atom.get_pos()[1], atom.get_pos()[2]])
-
-        # Create data frame
+        data = []
+        for i, atom in enumerate(self._atom_list):
+            p = self._pos_list[i]
+            data.append(
+                [
+                    atom.get_residue(),
+                    atom.get_name(),
+                    atom.get_atom_type(),
+                    p[0],
+                    p[1],
+                    p[2],
+                ]
+            )
         return pd.DataFrame(data, columns=columns).to_string()
-
 
     ##############
     # Management #
@@ -117,19 +117,14 @@ class Molecule:
             Link to requested file
         file_type : string
             File extension name
-
-        Returns
-        -------
-        atom_list : list
-            Atom list
         """
-        # Process input
-        if not file_type in ["GRO", "PDB", "MOL2"]:
+        if file_type not in ["GRO", "PDB", "MOL2"]:
             print("Unsupported filetype.")
             return
 
-        # Read molecule
         atom_list = []
+        pos_list = []
+
         with open(file_path, "r") as file_in:
             for line_idx, line in enumerate(file_in):
                 line_val = line.split()
@@ -138,17 +133,17 @@ class Molecule:
                 # Gro file
                 if file_type == "GRO":
                     if line_idx > 0 and len(line_val) > 3:
-                        residue = int(line[0:5])-1
-                        pos = [float(line_val[i]) for i in range(3, 5+1)]
+                        residue = int(line[0:5]) - 1
+                        pos = [float(line_val[i]) for i in range(3, 5 + 1)]
                         name = line_val[1]
-                        atom_type = ''.join([i for i in line_val[1] if not i.isdigit()])
+                        atom_type = "".join([i for i in line_val[1] if not i.isdigit()])
                         is_add = True
 
                 # Pdb file
                 elif file_type == "PDB":
                     if line_val[0] in ["ATOM", "HETATM"]:
-                        residue = int(line[22:26])-1
-                        pos = [float(line_val[i])/10 for i in range(6, 8+1)]
+                        residue = int(line[22:26]) - 1
+                        pos = [float(line_val[i]) / 10 for i in range(6, 8 + 1)]
                         name = line_val[11]
                         atom_type = line_val[11]
                         is_add = True
@@ -157,46 +152,71 @@ class Molecule:
                 elif file_type == "MOL2":
                     if len(line_val) > 8:
                         residue = 0
-                        pos = [float(line_val[i])/10 for i in range(2, 4+1)]
+                        pos = [float(line_val[i]) / 10 for i in range(2, 4 + 1)]
                         name = line_val[1]
-                        atom_type = ''.join([i for i in line_val[1] if not i.isdigit()])
+                        atom_type = "".join([i for i in line_val[1] if not i.isdigit()])
                         is_add = True
 
                 if is_add:
-                    atom_list.append(Atom(pos, atom_type, name, residue))
+                    atom_list.append(Atom(atom_type, name, residue))
+                    pos_list.append(pos)
 
-        # Transform to column
-        return atom_list
+        self._atom_list = atom_list
+        self._pos_list = pos_list
 
     def _concat(self, mol_list):
-        """Concatenate a molecule list into one molecule object.
+        """Concatenate a molecule list into the current object.
 
         Parameters
         ----------
         mol_list : list
-            List of molecule objects to be concatenated
-
-        Returns
-        -------
-        atom_list : list
-            Atom list
+            List of Molecule objects to be concatenated
         """
-        return sum([mol.get_atom_list() for mol in mol_list], [])
+        self._atom_list = sum([mol._atom_list for mol in mol_list], [])
+        self._pos_list = sum([mol._pos_list for mol in mol_list], [])
 
     def _temp(self, atoms):
-        """Create a temporary molecule of specified atom ids.
+        """Create a temporary molecule copy of specified atom ids.
+
+        Returns the molecule copy and the index list so that callers can write
+        back modified positions via :meth:`_writeback_temp`.
 
         Parameters
         ----------
         atoms : list
-            List of atoms to be included
+            List of atom ids to include
 
         Returns
         -------
         mol : Molecule
-            Molecule object
+            Molecule copy
+        indices : list
+            Atom ids in *self* corresponding to the copy
         """
-        return Molecule(inp=[self._atom_list[x] for x in atoms])
+        mol = Molecule.__new__(Molecule)
+        mol._dim = self._dim
+        mol._name = self._name
+        mol._short = self._short
+        mol._box = []
+        mol._charge = 0
+        mol._masses = []
+        mol._mass = 0
+        mol._atom_list = [self._atom_list[x] for x in atoms]
+        mol._pos_list = [list(self._pos_list[x]) for x in atoms]
+        return mol, list(atoms)
+
+    def _writeback_temp(self, temp, indices):
+        """Write positions from a temporary molecule back into *self*.
+
+        Parameters
+        ----------
+        temp : Molecule
+            Temporary molecule whose positions should be written back
+        indices : list
+            Atom ids in *self* that correspond to *temp*
+        """
+        for i, atom_id in enumerate(indices):
+            self._pos_list[atom_id] = temp._pos_list[i]
 
     def append(self, mol):
         """Append a given molecule to the current object.
@@ -206,74 +226,69 @@ class Molecule:
         mol : Molecule
             Molecule object
         """
-        self._atom_list += mol.get_atom_list()
+        self._atom_list += mol._atom_list
+        self._pos_list += mol._pos_list
 
     def column_pos(self):
-        """Create column list of atom positions
+        """Create column list of atom positions.
 
         Returns
         -------
         column : list
-            Columns of all atom positions in all dimensions
+            Columns of all atom positions — ``[[x0, x1, ...], [y0, y1, ...], [z0, z1, ...]]``
         """
-        return utils.column([atom.get_pos() for atom in self._atom_list])
-
+        if not self._pos_list:
+            return [[], [], []]
+        return np.array(self._pos_list).T.tolist()
 
     ############
     # Geometry #
     ############
     def _vector(self, pos_a, pos_b):
-        """Calculate the vector between to two positions as defined in
-        :class:`porems.geometry.vector` with the addition to define the inputs
+        """Calculate the vector between two positions as defined in
+        :func:`porems.geometry.vector` with the addition to define the inputs
         as atom indices.
 
         Parameters
         ----------
         pos_a : integer, list
-            First position :math:`\\boldsymbol{a}`
+            First position
         pos_b : integer, list
-            Second position :math:`\\boldsymbol{b}`
+            Second position
 
         Returns
         -------
-        vector : list
+        vector : numpy.ndarray
             Bond vector
         """
-        # Process input
         if isinstance(pos_a, int) and isinstance(pos_b, int):
             pos_a = self.pos(pos_a)
             pos_b = self.pos(pos_b)
-        elif not (isinstance(pos_a, list) and isinstance(pos_b, list)):
+        elif not (
+            isinstance(pos_a, (list, np.ndarray))
+            and isinstance(pos_b, (list, np.ndarray))
+        ):
             print("Vector: Wrong input...")
-            return
+            return None
 
-        # Check dimensions
         if not len(pos_a) == self._dim:
             print("Vector: Wrong dimensions...")
-            return
+            return None
 
-        # Calculate vector
         return geometry.vector(pos_a, pos_b)
 
     def _box_size(self):
-        """Calculate the box size of the current molecule. This is done by
-        determining the maximal coordinate value of all atoms in all dimensions
-
-        .. math::
-
-            \\boldsymbol{b}=\\begin{pmatrix}\\max(\\boldsymbol{d}_1)&\\max(\\boldsymbol{d}_1)&\\dots&\\max(\\boldsymbol{d}_n)\\end{pmatrix}^T
-
-        where :math:`\\boldsymbol{d}_i` is the dimension-vector of the data
-        matrix.
+        """Calculate the box size of the current molecule.
 
         Returns
         -------
         box : list
-            Box length of the current molecule
+            Box length in all dimensions
         """
-        data = self.column_pos()
-        return [max(data[i]) if max(data[i]) > 0 else 0.001 for i in range(self._dim)]
-
+        if not self._pos_list:
+            return [0.001] * self._dim
+        maxes = np.array(self._pos_list).max(axis=0)
+        return [float(m) if float(m) > 0 else 0.001 for m in maxes]
 
     ##############
     # Properties #
@@ -291,11 +306,11 @@ class Molecule:
         pos : list
             Position vector of the specified atom
         """
-        return self._atom_list[atom].get_pos()
+        return self._pos_list[atom]
 
     def bond(self, inp_a, inp_b):
         """Return the bond vector of a specified bond. The two inputs can either
-        be atom indices or to vectoral positions.
+        be atom indices or positional vectors.
 
         Parameters
         ----------
@@ -306,7 +321,7 @@ class Molecule:
 
         Returns
         -------
-        bond : list
+        bond : numpy.ndarray
             Bond vector
 
         Examples
@@ -320,274 +335,186 @@ class Molecule:
         return self._vector(inp_a, inp_b)
 
     def centroid(self):
-        """Calculate the geometrical center of mass
-
-        .. math::
-
-            \\text{centroid}=\\begin{pmatrix}c_1&c_2&\\dots&c_n\\end{pmatrix}^T
-
-        with
-
-        .. math::
-
-            c_i=\\frac{1}{m}\\sum_j^m d_{ij}.
-
-        Hereby :math:`i\\dots n` stands for the dimension and :math:`j\\dots m`
-        for the molecule.
+        """Calculate the geometrical centre of mass.
 
         Returns
         -------
-        Centroid : list
-            Geometrical center of mass
+        centroid : list
+            Geometrical centre of mass
         """
-        # Calculate the centroid
-        data = self.column_pos()
-        return [sum(data[i])/len(data[i]) for i in range(self._dim)]
+        return np.mean(np.array(self._pos_list, dtype=float), axis=0).tolist()
 
     def com(self):
-        """Calculate the center of mass
-
-        .. math::
-
-            \\text{com}=\\begin{pmatrix}c_1&c_2&\\dots&c_n\\end{pmatrix}^T
-
-        with
-
-        .. math::
-
-            c_i=\\frac{1}{\\sum_j^mM_j}\\sum_j^m d_{ij}\\cdot M_j
-
-        and mass :math:`M`. Hereby :math:`i\\dots n` stands for the dimension
-        and :math:`j\\dots m` for the molecule.
+        """Calculate the centre of mass.
 
         Returns
         -------
-        COM : list
-            Center of mass
+        com : list
+            Centre of mass
         """
-        # Calculate the center of mass
-        data = self.column_pos()
-        masses = self.get_masses()
-        return [sum([data[i][j]*masses[j] for j in range(self.get_num())])/sum(masses) for i in range(self._dim)]
-
+        arr = np.array(self._pos_list, dtype=float)
+        masses = np.array(self.get_masses(), dtype=float)
+        return ((arr * masses[:, np.newaxis]).sum(axis=0) / masses.sum()).tolist()
 
     #################
     # Basic Editing #
     #################
     def translate(self, vec):
-        """Translate the atoms data matrix :math:`\\boldsymbol{D}` along a
-        vector :math:`\\boldsymbol{a}\\in\\mathbb{R}^n`.
-
-        .. math::
-
-            \\boldsymbol{D}_\\text{trans}=
-            \\boldsymbol{D}+\\boldsymbol{a}=
-            \\begin{pmatrix}
-            \\boldsymbol{d}_1+a_1&\\boldsymbol{d}_2+a_2&\\dots&\\boldsymbol{d}_n+a_n&\\boldsymbol{d}_t
-            \\end{pmatrix}
+        """Translate all atom positions along a vector.
 
         Parameters
         ----------
         vec : list
-            Vector a
+            Translation vector
         """
-        for atom in self._atom_list:
-            atom.set_pos([atom.get_pos()[i]+vec[i] for i in range(self._dim)])
+        arr = np.array(self._pos_list, dtype=float)
+        arr += np.asarray(vec, dtype=float)
+        self._pos_list = arr.tolist()
 
     def rotate(self, axis, angle, is_deg=True):
-        """Rotate data matrix :math:`\\boldsymbol{D}` around an axis
-        :math:`\\boldsymbol{a}\\in\\mathbb{R}^3` with angle
-        :math:`\\alpha\\in\\mathbb{R}` using rotation function
+        """Rotate all atom positions around an axis using
         :func:`porems.geometry.rotate`.
 
         Parameters
         ----------
         axis : integer, string, list
-            Axis
+            Rotation axis
         angle : float
             Angle
         is_deg : bool, optional
-            True if the input is in degree
+            True if the input is in degrees
         """
-        for atom in self._atom_list:
-            atom.set_pos(geometry.rotate(atom.get_pos(), axis, angle, is_deg))
+        if not self._pos_list:
+            return
+        arr = np.array(self._pos_list, dtype=float)  # (N, 3)
+        result = geometry.rotate(arr.T, axis, angle, is_deg)  # (3, N)
+        if result is not None:
+            self._pos_list = np.asarray(result, dtype=float).T.tolist()
 
     def move(self, atom, pos):
-        """Move whole the molecule to a new position, where the dragging point
-        is a given atom that is moved to a specified position.
+        """Move the molecule so that a given atom sits at a specified position.
 
         Parameters
         ----------
         atom : integer
-            Main atom id whose position will be changed
+            Atom id to use as the dragging point
         pos : list
-            New position vector
+            Target position
         """
         self.translate(self._vector(self.pos(atom), pos))
 
     def zero(self, pos=[0, 0, 0]):
-        """Move whole the molecule, so that the minimal coordinate
-        between all atoms is zero in all dimensions, or rather the values of the
-        position variable ``pos``. This function is basically setting
-        the zero point of the coordinate system to ``pos``.
+        """Shift the molecule so that its minimum coordinate equals ``pos``.
 
         Parameters
         ----------
         pos : list, optional
-            Vector of the zero point of the coordinate system
+            Zero-point coordinates
 
         Returns
         -------
         vec : list
-            Vector used for the translation
+            Translation vector used
         """
-        # Calculate translation vector
-        data = self.column_pos()
-        vec = [pos[i]-min(data[i]) for i in range(self._dim)]
-
-        # Reset box size
+        if not self._pos_list:
+            return [0.0] * self._dim
+        arr = np.array(self._pos_list, dtype=float)
+        mins = arr.min(axis=0)
+        vec = [float(pos[i]) - float(mins[i]) for i in range(self._dim)]
         self._box = []
-
-        # Translate molecule
         self.translate(vec)
-
         return vec
 
     def put(self, atom, pos):
-        """Change the position of an atom to a given position vector
-        :math:`\\boldsymbol{a}\\in\\mathbb{R}^n`.
+        """Move a single atom to a given position.
 
         Parameters
         ----------
         atom : integer
-            Atom id whose position will be changed
+            Atom id
         pos : list
             New position vector
         """
-        self._atom_list[atom].set_pos(pos)
-
+        self._pos_list[atom] = list(pos)
 
     ####################
     # Advanced Editing #
     ####################
-    def part_move(self, bond, atoms, length, vec=[]):
-        """Change the length of a specified bond. Variable ``atoms`` specifies
-        which atoms or rather which part of the molecule needs to be moved for
-        this specific bond. The given length is going to be the new bond length,
-        **not** by how much the bond length is changed.
-
-        The move vector is determined automatically by the given length and atom
-        bond. This vector can also be given manually with no regards to length,
-        by setting the variable ``vec``.
+    def part_move(self, bond, atoms, length, vec=None):
+        """Change the length of a specified bond by translating a subset of atoms.
 
         Parameters
         ----------
         bond : list
-            List of two atom ids of the bond to be adjusted
+            Two atom ids defining the bond to adjust
         atoms : integer, list
-            List of atoms that need to be moved by changing the bond length
-            (can also be one id)
+            Atom ids to translate
         length : float
             New bond length
         vec : list, optional
-            Set this vector to manually define the translation vector
-
-        Examples
-        --------
-        .. code-block:: python
-
-            mol.part_move([0, 1], [1, 2, 3], 0.5)
+            Override the translation direction
         """
-        # Create temporary molecule
         if isinstance(atoms, int):
             atoms = [atoms]
-        temp = self._temp(atoms)
+        temp, indices = self._temp(atoms)
 
-        # Set length
-        length = abs(length-geometry.length(self.bond(*bond)))
+        length = abs(length - geometry.length(self.bond(*bond)))
 
-        # Set vector
         if not vec:
             vec = self._vector(bond[0], bond[1])
-        vec = [v*length for v in geometry.unit(vec)]
+        vec = [v * length for v in geometry.unit(vec)]
 
-        # Move molecule
         temp.translate(vec)
+        self._writeback_temp(temp, indices)
 
     def part_rotate(self, bond, atoms, angle, zero):
-        """Rotate a set of specified atoms around a given bond as the rotation
-        axis. First however the system needs to be set to zero. Therefore the
-        atom id to define the new coordinate system must be given for the set
-        of specified atoms. Normally this is the atoms that is on the end of the
-        given bond axis.
+        """Rotate a subset of atoms around a bond axis.
 
         Parameters
         ----------
         bond : list
-            List of two atom ids of the bond to be set as an axis
+            Two atom ids defining the rotation axis
         atoms : integer, list
-            List of atoms to be rotated (can also be one id)
+            Atom ids to rotate
         angle : float
             Rotation angle
         zero : integer
-            Atom id to define zero point of the new coordinate system
-
-        Examples
-        --------
-        .. code-block:: python
-
-            mol.part_rotate([0, 1], [1, 2, 3], 90, 0)
+            Atom id used to set the coordinate origin before rotating
         """
-        # Create temporary molecule
         self.move(zero, [0, 0, 0])
         if isinstance(atoms, int):
             atoms = [atoms]
-        temp = self._temp(atoms)
+        temp, indices = self._temp(atoms)
 
-        # Rotate molecule
         temp.rotate([self.pos(bond[0]), self.pos(bond[1])], angle)
+        self._writeback_temp(temp, indices)
 
     def part_angle(self, bond_a, bond_b, atoms, angle, zero):
-        """Change the bond angle of two bond vectors. Variable ``atoms``
-        specifies which atoms or rather which part of the molecule needs to be
-        rotated in order to change the specified bond angle. First however the
-        system needs to be set to zero. Therefore, the atom id to define the new
-        coordinate system must be given for the set of specified atoms.
-        Normally this is the atom that touches the angle.
-
-        The rotation axis is determined by creating the cross product
-        of the two bond vectors. Thus, getting the normal vector of a surface
-        that contains both bond vectors.
+        """Change the angle between two bonds by rotating a subset of atoms.
 
         Parameters
         ----------
         bond_a : list
-            First bond vector given as a list of two atom ids
+            First bond (two atom ids or a 3-vector)
         bond_b : list
-            Second bond vector given as a list of two atom ids
+            Second bond (two atom ids or a 3-vector)
         atoms : integer, list
-            List of atoms to be rotated (can also be one id)
+            Atom ids to rotate
         angle : float
             Rotation angle
         zero : integer
-            Atom id to define zero point of the new coordinate system
-
-        Examples
-        --------
-        .. code-block:: python
-
-            mol.part_angle([0, 1], [1, 2], [1, 2, 3], 90, 1)
+            Atom id used to set the coordinate origin before rotating
         """
-        # Create temporary molecule
         self.move(zero, [0, 0, 0])
         if isinstance(atoms, int):
             atoms = [atoms]
-        temp = self._temp(atoms)
+        temp, indices = self._temp(atoms)
 
-        # Rotate molecule around normal vector
         if len(bond_a) == len(bond_b):
             if len(bond_a) == 2:
-                vec = geometry.cross_product(self._vector(*bond_a), self._vector(*bond_b))
+                vec = geometry.cross_product(
+                    self._vector(*bond_a), self._vector(*bond_b)
+                )
             elif len(bond_a) == self._dim:
                 vec = geometry.cross_product(bond_a, bond_b)
             else:
@@ -597,22 +524,27 @@ class Molecule:
             print("Part_Angle : Wrong bond dimensions...")
             return
 
-        # Rotate molecule
         temp.rotate(vec, angle)
-
+        self._writeback_temp(temp, indices)
 
     #########
     # Atoms #
     #########
-    def add(self, atom_type, pos, bond=[], r=0, theta=0, phi=0, is_deg=True, name="", residue=0):
+    def add(
+        self,
+        atom_type,
+        pos,
+        bond=None,
+        r=0,
+        theta=0,
+        phi=0,
+        is_deg=True,
+        name="",
+        residue=0,
+    ):
         """Add a new atom in polar coordinates. The ``pos`` input is either
-        an atom id, that determines is the bond-start,
-        or a vector for a specific position.
-
-        If the polar coordinates are dependent on a bond vector as an axis,
-        the ``bond`` variable must be set. The coordinate system is then
-        transformed to the bond axis. If this variable is set to an empty list,
-        then the given coordinates are assumed to be dependent on the z-axis.
+        an atom id that determines the bond-start, or a vector for a specific
+        position.
 
         Parameters
         ----------
@@ -629,9 +561,9 @@ class Molecule:
         phi : float, optional
             Polar angle
         is_deg : bool, optional
-            True if the input of the angles in degree
+            True if angles are given in degrees
         name : string, optional
-            Optionally set a unique atom name
+            Unique atom name
         residue : integer, optional
             Residue number
 
@@ -643,90 +575,85 @@ class Molecule:
             mol.add("C", 0, r=0.153, theta=-135)
             mol.add("C", 1, [0, 1], r=0.153, theta= 135)
         """
-        # Process input
         pos = self.pos(pos) if isinstance(pos, int) else pos
         vec = self._vector(*bond) if bond else geometry.main_axis("z")
 
-        # Add coordinate transformation when given a bond
         phi += geometry.angle_polar(vec, is_deg)
         theta += geometry.angle_azi(vec, is_deg)
 
-        # Process angles
-        phi *= math.pi/180 if is_deg else 1
-        theta *= math.pi/180 if is_deg else 1
+        phi *= np.pi / 180 if is_deg else 1
+        theta *= np.pi / 180 if is_deg else 1
 
-        # Transform spherical to cartesian coordinates
-        x = r*math.sin(theta)*math.cos(phi)
-        y = r*math.sin(theta)*math.sin(phi)
-        z = r*math.cos(theta)
-        coord = [x, y, z]
+        x = r * np.sin(theta) * np.cos(phi)
+        y = r * np.sin(theta) * np.sin(phi)
+        z = r * np.cos(theta)
 
-        # Create new atom
-        self._atom_list.append(Atom([pos[i]+coord[i] for i in range(self._dim)], atom_type, name, residue))
+        self._atom_list.append(Atom(atom_type, name, residue))
+        self._pos_list.append([float(pos[0] + x), float(pos[1] + y), float(pos[2] + z)])
 
-    # Delete an atom
     def delete(self, atoms):
-        """Delete specified atom from the molecule. The input can also be a list
-        of atom ids.
+        """Delete specified atoms from the molecule.
 
         Parameters
         ----------
         atoms : integer, list
-            Atom id or list to be deleted
+            Atom id or list of ids to delete
         """
-        # Process input
         atoms = [atoms] if isinstance(atoms, int) else atoms
-
-        # Remove atoms
         for atom in sorted(atoms, reverse=True):
             self._atom_list.pop(atom)
+            self._pos_list.pop(atom)
 
     def overlap(self, error=0.005):
-        """Search for overlapping atoms.
+        """Search for overlapping atoms using a KD-tree (Chebyshev metric).
 
         Parameters
         ----------
         error : float, optional
-            Error tolerance
+            Maximum coordinate-wise distance to consider atoms overlapping
 
         Returns
         -------
-        duplicate : dictionary
-            Dictionary of duplicate lists
+        duplicates : dictionary
+            Dictionary mapping each representative atom id to the list of
+            atoms that overlap with it
         """
-        # Initialize
-        atom_list = {x: False for x in range(self.get_num())}
+        from scipy.spatial import KDTree
+
+        if not self._pos_list:
+            return {}
+        arr = np.array(self._pos_list)
+        pairs = sorted(KDTree(arr).query_pairs(error, p=np.inf))
+
+        marked_as_b = set()
         duplicates = {}
+        for a, b in pairs:
+            if a not in marked_as_b:
+                if a not in duplicates:
+                    duplicates[a] = []
+                duplicates[a].append(b)
+                marked_as_b.add(b)
 
-        # Run through complete atoms list
-        for atom_a in atom_list:
-            # Ignore duplicate items
-            if not atom_list[atom_a]:
-                # Run through atom list after first loop
-                for atom_b in [x for x in atom_list if x>atom_a]:
-                    # Check if overlapping
-                    if sum([error > abs(x) for x in geometry.vector(self.pos(atom_a), self.pos(atom_b))]) == 3:
-                        if not atom_a in duplicates:
-                            duplicates[atom_a] = []
-                        duplicates[atom_a].append(atom_b)
-                        # Set to false
-                        atom_list[atom_a] = True
-                        atom_list[atom_b] = True
-
-        # Return duplicates
         return duplicates
 
     def switch_atom_order(self, atom_a, atom_b):
-        """Switch atom order of two atoms.
+        """Swap two atoms in the atom list and positions.
 
         Parameters
         ----------
         atom_a : integer
-            Atom id of the first atom
+            First atom id
         atom_b : integer
-            Atom id of the second atom
+            Second atom id
         """
-        self._atom_list[atom_a], self._atom_list[atom_b] = self._atom_list[atom_b], self._atom_list[atom_a]
+        self._atom_list[atom_a], self._atom_list[atom_b] = (
+            self._atom_list[atom_b],
+            self._atom_list[atom_a],
+        )
+        self._pos_list[atom_a], self._pos_list[atom_b] = (
+            self._pos_list[atom_b],
+            self._pos_list[atom_a],
+        )
 
     def set_atom_type(self, atom, atom_type):
         """Change the atom type of a specified atom.
@@ -780,15 +707,14 @@ class Molecule:
         return self._atom_list[atom].get_atom_type()
 
     def get_atom_list(self):
-        """Return the atoms list.
+        """Return the atom list.
 
         Returns
         -------
         atom_list : list
-            Atom list
+            List of :class:`porems.atom.Atom` objects
         """
         return self._atom_list
-
 
     ##################
     # Setter Methods #
@@ -833,15 +759,19 @@ class Molecule:
         """
         self._charge = charge
 
-    def set_masses(self, masses=[]):
+    def set_masses(self, masses=None):
         """Set the molar masses of the atoms.
 
         Parameters
         ----------
         masses : list, optional
-            List of molar masses in :math:`\\frac g{mol}`
+            List of molar masses in g/mol
         """
-        self._masses = masses if masses else [db.get_mass(atom.get_atom_type()) for atom in self._atom_list]
+        self._masses = (
+            masses
+            if masses
+            else [db.get_mass(atom.get_atom_type()) for atom in self._atom_list]
+        )
 
     def set_mass(self, mass=0):
         """Set the molar mass of the molecule.
@@ -849,10 +779,9 @@ class Molecule:
         Parameters
         ----------
         mass : float, optional
-            Molar mass in :math:`\\frac g{mol}`
+            Molar mass in g/mol
         """
         self._mass = mass if mass else sum(self.get_masses())
-
 
     ##################
     # Getter Methods #
@@ -908,12 +837,12 @@ class Molecule:
         return self._charge
 
     def get_masses(self):
-        """Return a list of masses of the atoms.
+        """Return a list of molar masses of the atoms.
 
         Returns
         -------
         masses : list
-            Masses in :math:`\\frac g{mol}`
+            Masses in g/mol
         """
         if not self._masses:
             self.set_masses()
@@ -925,7 +854,7 @@ class Molecule:
         Returns
         -------
         mass : float
-            Molar mass in :math:`\\frac g{mol}`
+            Molar mass in g/mol
         """
         if not self._mass:
             self.set_mass()
