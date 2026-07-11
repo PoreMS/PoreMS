@@ -33,7 +33,7 @@ pore.finalize()
 pore.store("pores/shape1/")
 ```
 
-:::{figure} /pics/shapes/shape1.pdf
+:::{figure} /pics/shapes/shape1.svg
 :align: center
 :width: 70%
 :::
@@ -68,7 +68,7 @@ pore.finalize()
 pore.store("pores/shape2/")
 ```
 
-:::{figure} /pics/shapes/shape2.pdf
+:::{figure} /pics/shapes/shape2.svg
 :align: center
 :width: 70%
 :::
@@ -111,7 +111,7 @@ If there are intersecting shapes, the free Si sites are assigned to the first de
 Keep this in mind if you want to functionalize one of these shapes.
 :::
 
-:::{figure} /pics/shapes/shape3.pdf
+:::{figure} /pics/shapes/shape3.svg
 :align: center
 :width: 70%
 :::
@@ -151,7 +151,7 @@ pore.finalize()
 pore.store("pores/shape4/")
 ```
 
-:::{figure} /pics/shapes/shape4.pdf
+:::{figure} /pics/shapes/shape4.svg
 :align: center
 :width: 100%
 :::
@@ -189,7 +189,7 @@ pore.finalize()
 pore.store("pores/shape5/")
 ```
 
-:::{figure} /pics/shapes/shape5.pdf
+:::{figure} /pics/shapes/shape5.svg
 :align: center
 :width: 100%
 :::
