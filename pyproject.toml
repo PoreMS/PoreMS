@@ -28,6 +28,9 @@ Homepage = "https://github.com/PoreMS/PoreMS"
 [tool.setuptools.package-data]
 porems = ["templates/*"]
 
+[tool.setuptools]
+packages = ["porems"]
+
 [tool.ruff]
 line-length = 88
 

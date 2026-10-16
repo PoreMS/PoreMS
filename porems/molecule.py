@@ -2,6 +2,7 @@
 # Molecule Class                                                               #
 #                                                                              #
 """All necessary function for creating and editing molecules."""
+
 ################################################################################
 
 import numpy as np
@@ -62,7 +63,9 @@ class Molecule:
         self._mass = 0
 
         self._atom_list = []
-        self._pos_list = []  # list of [x, y, z] — fast to append, vectorised on bulk ops
+        self._pos_list = (
+            []
+        )  # list of [x, y, z] — fast to append, vectorised on bulk ops
 
         # Check data input
         if inp is None:
@@ -76,6 +79,15 @@ class Molecule:
             elif isinstance(inp[0], Atom):
                 self._atom_list = list(inp)
                 self._pos_list = [[0.0, 0.0, 0.0] for _ in inp]
+
+    def __setstate__(self, state):
+        """Convert a position list from the old atom list to ensure backward compatibilit
+        """
+        if "_pos_list" not in state:
+            state["_pos_list"] = [
+                list(atom.__dict__["_pos"]) for atom in state["_atom_list"]
+            ]
+        self.__dict__.update(state)
 
     ##################
     # Representation #
@@ -306,7 +318,10 @@ class Molecule:
         pos : list
             Position vector of the specified atom
         """
-        return self._pos_list[atom]
+        try:
+            return self._pos_list[atom]
+        except:
+            return self._atom_list[atom].get_pos()
 
     def bond(self, inp_a, inp_b):
         """Return the bond vector of a specified bond. The two inputs can either

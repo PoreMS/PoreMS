@@ -2,6 +2,7 @@
 # Basic Pore System Classes                                                    #
 #                                                                              #
 """Here basic pore system constructions are defined."""
+
 ################################################################################
 
 import math
@@ -27,6 +28,12 @@ class PoreKit:
         self._hydro = {"in": [], "ex": 0}
         self._shapes = []
         self._yml = {}
+
+    def __setstate__(self, state):
+        # Alte Dateien kennen sites_shape noch nicht
+        state.setdefault("sites_shape", {})
+        self.__dict__.update(state)
+
 
     def structure(self, structure):
         """Add structure to the Pore builder.
@@ -1101,6 +1108,7 @@ class PoreKit:
 
         for i, shape in enumerate(self._shapes):
             index_si = self.sites_shape.get(i, self._si_pos_in[i])
+
             centroid = self._shapes[i][1].get_inp()["centroid"]
             central = self._shapes[i][1].get_inp()["central"]
 
@@ -1813,6 +1821,7 @@ class PoreKit:
         )
 
         try:
+            print("te",self._pore.sites_attach_mol)
             self._pore.sites_attach_mol
             for i in self._pore.sites_attach_mol:
                 if i != 20:
@@ -1831,19 +1840,19 @@ class PoreKit:
                     slx = self._pore.sites_attach_mol[i].get("SLX", 0)
                     data["Interior"][
                         "    Pore " + str(i + 1) + " Number of single silanol groups"
-                    ] = "%i" % sl
+                    ] = ("%i" % sl)
                     data["Exterior"][
                         "    Pore " + str(i + 1) + " Number of single silanol groups"
                     ] = " "
                     data["Interior"][
                         "    Pore " + str(i + 1) + " Number of geminal silanol groups"
-                    ] = "%i" % slg
+                    ] = ("%i" % slg)
                     data["Exterior"][
                         "    Pore " + str(i + 1) + " Number of geminal silanol groups"
                     ] = " "
                     data["Interior"][
                         "    Pore " + str(i + 1) + " Number of siloxane bridges"
-                    ] = "%i" % slx
+                    ] = ("%i" % slx)
                     data["Exterior"][
                         "    Pore " + str(i + 1) + " Number of siloxane bridges"
                     ] = " "
@@ -1876,7 +1885,7 @@ class PoreKit:
                     data["Interior"][
                         "    Unassigned binding sites"
                         + " Number of single silanol groups"
-                    ] = "%i" % sl
+                    ] = ("%i" % sl)
                     data["Exterior"][
                         "    Unassigned binding sites"
                         + " Number of single silanol groups"
@@ -1884,14 +1893,14 @@ class PoreKit:
                     data["Interior"][
                         "    Unassigned binding sites"
                         + " Number of geminal silanol groups"
-                    ] = "%i" % slg
+                    ] = ("%i" % slg)
                     data["Exterior"][
                         "    Unassigned binding sites"
                         + " Number of geminal silanol groups"
                     ] = " "
                     data["Interior"][
                         "    Unassigned binding sites" + " Number of siloxane bridges"
-                    ] = "%i" % slx
+                    ] = ("%i" % slx)
                     data["Exterior"][
                         "    Unassigned binding sites" + " Number of siloxane bridges"
                     ] = " "
@@ -1909,7 +1918,7 @@ class PoreKit:
                         "    Unassigned binding sites"
                         + " Overall hydroxylation (mumol/m^2)"
                     ] = " "
-        except AttributeError:
+        except:
             pass
 
         data["Interior"]["Surface chemistry - After Functionalization"] = " "
@@ -1964,7 +1973,7 @@ class PoreKit:
                                 + " Number of "
                                 + mol
                                 + " groups"
-                            ] = "%i" % self._pore.sites_attach_mol[i][mol]
+                            ] = ("%i" % self._pore.sites_attach_mol[i][mol])
                             data["Exterior"][
                                 "    Unassigned binding sites"
                                 + " Number of "
@@ -2005,7 +2014,7 @@ class PoreKit:
                                 + " Number of "
                                 + mol
                                 + " groups"
-                            ] = "%i" % self._pore.sites_attach_mol[i][mol]
+                            ] = ("%i" % self._pore.sites_attach_mol[i][mol])
                             data["Exterior"][
                                 "    Pore "
                                 + str(i + 1)
@@ -2032,7 +2041,7 @@ class PoreKit:
                                 + mol
                                 + " density (mumol/m^2)"
                             ] = " "
-        except AttributeError:
+        except:
             pass
         if fmt == "plain":
             return self._table_plain(data)
