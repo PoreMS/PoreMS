@@ -8,7 +8,8 @@ version = "1.0.0"
 description = "Pore Generator for Molecular Simulations."
 readme = "README.md"
 license = { text = "GPL-3.0-or-later" }
-authors = [{ name = "Hamzeh Kraus", email = "kraus@itt.uni-stuttgart.de" }]
+authors = [{ name = "Hamzeh Kraus", email = "kraus@itt.uni-stuttgart.de" },
+            { name = "Marc Högler", email = "hoegler@itt.uni-stuttgart.de" },]
 requires-python = ">=3.12"
 dependencies = ["numpy", "scipy", "pandas", "seaborn", "pyyaml"]
 classifiers = [

@@ -30,7 +30,7 @@ class PoreKit:
         self._yml = {}
 
     def __setstate__(self, state):
-        # Alte Dateien kennen sites_shape noch nicht
+        # For old obj files
         state.setdefault("sites_shape", {})
         self.__dict__.update(state)
 
@@ -1820,9 +1820,7 @@ class PoreKit:
             form % allocation["Hydro"]["ex"][2]
         )
 
-        try:
-            print("te",self._pore.sites_attach_mol)
-            self._pore.sites_attach_mol
+        if hasattr(self._pore, "sites_attach_mol"):
             for i in self._pore.sites_attach_mol:
                 if i != 20:
                     data["Interior"][
@@ -1835,9 +1833,10 @@ class PoreKit:
                         + str(i + 1)
                         + ")"
                     ] = " "
-                    sl = self._pore.sites_attach_mol[i].get("SL", 0)
-                    slg = self._pore.sites_attach_mol[i].get("SLG", 0)
-                    slx = self._pore.sites_attach_mol[i].get("SLX", 0)
+                    sl = self._pore.sites_attach_mol[i].get("SL", [])
+                    slg = self._pore.sites_attach_mol[i].get("SLG", [])
+                    slx = self._pore.sites_attach_mol[i].get("SLX", [])
+
                     data["Interior"][
                         "    Pore " + str(i + 1) + " Number of single silanol groups"
                     ] = ("%i" % sl)
@@ -1873,9 +1872,10 @@ class PoreKit:
                         "    Pore " + str(i + 1) + " Overall hydroxylation (mumol/m^2)"
                     ] = " "
                 elif i == 20:
-                    sl = self._pore.sites_attach_mol[i].get("SL", 0)
-                    slg = self._pore.sites_attach_mol[i].get("SLG", 0)
-                    slx = self._pore.sites_attach_mol[i].get("SLX", 0)
+                    sl = sum(self._pore.sites_attach_mol[i].get("SL", []))
+                    slg = sum(self._pore.sites_attach_mol[i].get("SLG", []))
+                    slx = sum(self._pore.sites_attach_mol[i].get("SLX", []))
+
                     data["Interior"][
                         "Surface chemistry - Before Functionalization (Unassigned binding sites)"
                     ] = " "
@@ -1918,7 +1918,7 @@ class PoreKit:
                         "    Unassigned binding sites"
                         + " Overall hydroxylation (mumol/m^2)"
                     ] = " "
-        except:
+        else:
             pass
 
         data["Interior"]["Surface chemistry - After Functionalization"] = " "
@@ -1956,11 +1956,11 @@ class PoreKit:
             form % allocation["OH"]["ex"][2]
         )
 
-        try:
-            self._pore.sites_attach_mol
+        if hasattr(self._pore, "sites_attach_mol"):
             for i in self._pore.sites_attach_mol:
                 for mol in self._pore.sites_attach_mol[i]:
                     if mol not in ["SL", "SLG", "SLX", "Hydro", "OH"]:
+                        mol_num = self._pore.sites_attach_mol[i].get(mol, [])
                         if i == 20:
                             data["Interior"][
                                 "Surface chemistry - After Functionalization (Unassigned binding sites)"
@@ -1973,7 +1973,7 @@ class PoreKit:
                                 + " Number of "
                                 + mol
                                 + " groups"
-                            ] = ("%i" % self._pore.sites_attach_mol[i][mol])
+                            ] = ("%i" % mol_num)
                             data["Exterior"][
                                 "    Unassigned binding sites"
                                 + " Number of "
@@ -1987,7 +1987,7 @@ class PoreKit:
                                 + " density (mumol/m^2)"
                             ] = form % (
                                 pms.utils.mols_to_mumol_m2(
-                                    self._pore.sites_attach_mol[i][mol],
+                                    mol_num,
                                     self.surface(is_sum=False)["in"][i],
                                 )
                             )
@@ -2014,7 +2014,7 @@ class PoreKit:
                                 + " Number of "
                                 + mol
                                 + " groups"
-                            ] = ("%i" % self._pore.sites_attach_mol[i][mol])
+                            ] = ("%i" % mol_num)
                             data["Exterior"][
                                 "    Pore "
                                 + str(i + 1)
@@ -2030,7 +2030,7 @@ class PoreKit:
                                 + " density (mumol/m^2)"
                             ] = form % (
                                 pms.utils.mols_to_mumol_m2(
-                                    self._pore.sites_attach_mol[i][mol],
+                                    mol_num,
                                     self.surface(is_sum=False)["in"][i],
                                 )
                             )
@@ -2041,7 +2041,7 @@ class PoreKit:
                                 + mol
                                 + " density (mumol/m^2)"
                             ] = " "
-        except:
+        else:
             pass
         if fmt == "plain":
             return self._table_plain(data)

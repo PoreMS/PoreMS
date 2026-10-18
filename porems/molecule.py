@@ -318,10 +318,11 @@ class Molecule:
         pos : list
             Position vector of the specified atom
         """
-        try:
-            return self._pos_list[atom]
-        except:
-            return self._atom_list[atom].get_pos()
+        return self._pos_list[atom]
+        # try:
+        #     return self._pos_list[atom]
+        # except:
+        #     return self._atom_list[atom].get_pos()
 
     def bond(self, inp_a, inp_b):
         """Return the bond vector of a specified bond. The two inputs can either
