@@ -7,3 +7,11 @@ __pycache__
 .ipynb_checkpoints
 .coverage
 .pytest_cache
+.claude
+*.code-workspace
+venv
+docs/_build/
+docs/autoapi/
+docs/generated/
+tests/output/
+tests/test_temp.py

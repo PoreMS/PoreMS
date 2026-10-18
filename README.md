@@ -1,8 +1,8 @@
-<img src="https://github.com/porems/PoreMS/blob/main/docsrc/pics/logo_text_sub.svg" width="60%">
+<img src="https://github.com/PoreMS/PoreMS/blob/main/docs/pics/logo_text_sub.svg" width="60%">
 
 --------------------------------------
 
-[![PyPI Version](https://img.shields.io/badge/PyPI-0.4.0-orange)](https://pypi.org/project/porems/)
+[![PyPI Version](https://img.shields.io/badge/PyPI-1.0.0-orange)](https://pypi.org/project/porems/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/PoreMS/PoreMS/blob/main/LICENSE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14028652.svg)](https://doi.org/10.5281/zenodo.14028652)
 [![Build Status](https://github.com/PoreMS/PoreMS/actions/workflows/workflow.yml/badge.svg)](https://github.com/PoreMS/PoreMS/actions/workflows/workflow.yml)
@@ -12,17 +12,20 @@
 
 Online documentation is available at [porems.github.io/PoreMS](https://porems.github.io/PoreMS/).
 
-<img src="https://github.com/porems/PoreMS/blob/main/docsrc/pics/pore.svg" width="60%">
+<img src="https://github.com/PoreMS/PoreMS/blob/main/docs/pics/pore.svg" width="60%">
 
-The docs include an example for generating [molecules](https://porems.github.io/PoreMS/molecule.html) and [pores](https://porems.github.io/PoreMS/pore.html), and an [API reference](https://porems.github.io/PoreMS/api.html). Visit [process](https://porems.github.io/PoreMS/process.html) for an overview of the programs operating principle.
+The docs include tutorials for generating [molecules](https://porems.github.io/PoreMS/molecule.html) and [pores](https://porems.github.io/PoreMS/pore.html), and a full [API reference](https://porems.github.io/PoreMS/autoapi/index.html). Visit [workflow](https://porems.github.io/PoreMS/workflow.html) for an example simulation setup with GROMACS.
 
-An examplary [workflow](https://porems.github.io/PoreMS/workflow.html) has been provided for using the PoreMS package to create a pore system and run molecular dynamics simulation using [Gromacs](http://www.gromacs.org/).
+## PoreMS App
+
+A browser-based interface for PoreMS is available at [github.com/PoreMS/PoreMS-App](https://github.com/PoreMS/PoreMS-App).
+It provides a step-by-step wizard for configuring pore geometry, attaching surface molecules, and downloading a GROMACS-ready structure — no Python scripting required.
 
 ## Dependencies
 
-PoreMS supports Python 3.5+.
+PoreMS requires Python 3.12+.
 
-Installation requires [numpy](https://numpy.org/), [pandas](https://pandas.pydata.org/) and [matplotlib](https://matplotlib.org/).
+Installation requires [numpy](https://numpy.org/), [scipy](https://scipy.org/), [pandas](https://pandas.pydata.org/), [seaborn](https://seaborn.pydata.org/), and [pyyaml](https://pyyaml.org/).
 
 
 ## Installation
@@ -33,9 +36,7 @@ The latest stable release (and older versions) can be installed from PyPI:
 
 You may instead want to use the development version from Github:
 
-    pip install git+https://github.com/porems/porems.git#egg=porems
-
-    pip install git+https://github.com/porems/porems.git@develop#egg=porems
+    pip install git+https://github.com/PoreMS/PoreMS.git#egg=porems
 
 Or download the repository and install in the top directory via:
 
@@ -44,25 +45,38 @@ Or download the repository and install in the top directory via:
 
 ## Testing
 
-To test porems, run the test in the test directory.
+Install in editable mode with test dependencies:
+
+    pip install -e ".[dev]"
+
+Then run the tests:
+
+    pytest tests/test_unit.py          # fast unit tests
+    pytest tests/test_integration.py   # full integration tests (slow)
+    pytest tests/test_bench.py         # generation speed benchmarks
+
+To compare generation speed against a specific PyPI release:
+
+    python tests/bench_compare.py              # local build vs latest PyPI (0.3.0)
+    python tests/bench_compare.py --pypi 0.3.0  # pin a specific PyPI version
+    python tests/bench_compare.py --quick       # smaller subset, faster run
 
 
 ## Development
 
-PoreMS development takes place on Github: [www.github.com/porems/PoreMS](https://github.com/porems/PoreMS)
+PoreMS development takes place on Github: [www.github.com/PoreMS/PoreMS](https://github.com/PoreMS/PoreMS)
 
-Please submit any reproducible bugs you encounter to the [issue tracker](https://github.com/porems/PoreMS/issues).
+Please submit any reproducible bugs you encounter to the [issue tracker](https://github.com/PoreMS/PoreMS/issues).
 
 
 ## How to Cite PoreMS
 
 When citing PoreMS please use the following: **Kraus et al., Molecular Simulation, 2021, DOI: [10.1080/08927022.2020.1871478](https://doi.org/10.1080/08927022.2020.1871478)**
 
-Additionaly, to assure reproducability of the generated pore systems, please cite the **Zenodo DOI** corresponding to the used PoreMS version. (Current DOI is listed in the badges.)
+Additionally, to ensure reproducibility of the generated pore systems, please cite the **Zenodo DOI** corresponding to the used PoreMS version. (Current DOI is listed in the badges.)
 
 ## Published Work
 * Probst et al., 2025. Ring-Expansion Metathesis Polymerization under Confinement. Journal of the American Chemical Society, doi:[doi.org/10.1021/jacs.4c18171](https://doi.org/10.1021/jacs.4c18171)
-  - Data-Repository: doi:[]()
 * Högler et al., 2024. Influence of Ionic Liquid Film Thickness and Flow Rate on Macrocyclization Efficiency and Selectivity in Supported Ionic Liquid-Liquid Phase Catalysis. Chemistry – A European Journal, doi:[doi.org/10.1002/chem.202403237](https://doi.org/10.1002/chem.202403237)
   - Data-Repository: doi:[10.18419/DARUS-4063](https://doi.org/10.18419/DARUS-4063)
 * Nguyen et al., 2024. Effects of Surfaces and Confinement on Formic Acid Dehydrogenation Catalyzed by an Immobilized Ru–H Complex: Insights from Molecular Simulation and Neutron Scattering. ACS Catalysis, doi:[doi.org/10.1021/acscatal.4c02626](https://doi.org/10.1021/acscatal.4c02626)

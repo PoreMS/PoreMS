@@ -1,0 +1,10 @@
+{% extends "!base.html" %}
+{% block extrahead %}
+    {{ super() }}
+    <script>
+        // Default to light mode; respect any explicit user preference stored in localStorage
+        if (!localStorage.getItem("theme")) {
+            localStorage.setItem("theme", "light");
+        }
+    </script>
+{% endblock %}

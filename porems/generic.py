@@ -5,7 +5,6 @@
 molecule generation process."""
 ################################################################################
 
-
 from porems.molecule import Molecule
 
 
@@ -39,9 +38,9 @@ def alkane(length, name="alkane", short="ALK", is_h=True):
     mol.add("C", [0, 0, 0])
 
     angle = a["ccc"]
-    for i in range(length-1):
+    for i in range(length - 1):
         angle *= -1
-        mol.add("C", mol.get_num()-1, r=b["cc"], theta=angle)
+        mol.add("C", mol.get_num() - 1, r=b["cc"], theta=angle)
 
     # Add hydrogens
     if is_h:
@@ -49,9 +48,9 @@ def alkane(length, name="alkane", short="ALK", is_h=True):
             angle = -90
             for i in range(length):
                 # Boundary
-                if i==0 or i==length-1:
+                if i == 0 or i == length - 1:
                     for j in range(3):
-                        mol.add("H", i, r=b["ch"], theta=angle-30, phi=120*j)
+                        mol.add("H", i, r=b["ch"], theta=angle - 30, phi=120 * j)
                 # Inner
                 else:
                     mol.add("H", i, r=b["ch"], theta=angle, phi=a["cch"])
@@ -64,7 +63,7 @@ def alkane(length, name="alkane", short="ALK", is_h=True):
         else:
             mol.add("H", 0, r=b["ch"])
             for i in range(3):
-                mol.add("H", 0, r=b["ch"], theta=a["cch"], phi=i*120)
+                mol.add("H", 0, r=b["ch"], theta=a["cch"], phi=i * 120)
 
     # Move to zero
     mol.zero()
@@ -103,13 +102,13 @@ def alcohol(length, name="alcohol", short="ALC", is_h=True):
     mol.add("C", [0, 0, 0])
 
     angle = a["ccc"]
-    for i in range(length-1):
+    for i in range(length - 1):
         angle *= -1
-        mol.add("C", mol.get_num()-1, r=b["cc"], theta=angle)
+        mol.add("C", mol.get_num() - 1, r=b["cc"], theta=angle)
 
     # Add hydroxy
-    mol.add("O", mol.get_num()-1, r=b["co"], theta=-angle)
-    mol.add("H", mol.get_num()-1, r=b["oh"], theta=angle)
+    mol.add("O", mol.get_num() - 1, r=b["co"], theta=-angle)
+    mol.add("H", mol.get_num() - 1, r=b["oh"], theta=angle)
 
     # Add hydrogens
     if is_h:
@@ -117,9 +116,9 @@ def alcohol(length, name="alcohol", short="ALC", is_h=True):
             angle = -90
             for i in range(length):
                 # Boundary
-                if i==0:
+                if i == 0:
                     for j in range(3):
-                        mol.add("H", i, r=b["ch"], theta=angle-30, phi=120*j)
+                        mol.add("H", i, r=b["ch"], theta=angle - 30, phi=120 * j)
                 # Inner
                 else:
                     mol.add("H", i, r=b["ch"], theta=angle, phi=a["cch"])
@@ -131,7 +130,7 @@ def alcohol(length, name="alcohol", short="ALC", is_h=True):
         # Methanol
         else:
             for i in range(3):
-                mol.add("H", 0, r=b["ch"], theta=a["cch"], phi=i*120)
+                mol.add("H", 0, r=b["ch"], theta=a["cch"], phi=i * 120)
 
     # Move to zero
     mol.zero()
@@ -177,24 +176,24 @@ def ketone(length, pos, name="ketone", short="KET", is_h=True):
     mol.add("C", [0, 0, 0])
 
     angle = a["ccc"]
-    for i in range(length-1):
+    for i in range(length - 1):
         angle *= -1
-        mol.add("C", mol.get_num()-1, r=b["cc"], theta=angle)
+        mol.add("C", mol.get_num() - 1, r=b["cc"], theta=angle)
 
     # Add oxygen
     angle = -90 if pos % 2 == 0 else 90
-    mol.add("O", pos-1, r=b["co"], theta=angle)
+    mol.add("O", pos - 1, r=b["co"], theta=angle)
 
     # Add hydrogens
     if is_h:
         angle = -90
         for i in range(length):
             # Boundary
-            if i==0 or i==length-1:
+            if i == 0 or i == length - 1:
                 for j in range(3):
-                    mol.add("H", i, r=b["ch"], theta=angle-30, phi=120*j)
+                    mol.add("H", i, r=b["ch"], theta=angle - 30, phi=120 * j)
             # Inner
-            elif not i == pos-1:
+            elif not i == pos - 1:
                 mol.add("H", i, r=b["ch"], theta=angle, phi=a["cch"])
                 mol.add("H", i, r=b["ch"], theta=angle, phi=-a["cch"])
 
@@ -247,18 +246,18 @@ def tms(name="tms", short="TMS", separation=30, is_si=True, is_hydro=True):
 
     # Add methyl
     for i in range(3):
-        mol.add("C", 2, r=b[sic], theta=separation+10, phi=120*i)
+        mol.add("C", 2, r=b[sic], theta=separation + 10, phi=120 * i)
 
     if is_hydro:
         # Add hydrogens
-        for i in range(3, 5+1):
+        for i in range(3, 5 + 1):
             for j in range(3):
-                mol.add("H", i, r=b["ch"], theta=separation, phi=120*j)
+                mol.add("H", i, r=b["ch"], theta=separation, phi=120 * j)
 
         # If not silicon ending
         for i in range(3):
             if not is_si:
-                mol.add("H", 0, r=b["ch"], theta=180-separation, phi=120*i)
+                mol.add("H", 0, r=b["ch"], theta=180 - separation, phi=120 * i)
 
     # Move to zero
     mol.zero()
@@ -289,7 +288,7 @@ def silanol(name="sl", short="SL"):
     b = {"sio": 0.164, "oh": 0.098}
 
     # Build molecule
-    mol.add("Si",[0, 0, 0])
+    mol.add("Si", [0, 0, 0])
     mol.add("O", 0, r=b["sio"])
     mol.add("H", 1, r=b["oh"])
 
