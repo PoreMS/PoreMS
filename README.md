@@ -76,7 +76,15 @@ When citing PoreMS please use the following: **Kraus et al., Molecular Simulatio
 Additionally, to ensure reproducibility of the generated pore systems, please cite the **Zenodo DOI** corresponding to the used PoreMS version. (Current DOI is listed in the badges.)
 
 ## Published Work
+* Rautenbach et al., 2026. Mesoporous confinement enables activity boost in cooperative asymmetric catalysis in analogy to enzymes. ACS Catalysis, doi:[doi.org/10.1021/acscatal.6c01499](https://doi.org/10.1021/acscatal.6c01499)
+ - Data-Repository: doi:[doi.org/10.18419/DARUS-5388](https://doi.org/10.18419/DARUS-5388)
+
+* Bhattacharya etl al., 2026. Ethylene oligomerization under confinement using supported Cr(ii) and Cr(iii) catalysts. Catalysis Science & Technology, doi:[doi.org/10.1039/d5cy01483b](https://doi.org/10.1039/d5cy01483b)
+ - Data-Repository: doi:[doi.org/10.18419/DARUS-5511](https://doi.org/10.18419/DARUS-5511)
+* Wimmer et al., 2026. Palladium Hydride Catalysts Confined in Silica Mesopores: Effects on Catalytic Enyne Cyclization. Organometallics, doi:[doi.org/10.1021/acs.organomet.6c00033](https://doi.org/10.1021/acs.organomet.6c00033)
+ - Data-Repository: doi:[doi.org/10.18419/DARUS-5129](https://doi.org/10.18419/DARUS-5129)
 * Probst et al., 2025. Ring-Expansion Metathesis Polymerization under Confinement. Journal of the American Chemical Society, doi:[doi.org/10.1021/jacs.4c18171](https://doi.org/10.1021/jacs.4c18171)
+ - Data-Repository: doi:[doi.org/10.18419/DARUS-4537](https://doi.org/10.18419/DARUS-4537)
 * Högler et al., 2024. Influence of Ionic Liquid Film Thickness and Flow Rate on Macrocyclization Efficiency and Selectivity in Supported Ionic Liquid-Liquid Phase Catalysis. Chemistry – A European Journal, doi:[doi.org/10.1002/chem.202403237](https://doi.org/10.1002/chem.202403237)
   - Data-Repository: doi:[10.18419/DARUS-4063](https://doi.org/10.18419/DARUS-4063)
 * Nguyen et al., 2024. Effects of Surfaces and Confinement on Formic Acid Dehydrogenation Catalyzed by an Immobilized Ru–H Complex: Insights from Molecular Simulation and Neutron Scattering. ACS Catalysis, doi:[doi.org/10.1021/acscatal.4c02626](https://doi.org/10.1021/acscatal.4c02626)

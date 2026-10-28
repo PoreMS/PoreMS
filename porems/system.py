@@ -34,7 +34,6 @@ class PoreKit:
         state.setdefault("sites_shape", {})
         self.__dict__.update(state)
 
-
     def structure(self, structure):
         """Add structure to the Pore builder.
 
@@ -1836,7 +1835,8 @@ class PoreKit:
                     sl = self._pore.sites_attach_mol[i].get("SL", [])
                     slg = self._pore.sites_attach_mol[i].get("SLG", [])
                     slx = self._pore.sites_attach_mol[i].get("SLX", [])
-
+                    if not slx:
+                        slx = 0
                     data["Interior"][
                         "    Pore " + str(i + 1) + " Number of single silanol groups"
                     ] = ("%i" % sl)
@@ -1875,7 +1875,8 @@ class PoreKit:
                     sl = sum(self._pore.sites_attach_mol[i].get("SL", []))
                     slg = sum(self._pore.sites_attach_mol[i].get("SLG", []))
                     slx = sum(self._pore.sites_attach_mol[i].get("SLX", []))
-
+                    if not slx:
+                        slx = 0
                     data["Interior"][
                         "Surface chemistry - Before Functionalization (Unassigned binding sites)"
                     ] = " "
