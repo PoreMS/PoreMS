@@ -78,7 +78,6 @@ Additionally, to ensure reproducibility of the generated pore systems, please ci
 ## Published Work
 * Rautenbach et al., 2026. Mesoporous confinement enables activity boost in cooperative asymmetric catalysis in analogy to enzymes. ACS Catalysis, doi:[doi.org/10.1021/acscatal.6c01499](https://doi.org/10.1021/acscatal.6c01499)
  - Data-Repository: doi:[doi.org/10.18419/DARUS-5388](https://doi.org/10.18419/DARUS-5388)
-
 * Bhattacharya etl al., 2026. Ethylene oligomerization under confinement using supported Cr(ii) and Cr(iii) catalysts. Catalysis Science & Technology, doi:[doi.org/10.1039/d5cy01483b](https://doi.org/10.1039/d5cy01483b)
  - Data-Repository: doi:[doi.org/10.18419/DARUS-5511](https://doi.org/10.18419/DARUS-5511)
 * Wimmer et al., 2026. Palladium Hydride Catalysts Confined in Silica Mesopores: Effects on Catalytic Enyne Cyclization. Organometallics, doi:[doi.org/10.1021/acs.organomet.6c00033](https://doi.org/10.1021/acs.organomet.6c00033)
