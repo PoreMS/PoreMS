@@ -1,0 +1,471 @@
+porems.molecule
+===============
+
+.. py:module:: porems.molecule
+
+.. autoapi-nested-parse::
+
+   All necessary function for creating and editing molecules.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   porems.molecule.Molecule
+
+
+Module Contents
+---------------
+
+.. py:class:: Molecule(name='molecule', short='MOL', inp=None)
+
+   This class defines a molecule object, which is basically a list of Atom
+   objects combined with a numpy-backed positions list. Each atom object carries
+   the atom type, name and residue; positions are stored separately for
+   vectorised bulk operations.
+
+   Functions have been provided for editing, moving and transforming the
+   atom objects, either as a collective or specific part of the molecule.
+
+   :param name: Molecule name
+   :type name: string, optional
+   :param short: Molecule short name
+   :type short: string, optional
+   :param inp: None for empty Molecule, string to read a molecule from a
+               specified file link, or a list of Molecule objects to concatenate.
+   :type inp: None, string, list, optional
+
+   .. rubric:: Examples
+
+   Following example generates a benzene molecule without hydrogen atoms
+
+   .. code-block:: python
+
+       import porems as pms
+
+       mol = pms.Molecule("benzene", "BEN")
+       mol.add("C", [0,0,0])
+       mol.add("C", 0, r=0.1375, theta= 60)
+       mol.add("C", 1, r=0.1375, theta=120)
+       mol.add("C", 2, r=0.1375, theta=180)
+       mol.add("C", 3, r=0.1375, theta=240)
+       mol.add("C", 4, r=0.1375, theta=300)
+
+
+   .. py:method:: append(mol)
+
+      Append a given molecule to the current object.
+
+      :param mol: Molecule object
+      :type mol: Molecule
+
+
+
+   .. py:method:: column_pos()
+
+      Create column list of atom positions.
+
+      :returns: **column** -- Columns of all atom positions — ``[[x0, x1, ...], [y0, y1, ...], [z0, z1, ...]]``
+      :rtype: list
+
+
+
+   .. py:method:: pos(atom)
+
+      Get the position of an atom.
+
+      :param atom: Atom id
+      :type atom: integer
+
+      :returns: **pos** -- Position vector of the specified atom
+      :rtype: list
+
+
+
+   .. py:method:: bond(inp_a, inp_b)
+
+      Return the bond vector of a specified bond. The two inputs can either
+      be atom indices or positional vectors.
+
+      :param inp_a: Either an atom id or a position vector
+      :type inp_a: integer, list
+      :param inp_b: Either an atom id or a position vector
+      :type inp_b: integer, list
+
+      :returns: **bond** -- Bond vector
+      :rtype: numpy.ndarray
+
+      .. rubric:: Examples
+
+      .. code-block:: python
+
+          mol.bond(0, 1)
+          mol.bond(*[0, 1])
+          mol.bond([1, 0, 0], [0, 0, 0])
+
+
+
+   .. py:method:: centroid()
+
+      Calculate the geometrical centre of mass.
+
+      :returns: **centroid** -- Geometrical centre of mass
+      :rtype: list
+
+
+
+   .. py:method:: com()
+
+      Calculate the centre of mass.
+
+      :returns: **com** -- Centre of mass
+      :rtype: list
+
+
+
+   .. py:method:: translate(vec)
+
+      Translate all atom positions along a vector.
+
+      :param vec: Translation vector
+      :type vec: list
+
+
+
+   .. py:method:: rotate(axis, angle, is_deg=True)
+
+      Rotate all atom positions around an axis using
+      :func:`porems.geometry.rotate`.
+
+      :param axis: Rotation axis
+      :type axis: integer, string, list
+      :param angle: Angle
+      :type angle: float
+      :param is_deg: True if the input is in degrees
+      :type is_deg: bool, optional
+
+
+
+   .. py:method:: move(atom, pos)
+
+      Move the molecule so that a given atom sits at a specified position.
+
+      :param atom: Atom id to use as the dragging point
+      :type atom: integer
+      :param pos: Target position
+      :type pos: list
+
+
+
+   .. py:method:: zero(pos=[0, 0, 0])
+
+      Shift the molecule so that its minimum coordinate equals ``pos``.
+
+      :param pos: Zero-point coordinates
+      :type pos: list, optional
+
+      :returns: **vec** -- Translation vector used
+      :rtype: list
+
+
+
+   .. py:method:: put(atom, pos)
+
+      Move a single atom to a given position.
+
+      :param atom: Atom id
+      :type atom: integer
+      :param pos: New position vector
+      :type pos: list
+
+
+
+   .. py:method:: part_move(bond, atoms, length, vec=None)
+
+      Change the length of a specified bond by translating a subset of atoms.
+
+      :param bond: Two atom ids defining the bond to adjust
+      :type bond: list
+      :param atoms: Atom ids to translate
+      :type atoms: integer, list
+      :param length: New bond length
+      :type length: float
+      :param vec: Override the translation direction
+      :type vec: list, optional
+
+
+
+   .. py:method:: part_rotate(bond, atoms, angle, zero)
+
+      Rotate a subset of atoms around a bond axis.
+
+      :param bond: Two atom ids defining the rotation axis
+      :type bond: list
+      :param atoms: Atom ids to rotate
+      :type atoms: integer, list
+      :param angle: Rotation angle
+      :type angle: float
+      :param zero: Atom id used to set the coordinate origin before rotating
+      :type zero: integer
+
+
+
+   .. py:method:: part_angle(bond_a, bond_b, atoms, angle, zero)
+
+      Change the angle between two bonds by rotating a subset of atoms.
+
+      :param bond_a: First bond (two atom ids or a 3-vector)
+      :type bond_a: list
+      :param bond_b: Second bond (two atom ids or a 3-vector)
+      :type bond_b: list
+      :param atoms: Atom ids to rotate
+      :type atoms: integer, list
+      :param angle: Rotation angle
+      :type angle: float
+      :param zero: Atom id used to set the coordinate origin before rotating
+      :type zero: integer
+
+
+
+   .. py:method:: add(atom_type, pos, bond=None, r=0, theta=0, phi=0, is_deg=True, name='', residue=0)
+
+      Add a new atom in polar coordinates. The ``pos`` input is either
+      an atom id that determines the bond-start, or a vector for a specific
+      position.
+
+      :param atom_type: Atom type
+      :type atom_type: string
+      :param pos: Position of the atom
+      :type pos: integer, list
+      :param bond: Bond axis
+      :type bond: list, optional
+      :param r: Bond length
+      :type r: float, optional
+      :param theta: Azimuthal angle
+      :type theta: float, optional
+      :param phi: Polar angle
+      :type phi: float, optional
+      :param is_deg: True if angles are given in degrees
+      :type is_deg: bool, optional
+      :param name: Unique atom name
+      :type name: string, optional
+      :param residue: Residue number
+      :type residue: integer, optional
+
+      .. rubric:: Examples
+
+      .. code-block:: python
+
+          mol.add("C", [0, 0, 0])
+          mol.add("C", 0, r=0.153, theta=-135)
+          mol.add("C", 1, [0, 1], r=0.153, theta= 135)
+
+
+
+   .. py:method:: delete(atoms)
+
+      Delete specified atoms from the molecule.
+
+      :param atoms: Atom id or list of ids to delete
+      :type atoms: integer, list
+
+
+
+   .. py:method:: overlap(error=0.005)
+
+      Search for overlapping atoms using a KD-tree (Chebyshev metric).
+
+      :param error: Maximum coordinate-wise distance to consider atoms overlapping
+      :type error: float, optional
+
+      :returns: **duplicates** -- Dictionary mapping each representative atom id to the list of
+                atoms that overlap with it
+      :rtype: dictionary
+
+
+
+   .. py:method:: switch_atom_order(atom_a, atom_b)
+
+      Swap two atoms in the atom list and positions.
+
+      :param atom_a: First atom id
+      :type atom_a: integer
+      :param atom_b: Second atom id
+      :type atom_b: integer
+
+
+
+   .. py:method:: set_atom_type(atom, atom_type)
+
+      Change the atom type of a specified atom.
+
+      :param atom: Atom id
+      :type atom: integer
+      :param atom_type: New atom type
+      :type atom_type: string
+
+
+
+   .. py:method:: set_atom_name(atom, name)
+
+      Change the atom name of a specified atom.
+
+      :param atom: Atom id
+      :type atom: integer
+      :param name: New atom name
+      :type name: string
+
+
+
+   .. py:method:: set_atom_residue(atom, residue)
+
+      Change the residue index of a specified atom.
+
+      :param atom: Atom id
+      :type atom: integer
+      :param residue: New residue index
+      :type residue: integer
+
+
+
+   .. py:method:: get_atom_type(atom)
+
+      Return the atom type of the given atom id.
+
+      :param atom: Atom id
+      :type atom: integer
+
+      :returns: **atom_type** -- Atom type
+      :rtype: string
+
+
+
+   .. py:method:: get_atom_list()
+
+      Return the atom list.
+
+      :returns: **atom_list** -- List of :class:`porems.atom.Atom` objects
+      :rtype: list
+
+
+
+   .. py:method:: set_name(name)
+
+      Set the molecule name.
+
+      :param name: Molecule name
+      :type name: string
+
+
+
+   .. py:method:: set_short(short)
+
+      Set the molecule short name.
+
+      :param short: Molecule short name
+      :type short: string
+
+
+
+   .. py:method:: set_box(box)
+
+      Set the box size.
+
+      :param box: Box size in all dimensions
+      :type box: list
+
+
+
+   .. py:method:: set_charge(charge)
+
+      Set the total charge of the molecule.
+
+      :param charge: Total molecule charge
+      :type charge: float
+
+
+
+   .. py:method:: set_masses(masses=None)
+
+      Set the molar masses of the atoms.
+
+      :param masses: List of molar masses in g/mol
+      :type masses: list, optional
+
+
+
+   .. py:method:: set_mass(mass=0)
+
+      Set the molar mass of the molecule.
+
+      :param mass: Molar mass in g/mol
+      :type mass: float, optional
+
+
+
+   .. py:method:: get_name()
+
+      Return the molecule name.
+
+      :returns: **name** -- Molecule name
+      :rtype: string
+
+
+
+   .. py:method:: get_short()
+
+      Return the molecule short name.
+
+      :returns: **short** -- Molecule short name
+      :rtype: string
+
+
+
+   .. py:method:: get_box()
+
+      Return the box size of the molecule.
+
+      :returns: **box** -- Box size in all dimensions
+      :rtype: list
+
+
+
+   .. py:method:: get_num()
+
+      Return the number of atoms.
+
+      :returns: **num** -- Number of atoms
+      :rtype: integer
+
+
+
+   .. py:method:: get_charge()
+
+      Return the total charge of the molecule.
+
+      :returns: **charge** -- Total charge
+      :rtype: float
+
+
+
+   .. py:method:: get_masses()
+
+      Return a list of molar masses of the atoms.
+
+      :returns: **masses** -- Masses in g/mol
+      :rtype: list
+
+
+
+   .. py:method:: get_mass()
+
+      Return the molar mass of the molecule.
+
+      :returns: **mass** -- Molar mass in g/mol
+      :rtype: float
+
+
+

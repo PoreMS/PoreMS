@@ -1,0 +1,127 @@
+porems.matrix
+=============
+
+.. py:module:: porems.matrix
+
+.. autoapi-nested-parse::
+
+   Matrix class for preserving bond information.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   porems.matrix.Matrix
+
+
+Module Contents
+---------------
+
+.. py:class:: Matrix(bonds)
+
+   The aim of this class is preserving all information of the grid bonds.
+
+   Although the search can be parallelized, still multiple iterations are
+   needed to cover the surface preparations. Additionally, due to machine
+   inaccuracy there is the risk of bonds not being detected as such, leading
+   to artefacts. Also, it is not possible to ensure that all bonds were found
+   when deleting atoms, because all systems are shaped differently. Therefore,
+   another optimization, or rather supporting algorithm, was implemented to
+   bypass these issues.
+
+   The idea was reducing the number of iterations to a single search by
+   creating a connectivity matrix of all grid atoms. The result is a dictionary
+   that has atoms :math:`1\dots n` as keys and their corresponding value is a
+   list of bonded atoms :math:`1\dots m`
+
+   .. math::
+
+       \boldsymbol{C}=
+       \begin{Bmatrix}
+           a_1:&\begin{bmatrix}a_{1,1}&a_{1,2}&\dots&a_{1,m_1}\end{bmatrix}\\
+           a_2:&\begin{bmatrix}a_{2,1}&a_{2,2}&\dots&a_{2,m_2}\end{bmatrix}\\
+           \vdots&\vdots\\
+           a_n:&\begin{bmatrix}a_{n,1}&a_{n,2}&\dots&a_{n,m_n}\end{bmatrix}\\
+       \end{Bmatrix}
+
+   Using this implementation, it is no longer required to physically delete
+   atoms when carving out a structure, it is enough to remove binding partners
+   from the matrix. For example, conditions for the surface preparation only
+   need to consider the number of bonds remaining in each entry and thereby
+   determine whether an atom needs to be removed or not, resulting into a
+   negligible computational effort scaling linear with the number of atoms
+
+   .. math::
+
+     \mathcal{O}(n).
+
+   In addtition, for further processing, the original amount of bonds is saved
+   in the same dictionary.
+
+   :param bonds: List of all pairwise bonds in the grid with only two different atom
+                 types
+   :type bonds: list
+
+
+   .. py:method:: split(atom_a, atom_b)
+
+      Remove the bond between two atoms from the connectivity matrix.
+
+      :param atom_a: Atom A
+      :type atom_a: integer
+      :param atom_b: Atom B
+      :type atom_b: integer
+
+
+
+   .. py:method:: strip(atoms)
+
+      Remove all bonds of a specified atom from the connection matrix.
+
+      :param atoms: List of atom ids or one atom id
+      :type atoms: list, integer
+
+
+
+   .. py:method:: add(atom_a, atom_b)
+
+      Add atom between given atom ids.
+
+      :param atom_a: First atom id
+      :type atom_a: int
+      :param atom_b: Second atom id
+      :type atom_b: int
+
+
+
+   .. py:method:: bound(num_bonds, logic='eq')
+
+      Return a list of atoms with the specified number of bonds. Possible
+      ``logic`` arguments are
+
+      * **eq** - Equals
+      * **lt** - Less than
+      * **gt** - Greater than
+
+      :param num_bonds: Number of bonds to search for
+      :type num_bonds: int
+      :param logic: Logic statement
+      :type logic: string, optional
+
+      :returns: **atoms** -- List of atom ids with the number of specified bonds
+      :rtype: list
+
+
+
+   .. py:method:: get_matrix()
+
+      Return the connectivity matrix.
+
+      :returns: **matrix** -- Connectivity matrix
+      :rtype: dictionary
+
+
+

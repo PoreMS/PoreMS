@@ -1,0 +1,149 @@
+porems.store
+============
+
+.. py:module:: porems.store
+
+.. autoapi-nested-parse::
+
+   Contains function for creating simulation files.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   porems.store.Store
+
+
+Module Contents
+---------------
+
+.. py:class:: Store(inp, link='./', sort_list=None)
+
+   This class converts a molecule object to a structure file of different
+   possible formats. Currently only **PDB** and **GRO** are fully supported.
+
+   For pore objects two additional methods are available for generating the
+   main topology file and a topology file containing grid molecule
+   parameters and charges. Currently only the GROMACS format is supported.
+
+   Furthermore, there is an automized routine for generating topologies
+   with Antechamber where job-file for this tool are created.
+
+   :param inp: Molecule or Pore object
+   :type inp: Molecule, Pore
+   :param link: Folder link for output
+   :type link: string, optional
+   :param sort_list: Optionally provide a sorting list in case a dictionary of molecules is
+                     given
+   :type sort_list: list, optional
+
+   .. rubric:: Examples
+
+   Assuming a pore or molecule object have already been created, the structure
+   files can be generated like following examples
+
+   .. code-block:: python
+
+       Store(mol).pdb()
+       Store(pore, "output").gro("pore.gro")
+
+
+   .. py:method:: job(name='', master='')
+
+      Create job file to run with Antechamber. A shell file and a tleap
+      file are created with all necessary commands to create a topology from a
+      pdb file. For the conversion to GROMACS file format the python package
+      **ParmED** needs to be installed.
+
+      :param name: Filename
+      :type name: string, optional
+      :param master: Set name for master job file if needed (practical for running
+                     multiple topology generations)
+      :type master: string, optional
+
+
+
+   .. py:method:: obj(name='')
+
+      Save the molecule object or the dictionary of those using pickle.
+
+      :param name: Filename
+      :type name: string, optional
+
+
+
+   .. py:method:: pdb(name='', use_atom_names=False)
+
+      Generate the structure file for the defined molecule in the **PDB**
+      format.
+
+      :param name: Filename
+      :type name: string, optional
+      :param use_atom_names: True to use atom names if they are defined, False to enumerate based
+                             on type
+      :type use_atom_names: bool, optional
+
+
+
+   .. py:method:: gro(name='', use_atom_names=False)
+
+      Generate the structure file for the defined molecule in the **GRO**
+      format.
+
+      :param name: Filename
+      :type name: string, optional
+      :param use_atom_names: True to use atom names if they are defined, False to enumerate based
+                             on type
+      :type use_atom_names: bool, optional
+
+
+
+   .. py:method:: xyz(name='', use_atom_names=False)
+
+      Generate the structure file for the defined molecule in the **XYZ**
+      format for running qm-simulations.
+
+      :param name: Filename
+      :type name: string, optional
+      :param use_atom_names: True to use atom names if they are defined, False to enumerate based
+                             on type
+      :type use_atom_names: bool, optional
+
+
+
+   .. py:method:: lmp(name='')
+
+      Generate the structure file for the defined molecule in the LAMMPS
+      format. Assuming real units are used, the coordinates are in Angstroms.
+
+      :param name: Filename
+      :type name: string, optional
+
+
+
+   .. py:method:: top(name='')
+
+      Store the **topology** file for a pore. A top file is created
+      containing the itp-include for all molecules and the count of the
+      different groups of the pore.
+
+      :param name: Filename
+      :type name: string, optional
+
+
+
+   .. py:method:: grid(name='', charges={'si': 1.28, 'om': -0.64})
+
+      Store the **grid.itp** file containing the necessary parameters and
+      charges of the grid molecules.
+
+      :param name: Filename
+      :type name: string, optional
+      :param charges: Dictionary of charges for silicon and oxygen atoms
+      :type charges: dictionary, optional
+
+
+

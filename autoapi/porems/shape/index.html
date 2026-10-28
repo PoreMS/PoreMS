@@ -1,0 +1,1533 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="next" title="porems.store" href="../store/index.html"><link rel="prev" title="porems.pore" href="../pore/index.html">
+        <link rel="prefetch" href="../../../_static/logo_text.svg" as="image">
+        <link rel="prefetch" href="../../../_static/logo_text.svg" as="image">
+
+    <!-- Generated with Sphinx 9.1.1 and Furo 2025.12.19 -->
+        <title>porems.shape - PoreMS 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/style.css?v=803689d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style>
+    
+    <script>
+        // Default to light mode; respect any explicit user preference stored in localStorage
+        if (!localStorage.getItem("theme")) {
+            localStorage.setItem("theme", "light");
+        }
+    </script>
+</head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">PoreMS 1.0.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../../../_static/logo_text.svg" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../../../_static/logo_text.svg" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">PoreMS 1.0.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../molecule.html">Generate a Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pore.html">Generate a Pore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../workflow.html">Simulation Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../shape_examples.html">Complex structure with PoreKit</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">porems</a><input aria-label="Toggle navigation of porems" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../atom/index.html">porems.atom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../database/index.html">porems.database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dice/index.html">porems.dice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generic/index.html">porems.generic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../geometry/index.html">porems.geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../matrix/index.html">porems.matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../molecule/index.html">porems.molecule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pattern/index.html">porems.pattern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pore/index.html">porems.pore</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">porems.shape</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../store/index.html">porems.store</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../system/index.html">porems.system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utils/index.html">porems.utils</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/autoapi/porems/shape/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-porems.shape">
+<span id="porems-shape"></span><h1>porems.shape<a class="headerlink" href="#module-porems.shape" title="Link to this heading">¶</a></h1>
+<p>This file contains shape definitions to be cut out from the crystal block.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#porems.shape.Shape" title="porems.shape.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p></td>
+<td><p>This class is a container for individual shape classes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#porems.shape.Cylinder" title="porems.shape.Cylinder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cylinder</span></code></a></p></td>
+<td><p>This class defines a cylindrical shape. Needed inputs are</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#porems.shape.Sphere" title="porems.shape.Sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sphere</span></code></a></p></td>
+<td><p>This class defines a sphere shape. Needed inputs are</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#porems.shape.Cuboid" title="porems.shape.Cuboid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cuboid</span></code></a></p></td>
+<td><p>This class defines a cuboid shape. Needed inputs are</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#porems.shape.Cone" title="porems.shape.Cone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cone</span></code></a></p></td>
+<td><p>This class defines a conical shape. Needed inputs are</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#porems.shape.Hourglass" title="porems.shape.Hourglass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hourglass</span></code></a></p></td>
+<td><p>Cylindrical shape whose radius varies as a cosine along the axis,</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="porems.shape.Shape">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">porems.shape.</span></span><span class="sig-name descname"><span class="pre">Shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Shape" title="Link to this definition">¶</a></dt>
+<dd><p>This class is a container for individual shape classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inp</strong> (<em>dictionary</em>) – Dictionary of necessary inputs</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Shape.convert">
+<span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_zero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Shape.convert" title="Link to this definition">¶</a></dt>
+<dd><p>This helper method rotates the given data to match the global central
+axis and translates it so that the center point is aligned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>list</em>) – Data input</p></li>
+<li><p><strong>to_zero</strong> (<em>bool</em>) – True to convert data towards zero axis, False to convert data from
+zero axis to central axis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>data</strong> – Converted input</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Shape.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Shape.plot" title="Link to this definition">¶</a></dt>
+<dd><p>Plot surface and rim.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inp</strong> (<em>float</em><em>, </em><em>optional</em>) – Position on the axis</p></li>
+<li><p><strong>num</strong> (<em>integer</em><em>, </em><em>optional</em>) – Number of points</p></li>
+<li><p><strong>vec</strong> (<em>list</em><em>, </em><em>optional</em>) – Vector on surface to test normal vector</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Shape.get_inp">
+<span class="sig-name descname"><span class="pre">get_inp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Shape.get_inp" title="Link to this definition">¶</a></dt>
+<dd><p>Return full input dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inp</strong> – Dictionary of all inputs</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="porems.shape.Cylinder">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">porems.shape.</span></span><span class="sig-name descname"><span class="pre">Cylinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cylinder" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#porems.shape.Shape" title="porems.shape.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p>
+<p>This class defines a cylindrical shape. Needed inputs are</p>
+<ul class="simple">
+<li><p><strong>central</strong> - Central axis</p></li>
+<li><p><strong>centroid</strong> - Centroid of block</p></li>
+<li><p><strong>length</strong> - Cylinder length</p></li>
+<li><p><strong>diameter</strong> - Cylinder diameter</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inp</strong> (<em>dictionary</em>) – Dictionary of necessary inputs</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cylinder.Phi">
+<span class="sig-name descname"><span class="pre">Phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cylinder.Phi" title="Link to this definition">¶</a></dt>
+<dd><p>Surface function of a cylinder</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\Phi(r,\phi,z)=
+\begin{bmatrix}r\cos(\phi)\\r\sin(\phi)\\z\end{bmatrix}\end{split}\]</div>
+</div>
+<p>with radius <span class="math notranslate nohighlight">\(r\)</span>, polar angle <span class="math notranslate nohighlight">\(\phi\)</span> and cylinder length
+<span class="math notranslate nohighlight">\(z\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>float</em>) – Radius</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Polar angle</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – Distance ins z-axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pos</strong> – Cartesian coordinates for given polar coordinates</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cylinder.d_Phi_phi">
+<span class="sig-name descname"><span class="pre">d_Phi_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cylinder.d_Phi_phi" title="Link to this definition">¶</a></dt>
+<dd><p>Derivative of the surface function considering the polar angle</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial\Phi}{\partial\phi}(r,\phi,z)=
+\begin{bmatrix}-r\sin(\phi)\\r\cos(\phi)\\0\end{bmatrix}\end{split}\]</div>
+</div>
+<p>with radius <span class="math notranslate nohighlight">\(r\)</span>, polar angle <span class="math notranslate nohighlight">\(\phi\)</span> and cylinder length
+<span class="math notranslate nohighlight">\(z\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>float</em>) – Radius</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Polar angle</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – Distance ins z-axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pos</strong> – Cartesian coordinates for given polar coordinates</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cylinder.d_Phi_z">
+<span class="sig-name descname"><span class="pre">d_Phi_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cylinder.d_Phi_z" title="Link to this definition">¶</a></dt>
+<dd><p>Derivative of the surface function considering the z-axis</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial\Phi}{\partial z}(r,\phi,z)=
+\begin{bmatrix}0\\0\\1\end{bmatrix}\end{split}\]</div>
+</div>
+<p>with radius <span class="math notranslate nohighlight">\(r\)</span>, polar angle <span class="math notranslate nohighlight">\(\phi\)</span> and cylinder length
+<span class="math notranslate nohighlight">\(z\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>float</em>) – Radius</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Polar angle</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – Distance ins z-axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pos</strong> – Cartesian coordinates for given polar coordinates</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cylinder.normal">
+<span class="sig-name descname"><span class="pre">normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cylinder.normal" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate unit normal vector on surface for a given position</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial\Phi}{\partial\phi}(r,\phi,z)\times
+\frac{\partial\Phi}{\partial z}(r,\phi,z)=
+\begin{bmatrix}r\cos(\phi)\\r\sin(\phi)\\0\end{bmatrix}\end{split}\]</div>
+</div>
+<p>with radius <span class="math notranslate nohighlight">\(r\)</span>, polar angle <span class="math notranslate nohighlight">\(\phi\)</span> and cylinder length
+<span class="math notranslate nohighlight">\(z\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pos</strong> (<em>list</em>) – Position</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>normal</strong> – Normal vector</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cylinder.is_in">
+<span class="sig-name descname"><span class="pre">is_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cylinder.is_in" title="Link to this definition">¶</a></dt>
+<dd><p>Check if given position is inside of shape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pos</strong> (<em>list</em>) – Position</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>is_in</strong> – True if position is inside of shape</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cylinder.rim">
+<span class="sig-name descname"><span class="pre">rim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cylinder.rim" title="Link to this definition">¶</a></dt>
+<dd><p>Return x and y values for given z-position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> (<em>float</em>) – Position on the axis</p></li>
+<li><p><strong>num</strong> (<em>integer</em><em>, </em><em>optional</em>) – Number of points</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>positions</strong> – x and y arrays of the surface rim on the z-position</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cylinder.surf">
+<span class="sig-name descname"><span class="pre">surf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cylinder.surf" title="Link to this definition">¶</a></dt>
+<dd><p>Return x, y and z values for the shape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>num</strong> (<em>integer</em><em>, </em><em>optional</em>) – Number of points</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>positions</strong> – x, y and z arrays of the surface rim</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cylinder.volume">
+<span class="sig-name descname"><span class="pre">volume</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cylinder.volume" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate volume</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[V=\pi r^2l\]</div>
+</div>
+<p>with radius <span class="math notranslate nohighlight">\(r\)</span> and cylinder length <span class="math notranslate nohighlight">\(length\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>volume</strong> – Volume</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cylinder.surface">
+<span class="sig-name descname"><span class="pre">surface</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cylinder.surface" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate inner surface</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[S=2\pi rl\]</div>
+</div>
+<p>with radius <span class="math notranslate nohighlight">\(r\)</span> and cylinder length <span class="math notranslate nohighlight">\(length\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>surface</strong> – Inner surface</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="porems.shape.Sphere">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">porems.shape.</span></span><span class="sig-name descname"><span class="pre">Sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Sphere" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#porems.shape.Shape" title="porems.shape.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p>
+<p>This class defines a sphere shape. Needed inputs are</p>
+<ul class="simple">
+<li><p><strong>central</strong> - Central axis</p></li>
+<li><p><strong>centroid</strong> - Sphere Centroid</p></li>
+<li><p><strong>diameter</strong> - Sphere diameter</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inp</strong> (<em>dictionary</em>) – Dictionary of necessary inputs</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Sphere.Phi">
+<span class="sig-name descname"><span class="pre">Phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Sphere.Phi" title="Link to this definition">¶</a></dt>
+<dd><p>Surface function of a sphere</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\Phi(r,\phi,\theta)=
+\begin{bmatrix}r\cos(\phi)\sin(\theta)\\r\sin(\phi)\sin(\theta)\\r\cos(\theta)\end{bmatrix}\end{split}\]</div>
+</div>
+<p>with radius <span class="math notranslate nohighlight">\(r\)</span>, polar angle <span class="math notranslate nohighlight">\(\phi\)</span> and azimuthal angle
+<span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>float</em>) – Radius</p></li>
+<li><p><strong>theta</strong> (<em>float</em>) – Azimuth angle</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Polar angle</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pos</strong> – Cartesian coordinates for given spherical coordinates</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Sphere.d_Phi_phi">
+<span class="sig-name descname"><span class="pre">d_Phi_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Sphere.d_Phi_phi" title="Link to this definition">¶</a></dt>
+<dd><p>Derivative of the surface function considering the polar angle
+<span class="math notranslate nohighlight">\(\phi\)</span></p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial\Phi}{\partial\phi}(r,\phi,\theta)=
+\begin{bmatrix}-r\sin(\phi)\sin(\theta)\\r\cos(\phi)\sin(\theta)\\0\end{bmatrix}\end{split}\]</div>
+</div>
+<p>with radius <span class="math notranslate nohighlight">\(r\)</span>, polar angle <span class="math notranslate nohighlight">\(\phi\)</span> and azimuthal angle
+<span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>float</em>) – Radius</p></li>
+<li><p><strong>theta</strong> (<em>float</em>) – Azimuth angle</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Polar angle</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pos</strong> – Cartesian coordinates for given spherical coordinates</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Sphere.d_Phi_theta">
+<span class="sig-name descname"><span class="pre">d_Phi_theta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Sphere.d_Phi_theta" title="Link to this definition">¶</a></dt>
+<dd><p>Derivative of the surface function considering the azimuthal angle
+<span class="math notranslate nohighlight">\(\theta\)</span></p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial\Phi}{\partial\theta}(r,\phi,\theta)=
+\begin{bmatrix}r\cos(\phi)\cos(\theta)\\r\sin(\phi)\cos(\theta)\\-r\sin(\theta)\end{bmatrix}\end{split}\]</div>
+</div>
+<p>with radius <span class="math notranslate nohighlight">\(r\)</span>, polar angle <span class="math notranslate nohighlight">\(\phi\)</span> and azimuthal angle
+<span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>float</em>) – Radius</p></li>
+<li><p><strong>theta</strong> (<em>float</em>) – Azimuth angle</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Polar angle</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pos</strong> – Cartesian coordinates for given spherical coordinates</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Sphere.normal">
+<span class="sig-name descname"><span class="pre">normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Sphere.normal" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate unit normal vector on surface for a given position</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial\Phi}{\partial\theta}(r,\phi,\theta)\times
+\frac{\partial\Phi}{\partial\phi}(r,\phi,\theta)=
+\begin{bmatrix}
+-r^2\cos(\phi)\sin(\theta)^2\\
+r^2\sin(\phi)\sin(\theta)^2\\
+-r^2\sin(\theta)\cos(\theta)\left[\sin(\phi)^2-\cos(\phi)^2\right]\\
+\end{bmatrix}\end{split}\]</div>
+</div>
+<p>with radius <span class="math notranslate nohighlight">\(r\)</span>, polar angle <span class="math notranslate nohighlight">\(\phi\)</span> and cylinder length
+<span class="math notranslate nohighlight">\(z\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pos</strong> (<em>list</em>) – Position</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>normal</strong> – Normal vector</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Sphere.is_in">
+<span class="sig-name descname"><span class="pre">is_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Sphere.is_in" title="Link to this definition">¶</a></dt>
+<dd><p>Check if given position is inside of shape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pos</strong> (<em>list</em>) – Position</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>is_in</strong> – True if position is inside of shape</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Sphere.rim">
+<span class="sig-name descname"><span class="pre">rim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Sphere.rim" title="Link to this definition">¶</a></dt>
+<dd><p>Return x and y values for given polar angle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi</strong> (<em>float</em>) – Position on the axis</p></li>
+<li><p><strong>num</strong> (<em>integer</em><em>, </em><em>optional</em>) – Number of points</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>positions</strong> – x and y arrays of the surface rim on the z-position</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Sphere.surf">
+<span class="sig-name descname"><span class="pre">surf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Sphere.surf" title="Link to this definition">¶</a></dt>
+<dd><p>Return x, y and z values for the shape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>num</strong> (<em>integer</em><em>, </em><em>optional</em>) – Number of points</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>positions</strong> – x, y and z arrays of the surface rim</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Sphere.volume">
+<span class="sig-name descname"><span class="pre">volume</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Sphere.volume" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate volume</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[V=\frac43\pi r^3\]</div>
+</div>
+<p>with radius <span class="math notranslate nohighlight">\(r\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>volume</strong> – Volume</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Sphere.surface">
+<span class="sig-name descname"><span class="pre">surface</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Sphere.surface" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate inner surface</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[S=4\pi r^2\]</div>
+</div>
+<p>with radius <span class="math notranslate nohighlight">\(r\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>surface</strong> – Inner surface</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="porems.shape.Cuboid">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">porems.shape.</span></span><span class="sig-name descname"><span class="pre">Cuboid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cuboid" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#porems.shape.Shape" title="porems.shape.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p>
+<p>This class defines a cuboid shape. Needed inputs are</p>
+<ul class="simple">
+<li><p><strong>central</strong> - Central axis</p></li>
+<li><p><strong>centroid</strong> - Centroid of block</p></li>
+<li><p><strong>length</strong> - Cuboid length</p></li>
+<li><p><strong>width</strong> - Cuboid width</p></li>
+<li><p><strong>height</strong> - Cuboid height</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inp</strong> (<em>dictionary</em>) – Dictionary of necessary inputs</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cuboid.Phi">
+<span class="sig-name descname"><span class="pre">Phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cuboid.Phi" title="Link to this definition">¶</a></dt>
+<dd><p>Surface function of a cuboid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – Width</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – Height</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – Length</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pos</strong> – Cartesian coordinates for given spherical coordinates</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cuboid.normal">
+<span class="sig-name descname"><span class="pre">normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cuboid.normal" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate unit normal vector on surface for a given position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pos</strong> (<em>list</em>) – Position</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>normal</strong> – Unit normal vector</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cuboid.is_in">
+<span class="sig-name descname"><span class="pre">is_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cuboid.is_in" title="Link to this definition">¶</a></dt>
+<dd><p>Check if given position is inside of shape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pos</strong> (<em>list</em>) – Position</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>is_in</strong> – True if position is inside of shape</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cuboid.rim">
+<span class="sig-name descname"><span class="pre">rim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cuboid.rim" title="Link to this definition">¶</a></dt>
+<dd><p>Return x and y values for given length.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> (<em>float</em>) – Position on the axis</p></li>
+<li><p><strong>num</strong> (<em>integer</em><em>, </em><em>optional</em>) – Number of points</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>positions</strong> – x and y arrays of the surface rim on the z-position</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cuboid.surf">
+<span class="sig-name descname"><span class="pre">surf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cuboid.surf" title="Link to this definition">¶</a></dt>
+<dd><p>Return x, y and z values for the shape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>num</strong> (<em>integer</em><em>, </em><em>optional</em>) – Number of points</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>positions</strong> – x, y and z arrays of the surface rim</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cuboid.volume">
+<span class="sig-name descname"><span class="pre">volume</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cuboid.volume" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate volume</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[V=w\cdot h\cdot length\]</div>
+</div>
+<p>with width <span class="math notranslate nohighlight">\(w\)</span>, height <span class="math notranslate nohighlight">\(h\)</span> and length <span class="math notranslate nohighlight">\(length\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>volume</strong> – Volume</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cuboid.surface">
+<span class="sig-name descname"><span class="pre">surface</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cuboid.surface" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate inner surface</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[S=2\cdot(w\cdot h+w\cdot length+h\cdot length)\]</div>
+</div>
+<p>with width <span class="math notranslate nohighlight">\(w\)</span>, height <span class="math notranslate nohighlight">\(h\)</span> and length <span class="math notranslate nohighlight">\(length\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>surface</strong> – Inner surface</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="porems.shape.Cone">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">porems.shape.</span></span><span class="sig-name descname"><span class="pre">Cone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cone" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#porems.shape.Shape" title="porems.shape.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p>
+<p>This class defines a conical shape. Needed inputs are</p>
+<ul class="simple">
+<li><p><strong>central</strong> - Central axis</p></li>
+<li><p><strong>centroid</strong> - Centroid of block</p></li>
+<li><p><strong>length</strong> - Cone length</p></li>
+<li><p><strong>diameter_1</strong> - Cone starting diameter</p></li>
+<li><p><strong>diameter_2</strong> - Cone ending diameter</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inp</strong> (<em>dictionary</em>) – Dictionary of necessary inputs</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cone.Phi">
+<span class="sig-name descname"><span class="pre">Phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cone.Phi" title="Link to this definition">¶</a></dt>
+<dd><p>Surface function of a cone</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\Phi(r(z),\phi,z)=
+\begin{bmatrix}r(z)\cos(\phi)\\r(z)\sin(\phi)\\z\end{bmatrix}\end{split}\]</div>
+</div>
+<p>with polar angle <span class="math notranslate nohighlight">\(\phi\)</span> and radius function along the <span class="math notranslate nohighlight">\(z\)</span>-axis</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[r(z)=r_1+\frac{r_2-r_1}{length-1}(z-1)\]</div>
+</div>
+<p>with radii <span class="math notranslate nohighlight">\(r_1\)</span> and <span class="math notranslate nohighlight">\(r_2\)</span> and cone length <span class="math notranslate nohighlight">\(length\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>float</em>) – Radius</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Polar angle</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – Distance ins z-axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pos</strong> – Cartesian coordinates for given polar coordinates</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cone.d_Phi_phi">
+<span class="sig-name descname"><span class="pre">d_Phi_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cone.d_Phi_phi" title="Link to this definition">¶</a></dt>
+<dd><p>Derivative of the surface function considering the polar angle</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial\Phi}{\partial\phi}(r(z),\phi,z)=
+\begin{bmatrix}-r(z)\sin(\phi)\\r(z)\cos(\phi)\\0\end{bmatrix}\end{split}\]</div>
+</div>
+<p>with polar angle <span class="math notranslate nohighlight">\(\phi\)</span> and radius function along the <span class="math notranslate nohighlight">\(z\)</span>-axis</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[r(z)=r_1+\frac{r_2-r_1}{length-1}(z-1)\]</div>
+</div>
+<p>with radii <span class="math notranslate nohighlight">\(r_1\)</span> and <span class="math notranslate nohighlight">\(r_2\)</span> and cone length <span class="math notranslate nohighlight">\(length\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>float</em>) – Radius</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Polar angle</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – Distance ins z-axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pos</strong> – Cartesian coordinates for given polar coordinates</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cone.d_Phi_z">
+<span class="sig-name descname"><span class="pre">d_Phi_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cone.d_Phi_z" title="Link to this definition">¶</a></dt>
+<dd><p>Derivative of the surface function considering the z-axis</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial\Phi}{\partial z}(r(z),\phi,z)=
+\begin{bmatrix}r(z)\cos(\phi)\\r(z)\sin(\phi)\\1\end{bmatrix}\end{split}\]</div>
+</div>
+<p>with polar angle <span class="math notranslate nohighlight">\(\phi\)</span> and radius function along the <span class="math notranslate nohighlight">\(z\)</span>-axis</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[r(z)=\frac{r_2-r_1}{length-1}\]</div>
+</div>
+<p>with radii <span class="math notranslate nohighlight">\(r_1\)</span> and <span class="math notranslate nohighlight">\(r_2\)</span> and cone length <span class="math notranslate nohighlight">\(length\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>float</em>) – Radius</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Polar angle</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – Distance ins z-axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pos</strong> – Cartesian coordinates for given polar coordinates</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cone.normal">
+<span class="sig-name descname"><span class="pre">normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cone.normal" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate unit normal vector on surface for a given position</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial\Phi}{\partial\phi}(\tilde r(z),\phi,z)\times
+\frac{\partial\Phi}{\partial z}(\hat r(z),\phi,z)=
+\begin{bmatrix}\tilde r(z)\cos(\phi)\\\tilde r(z)\sin(\phi)\\\tilde r(z)\hat r(z)\end{bmatrix}\end{split}\]</div>
+</div>
+<p>with polar angle <span class="math notranslate nohighlight">\(\phi\)</span> and radius functions along the <span class="math notranslate nohighlight">\(z\)</span>-axis</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}&amp;\tilde r(z)=r_1+\frac{r_2-r_1}{length-1}(z-1)\\
+&amp;\hat r(z)=\frac{r_2-r_1}{length-1},\end{split}\]</div>
+</div>
+<p>with radii <span class="math notranslate nohighlight">\(r_1\)</span> and <span class="math notranslate nohighlight">\(r_2\)</span> and cone length <span class="math notranslate nohighlight">\(length\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pos</strong> (<em>list</em>) – Position</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>normal</strong> – Normal vector</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cone.is_in">
+<span class="sig-name descname"><span class="pre">is_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cone.is_in" title="Link to this definition">¶</a></dt>
+<dd><p>Check if given position is inside of shape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pos</strong> (<em>list</em>) – Position</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>is_in</strong> – True if position is inside of shape</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cone.rim">
+<span class="sig-name descname"><span class="pre">rim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cone.rim" title="Link to this definition">¶</a></dt>
+<dd><p>Return x and y values for given z-position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> (<em>float</em>) – Position on the axis</p></li>
+<li><p><strong>num</strong> (<em>integer</em><em>, </em><em>optional</em>) – Number of points</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>positions</strong> – x and y arrays of the surface rim on the z-position</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cone.surf">
+<span class="sig-name descname"><span class="pre">surf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cone.surf" title="Link to this definition">¶</a></dt>
+<dd><p>Return x, y and z values for the shape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>num</strong> (<em>integer</em><em>, </em><em>optional</em>) – Number of points</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>positions</strong> – x, y and z arrays of the surface rim</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cone.volume">
+<span class="sig-name descname"><span class="pre">volume</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cone.volume" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate volume</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[V=\frac{1}{3}\pi \left[r_1^2+r_2^2+r_1r_2\right]length\]</div>
+</div>
+<p>with radii <span class="math notranslate nohighlight">\(r_1\)</span> and <span class="math notranslate nohighlight">\(r_2\)</span> and cone length <span class="math notranslate nohighlight">\(length\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>volume</strong> – Volume</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Cone.surface">
+<span class="sig-name descname"><span class="pre">surface</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Cone.surface" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate inner surface</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[S=\pi (r_1+r_2)length\]</div>
+</div>
+<p>with radii <span class="math notranslate nohighlight">\(r_1\)</span> and <span class="math notranslate nohighlight">\(r_2\)</span> and cone length <span class="math notranslate nohighlight">\(length\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>surface</strong> – Inner surface</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="porems.shape.Hourglass">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">porems.shape.</span></span><span class="sig-name descname"><span class="pre">Hourglass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Hourglass" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#porems.shape.Shape" title="porems.shape.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p>
+<p>Cylindrical shape whose radius varies as a cosine along the axis,
+narrowing to a minimum at the mid-point.</p>
+<p>Required inputs:</p>
+<ul class="simple">
+<li><p><strong>central</strong> - Central axis unit vector</p></li>
+<li><p><strong>centroid</strong> - Centroid of the block</p></li>
+<li><p><strong>length</strong> - Total length along the axis</p></li>
+<li><p><strong>diameter_outer</strong> - Diameter at both ends (widest)</p></li>
+<li><p><strong>diameter_inner</strong> - Diameter at the mid-point (narrowest)</p></li>
+</ul>
+<p>The radius profile is</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[r(z) = r_i + (r_o - r_i)\,\frac{1 + \cos\!\left(\frac{2\pi z}{length}\right)}{2}\]</div>
+</div>
+<p>with outer radius <span class="math notranslate nohighlight">\(r_o\)</span>, inner radius <span class="math notranslate nohighlight">\(r_i\)</span> and length
+<span class="math notranslate nohighlight">\(length\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inp</strong> (<em>dictionary</em>) – Dictionary of necessary inputs</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Hourglass.Phi">
+<span class="sig-name descname"><span class="pre">Phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Hourglass.Phi" title="Link to this definition">¶</a></dt>
+<dd><p>Surface parametrisation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>ignored</em>) – Kept for interface consistency; radius is determined by <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p></li>
+<li><p><strong>phi</strong> (<em>array-like</em>) – Polar angles</p></li>
+<li><p><strong>z</strong> (<em>array-like</em>) – Positions along the axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pos</strong> – x, y, z arrays of the surface</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Hourglass.d_Phi_phi">
+<span class="sig-name descname"><span class="pre">d_Phi_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Hourglass.d_Phi_phi" title="Link to this definition">¶</a></dt>
+<dd><p>Azimuthal tangent vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>float</em>) – Radius at z</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Polar angle</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – Position along axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tangent</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Hourglass.d_Phi_z">
+<span class="sig-name descname"><span class="pre">d_Phi_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Hourglass.d_Phi_z" title="Link to this definition">¶</a></dt>
+<dd><p>Axial tangent vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>float</em>) – Radius at z (unused; r’(z) is recomputed internally)</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Polar angle</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – Position along axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tangent</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Hourglass.normal">
+<span class="sig-name descname"><span class="pre">normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Hourglass.normal" title="Link to this definition">¶</a></dt>
+<dd><p>Outward surface normal at <code class="docutils literal notranslate"><span class="pre">pos</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pos</strong> (<em>list</em>) – Global position on the surface</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>normal</strong> – Normal vector (unnormalised)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Hourglass.is_in">
+<span class="sig-name descname"><span class="pre">is_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Hourglass.is_in" title="Link to this definition">¶</a></dt>
+<dd><p>Return True if <code class="docutils literal notranslate"><span class="pre">pos</span></code> is inside the hourglass.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pos</strong> (<em>list</em>) – Global position</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>is_in</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Hourglass.rim">
+<span class="sig-name descname"><span class="pre">rim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Hourglass.rim" title="Link to this definition">¶</a></dt>
+<dd><p>Circle of surface points at axial position <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> (<em>float</em>) – Position along the axis (local frame)</p></li>
+<li><p><strong>num</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of points</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>positions</strong> – x, y, z arrays</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Hourglass.surf">
+<span class="sig-name descname"><span class="pre">surf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Hourglass.surf" title="Link to this definition">¶</a></dt>
+<dd><p>Parametric surface mesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>num</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of points in each direction</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>positions</strong> – x, y, z arrays</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Hourglass.volume">
+<span class="sig-name descname"><span class="pre">volume</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Hourglass.volume" title="Link to this definition">¶</a></dt>
+<dd><p>Volume enclosed by the hourglass.</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[V = \pi length \left(r_i^2 + r_i\,\Delta r + \frac{3\,\Delta r^2}{8}\right)\]</div>
+</div>
+<p>with <span class="math notranslate nohighlight">\(\Delta r = r_o - r_i\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>volume</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="porems.shape.Hourglass.surface">
+<span class="sig-name descname"><span class="pre">surface</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#porems.shape.Hourglass.surface" title="Link to this definition">¶</a></dt>
+<dd><p>Lateral surface area (numerical integration).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>surface</strong></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../store/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">porems.store</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../pore/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">porems.pore</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, Hamzeh Kraus
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">porems.shape</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#porems.shape.Shape"><code class="docutils literal notranslate"><span class="pre">Shape</span></code></a><ul>
+<li><a class="reference internal" href="#porems.shape.Shape.convert"><code class="docutils literal notranslate"><span class="pre">Shape.convert()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Shape.plot"><code class="docutils literal notranslate"><span class="pre">Shape.plot()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Shape.get_inp"><code class="docutils literal notranslate"><span class="pre">Shape.get_inp()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#porems.shape.Cylinder"><code class="docutils literal notranslate"><span class="pre">Cylinder</span></code></a><ul>
+<li><a class="reference internal" href="#porems.shape.Cylinder.Phi"><code class="docutils literal notranslate"><span class="pre">Cylinder.Phi()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cylinder.d_Phi_phi"><code class="docutils literal notranslate"><span class="pre">Cylinder.d_Phi_phi()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cylinder.d_Phi_z"><code class="docutils literal notranslate"><span class="pre">Cylinder.d_Phi_z()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cylinder.normal"><code class="docutils literal notranslate"><span class="pre">Cylinder.normal()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cylinder.is_in"><code class="docutils literal notranslate"><span class="pre">Cylinder.is_in()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cylinder.rim"><code class="docutils literal notranslate"><span class="pre">Cylinder.rim()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cylinder.surf"><code class="docutils literal notranslate"><span class="pre">Cylinder.surf()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cylinder.volume"><code class="docutils literal notranslate"><span class="pre">Cylinder.volume()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cylinder.surface"><code class="docutils literal notranslate"><span class="pre">Cylinder.surface()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#porems.shape.Sphere"><code class="docutils literal notranslate"><span class="pre">Sphere</span></code></a><ul>
+<li><a class="reference internal" href="#porems.shape.Sphere.Phi"><code class="docutils literal notranslate"><span class="pre">Sphere.Phi()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Sphere.d_Phi_phi"><code class="docutils literal notranslate"><span class="pre">Sphere.d_Phi_phi()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Sphere.d_Phi_theta"><code class="docutils literal notranslate"><span class="pre">Sphere.d_Phi_theta()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Sphere.normal"><code class="docutils literal notranslate"><span class="pre">Sphere.normal()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Sphere.is_in"><code class="docutils literal notranslate"><span class="pre">Sphere.is_in()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Sphere.rim"><code class="docutils literal notranslate"><span class="pre">Sphere.rim()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Sphere.surf"><code class="docutils literal notranslate"><span class="pre">Sphere.surf()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Sphere.volume"><code class="docutils literal notranslate"><span class="pre">Sphere.volume()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Sphere.surface"><code class="docutils literal notranslate"><span class="pre">Sphere.surface()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#porems.shape.Cuboid"><code class="docutils literal notranslate"><span class="pre">Cuboid</span></code></a><ul>
+<li><a class="reference internal" href="#porems.shape.Cuboid.Phi"><code class="docutils literal notranslate"><span class="pre">Cuboid.Phi()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cuboid.normal"><code class="docutils literal notranslate"><span class="pre">Cuboid.normal()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cuboid.is_in"><code class="docutils literal notranslate"><span class="pre">Cuboid.is_in()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cuboid.rim"><code class="docutils literal notranslate"><span class="pre">Cuboid.rim()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cuboid.surf"><code class="docutils literal notranslate"><span class="pre">Cuboid.surf()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cuboid.volume"><code class="docutils literal notranslate"><span class="pre">Cuboid.volume()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cuboid.surface"><code class="docutils literal notranslate"><span class="pre">Cuboid.surface()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#porems.shape.Cone"><code class="docutils literal notranslate"><span class="pre">Cone</span></code></a><ul>
+<li><a class="reference internal" href="#porems.shape.Cone.Phi"><code class="docutils literal notranslate"><span class="pre">Cone.Phi()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cone.d_Phi_phi"><code class="docutils literal notranslate"><span class="pre">Cone.d_Phi_phi()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cone.d_Phi_z"><code class="docutils literal notranslate"><span class="pre">Cone.d_Phi_z()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cone.normal"><code class="docutils literal notranslate"><span class="pre">Cone.normal()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cone.is_in"><code class="docutils literal notranslate"><span class="pre">Cone.is_in()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cone.rim"><code class="docutils literal notranslate"><span class="pre">Cone.rim()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cone.surf"><code class="docutils literal notranslate"><span class="pre">Cone.surf()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cone.volume"><code class="docutils literal notranslate"><span class="pre">Cone.volume()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Cone.surface"><code class="docutils literal notranslate"><span class="pre">Cone.surface()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#porems.shape.Hourglass"><code class="docutils literal notranslate"><span class="pre">Hourglass</span></code></a><ul>
+<li><a class="reference internal" href="#porems.shape.Hourglass.Phi"><code class="docutils literal notranslate"><span class="pre">Hourglass.Phi()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Hourglass.d_Phi_phi"><code class="docutils literal notranslate"><span class="pre">Hourglass.d_Phi_phi()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Hourglass.d_Phi_z"><code class="docutils literal notranslate"><span class="pre">Hourglass.d_Phi_z()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Hourglass.normal"><code class="docutils literal notranslate"><span class="pre">Hourglass.normal()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Hourglass.is_in"><code class="docutils literal notranslate"><span class="pre">Hourglass.is_in()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Hourglass.rim"><code class="docutils literal notranslate"><span class="pre">Hourglass.rim()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Hourglass.surf"><code class="docutils literal notranslate"><span class="pre">Hourglass.surf()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Hourglass.volume"><code class="docutils literal notranslate"><span class="pre">Hourglass.volume()</span></code></a></li>
+<li><a class="reference internal" href="#porems.shape.Hourglass.surface"><code class="docutils literal notranslate"><span class="pre">Hourglass.surface()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=8d563738"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    </body>
+</html>

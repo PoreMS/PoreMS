@@ -1,0 +1,43 @@
+porems.database
+===============
+
+.. py:module:: porems.database
+
+.. autoapi-nested-parse::
+
+   Very simple molecule database helper methods.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   porems.database.masses
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   porems.database.get_mass
+
+
+Module Contents
+---------------
+
+.. py:data:: masses
+
+.. py:function:: get_mass(symbol)
+
+   Return the mass of the specified atom.
+
+   :param symbol: Atom symbol
+   :type symbol: str
+
+   :returns: **mass** -- Atom mass in :math:`\frac g{mol}`
+   :rtype: float
+
+

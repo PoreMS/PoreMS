@@ -1,0 +1,1130 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#"><link rel="search" title="Search" href="search.html">
+        <link rel="prefetch" href="_static/logo_text.svg" as="image">
+        <link rel="prefetch" href="_static/logo_text.svg" as="image">
+
+    <!-- Generated with Sphinx 9.1.1 and Furo 2025.12.19 --><title>Index - PoreMS 1.0.0 documentation</title>
+<link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="_static/style.css?v=803689d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style>
+    
+    <script>
+        // Default to light mode; respect any explicit user preference stored in localStorage
+        if (!localStorage.getItem("theme")) {
+            localStorage.setItem("theme", "light");
+        }
+    </script>
+</head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">PoreMS 1.0.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="_static/logo_text.svg" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="_static/logo_text.svg" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">PoreMS 1.0.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="molecule.html">Generate a Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pore.html">Generate a Pore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">Simulation Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shape_examples.html">Complex structure with PoreKit</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/porems/index.html">porems</a><input aria-label="Toggle navigation of porems" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/porems/atom/index.html">porems.atom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/porems/database/index.html">porems.database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/porems/dice/index.html">porems.dice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/porems/generic/index.html">porems.generic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/porems/geometry/index.html">porems.geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/porems/matrix/index.html">porems.matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/porems/molecule/index.html">porems.molecule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/porems/pattern/index.html">porems.pattern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/porems/pore/index.html">porems.pore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/porems/shape/index.html">porems.shape</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/porems/store/index.html">porems.store</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/porems/system/index.html">porems.system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/porems/utils/index.html">porems.utils</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          
+<section class="genindex-section">
+  <h1 id="index">Index</h1>
+  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#H"><strong>H</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#J"><strong>J</strong></a> | <a href="#K"><strong>K</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#O"><strong>O</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#U"><strong>U</strong></a> | <a href="#V"><strong>V</strong></a> | <a href="#X"><strong>X</strong></a> | <a href="#Y"><strong>Y</strong></a> | <a href="#Z"><strong>Z</strong></a></div>
+</section>
+<section id="A" class="genindex-section">
+  <h2>A</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/matrix/index.html#porems.matrix.Matrix.add">add() (porems.matrix.Matrix method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.add">(porems.molecule.Molecule method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.add_shape">add_shape() (porems.system.PoreKit method)</a>
+</li>
+        <li><a href="autoapi/porems/generic/index.html#porems.generic.alcohol">alcohol() (in module porems.generic)</a>
+</li>
+        <li><a href="autoapi/porems/generic/index.html#porems.generic.alkane">alkane() (in module porems.generic)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.allocation">allocation() (porems.system.PoreKit method)</a>
+</li>
+        <li><a href="autoapi/porems/pattern/index.html#porems.pattern.AlphaCristobalit">AlphaCristobalit (class in porems.pattern)</a>
+</li>
+        <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.amorph">amorph() (porems.pore.Pore method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/geometry/index.html#porems.geometry.angle">angle() (in module porems.geometry)</a>
+</li>
+        <li><a href="autoapi/porems/geometry/index.html#porems.geometry.angle_azi">angle_azi() (in module porems.geometry)</a>
+</li>
+        <li><a href="autoapi/porems/geometry/index.html#porems.geometry.angle_polar">angle_polar() (in module porems.geometry)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.append">append() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/atom/index.html#porems.atom.Atom">Atom (class in porems.atom)</a>
+</li>
+        <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.attach">attach() (porems.pore.Pore method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.attach">(porems.system.PoreKit method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.attach_special">attach_special() (porems.system.PoreKit method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="B" class="genindex-section">
+  <h2>B</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/pattern/index.html#porems.pattern.BetaCristobalit">BetaCristobalit (class in porems.pattern)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.bond">bond() (porems.molecule.Molecule method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/matrix/index.html#porems.matrix.Matrix.bound">bound() (porems.matrix.Matrix method)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.box">box() (porems.system.PoreKit method)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.build">build() (porems.system.PoreKit method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="C" class="genindex-section">
+  <h2>C</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.centroid">centroid() (porems.molecule.Molecule method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.centroid">(porems.system.PoreKit method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/utils/index.html#porems.utils.column">column() (in module porems.utils)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.column_pos">column_pos() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.com">com() (porems.molecule.Molecule method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Cone">Cone (class in porems.shape)</a>
+</li>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Shape.convert">convert() (porems.shape.Shape method)</a>
+</li>
+        <li><a href="autoapi/porems/utils/index.html#porems.utils.copy">copy() (in module porems.utils)</a>
+</li>
+        <li><a href="autoapi/porems/geometry/index.html#porems.geometry.cross_product">cross_product() (in module porems.geometry)</a>
+</li>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Cuboid">Cuboid (class in porems.shape)</a>
+</li>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Cylinder">Cylinder (class in porems.shape)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="D" class="genindex-section">
+  <h2>D</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Cone.d_Phi_phi">d_Phi_phi() (porems.shape.Cone method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cylinder.d_Phi_phi">(porems.shape.Cylinder method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Hourglass.d_Phi_phi">(porems.shape.Hourglass method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Sphere.d_Phi_phi">(porems.shape.Sphere method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Sphere.d_Phi_theta">d_Phi_theta() (porems.shape.Sphere method)</a>
+</li>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Cone.d_Phi_z">d_Phi_z() (porems.shape.Cone method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cylinder.d_Phi_z">(porems.shape.Cylinder method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Hourglass.d_Phi_z">(porems.shape.Hourglass method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.delete">delete() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.diameter">diameter() (porems.system.PoreKit method)</a>
+</li>
+        <li><a href="autoapi/porems/dice/index.html#porems.dice.Dice">Dice (class in porems.dice)</a>
+</li>
+        <li><a href="autoapi/porems/geometry/index.html#porems.geometry.dot_product">dot_product() (in module porems.geometry)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="E" class="genindex-section">
+  <h2>E</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.exterior">exterior() (porems.pore.Pore method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.exterior">(porems.system.PoreKit method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="F" class="genindex-section">
+  <h2>F</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.fill_sites">fill_sites() (porems.pore.Pore method)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.finalize">finalize() (porems.system.PoreKit method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/dice/index.html#porems.dice.Dice.find_bond">find_bond() (porems.dice.Dice method)</a>
+</li>
+        <li><a href="autoapi/porems/dice/index.html#porems.dice.Dice.find_parallel">find_parallel() (porems.dice.Dice method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="G" class="genindex-section">
+  <h2>G</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/pattern/index.html#porems.pattern.Pattern.generate">generate() (porems.pattern.Pattern method)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.get_atom_list">get_atom_list() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/atom/index.html#porems.atom.Atom.get_atom_type">get_atom_type() (porems.atom.Atom method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.get_atom_type">(porems.molecule.Molecule method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/pattern/index.html#porems.pattern.Pattern.get_block">get_block() (porems.pattern.Pattern method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.get_block">(porems.pore.Pore method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.get_box">get_box() (porems.molecule.Molecule method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.get_box">(porems.pore.Pore method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.get_charge">get_charge() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/dice/index.html#porems.dice.Dice.get_count">get_count() (porems.dice.Dice method)</a>
+</li>
+        <li><a href="autoapi/porems/pattern/index.html#porems.pattern.Pattern.get_gap">get_gap() (porems.pattern.Pattern method)</a>
+</li>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Shape.get_inp">get_inp() (porems.shape.Shape method)</a>
+</li>
+        <li><a href="autoapi/porems/database/index.html#porems.database.get_mass">get_mass() (in module porems.database)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.get_mass">(porems.molecule.Molecule method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.get_masses">get_masses() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/matrix/index.html#porems.matrix.Matrix.get_matrix">get_matrix() (porems.matrix.Matrix method)</a>
+</li>
+        <li><a href="autoapi/porems/dice/index.html#porems.dice.Dice.get_mol">get_mol() (porems.dice.Dice method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.get_mol_dict">get_mol_dict() (porems.pore.Pore method)</a>
+</li>
+        <li><a href="autoapi/porems/atom/index.html#porems.atom.Atom.get_name">get_name() (porems.atom.Atom method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.get_name">(porems.molecule.Molecule method)</a>
+</li>
+          <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.get_name">(porems.pore.Pore method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.get_num">get_num() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.get_num_in_ex">get_num_in_ex() (porems.pore.Pore method)</a>
+</li>
+        <li><a href="autoapi/porems/pattern/index.html#porems.pattern.Pattern.get_orient">get_orient() (porems.pattern.Pattern method)</a>
+</li>
+        <li><a href="autoapi/porems/dice/index.html#porems.dice.Dice.get_origin">get_origin() (porems.dice.Dice method)</a>
+</li>
+        <li><a href="autoapi/porems/dice/index.html#porems.dice.Dice.get_pointer">get_pointer() (porems.dice.Dice method)</a>
+</li>
+        <li><a href="autoapi/porems/pattern/index.html#porems.pattern.Pattern.get_repeat">get_repeat() (porems.pattern.Pattern method)</a>
+</li>
+        <li><a href="autoapi/porems/atom/index.html#porems.atom.Atom.get_residue">get_residue() (porems.atom.Atom method)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.get_short">get_short() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.get_site_dict">get_site_dict() (porems.pore.Pore method)</a>
+</li>
+        <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.get_sites">get_sites() (porems.pore.Pore method)</a>
+</li>
+        <li><a href="autoapi/porems/dice/index.html#porems.dice.Dice.get_size">get_size() (porems.dice.Dice method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/pattern/index.html#porems.pattern.Pattern.get_size">(porems.pattern.Pattern method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/store/index.html#porems.store.Store.grid">grid() (porems.store.Store method)</a>
+</li>
+        <li><a href="autoapi/porems/store/index.html#porems.store.Store.gro">gro() (porems.store.Store method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="H" class="genindex-section">
+  <h2>H</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Hourglass">Hourglass (class in porems.shape)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="I" class="genindex-section">
+  <h2>I</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Cone.is_in">is_in() (porems.shape.Cone method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cuboid.is_in">(porems.shape.Cuboid method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cylinder.is_in">(porems.shape.Cylinder method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Hourglass.is_in">(porems.shape.Hourglass method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Sphere.is_in">(porems.shape.Sphere method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="J" class="genindex-section">
+  <h2>J</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/store/index.html#porems.store.Store.job">job() (porems.store.Store method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="K" class="genindex-section">
+  <h2>K</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/generic/index.html#porems.generic.ketone">ketone() (in module porems.generic)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="L" class="genindex-section">
+  <h2>L</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/geometry/index.html#porems.geometry.length">length() (in module porems.geometry)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/store/index.html#porems.store.Store.lmp">lmp() (porems.store.Store method)</a>
+</li>
+        <li><a href="autoapi/porems/utils/index.html#porems.utils.load">load() (in module porems.utils)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="M" class="genindex-section">
+  <h2>M</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/geometry/index.html#porems.geometry.main_axis">main_axis() (in module porems.geometry)</a>
+</li>
+        <li><a href="autoapi/porems/database/index.html#porems.database.masses">masses (in module porems.database)</a>
+</li>
+        <li><a href="autoapi/porems/matrix/index.html#porems.matrix.Matrix">Matrix (class in porems.matrix)</a>
+</li>
+        <li><a href="autoapi/porems/utils/index.html#porems.utils.mkdirp">mkdirp() (in module porems.utils)</a>
+</li>
+        <li><a href="autoapi/porems/utils/index.html#porems.utils.mmol_g_to_mumol_m2">mmol_g_to_mumol_m2() (in module porems.utils)</a>
+</li>
+        <li><a href="autoapi/porems/utils/index.html#porems.utils.mmol_l_to_mols">mmol_l_to_mols() (in module porems.utils)</a>
+</li>
+        <li>
+    module
+
+        <ul>
+          <li><a href="autoapi/porems/index.html#module-porems">porems</a>
+</li>
+          <li><a href="autoapi/porems/atom/index.html#module-porems.atom">porems.atom</a>
+</li>
+          <li><a href="autoapi/porems/database/index.html#module-porems.database">porems.database</a>
+</li>
+          <li><a href="autoapi/porems/dice/index.html#module-porems.dice">porems.dice</a>
+</li>
+          <li><a href="autoapi/porems/generic/index.html#module-porems.generic">porems.generic</a>
+</li>
+          <li><a href="autoapi/porems/geometry/index.html#module-porems.geometry">porems.geometry</a>
+</li>
+          <li><a href="autoapi/porems/matrix/index.html#module-porems.matrix">porems.matrix</a>
+</li>
+          <li><a href="autoapi/porems/molecule/index.html#module-porems.molecule">porems.molecule</a>
+</li>
+          <li><a href="autoapi/porems/pattern/index.html#module-porems.pattern">porems.pattern</a>
+</li>
+          <li><a href="autoapi/porems/pore/index.html#module-porems.pore">porems.pore</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#module-porems.shape">porems.shape</a>
+</li>
+          <li><a href="autoapi/porems/store/index.html#module-porems.store">porems.store</a>
+</li>
+          <li><a href="autoapi/porems/system/index.html#module-porems.system">porems.system</a>
+</li>
+          <li><a href="autoapi/porems/utils/index.html#module-porems.utils">porems.utils</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule">Molecule (class in porems.molecule)</a>
+</li>
+        <li><a href="autoapi/porems/utils/index.html#porems.utils.mols_to_mmol_l">mols_to_mmol_l() (in module porems.utils)</a>
+</li>
+        <li><a href="autoapi/porems/utils/index.html#porems.utils.mols_to_mumol_m2">mols_to_mumol_m2() (in module porems.utils)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.move">move() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/utils/index.html#porems.utils.mumol_m2_to_mols">mumol_m2_to_mols() (in module porems.utils)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="N" class="genindex-section">
+  <h2>N</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/dice/index.html#porems.dice.Dice.neighbor">neighbor() (porems.dice.Dice method)</a>
+</li>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Cone.normal">normal() (porems.shape.Cone method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cuboid.normal">(porems.shape.Cuboid method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cylinder.normal">(porems.shape.Cylinder method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Hourglass.normal">(porems.shape.Hourglass method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Sphere.normal">(porems.shape.Sphere method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="O" class="genindex-section">
+  <h2>O</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/store/index.html#porems.store.Store.obj">obj() (porems.store.Store method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.objectify">objectify() (porems.pore.Pore method)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.overlap">overlap() (porems.molecule.Molecule method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="P" class="genindex-section">
+  <h2>P</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.part_angle">part_angle() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.part_move">part_move() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.part_rotate">part_rotate() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/pattern/index.html#porems.pattern.Pattern">Pattern (class in porems.pattern)</a>
+</li>
+        <li><a href="autoapi/porems/pattern/index.html#porems.pattern.AlphaCristobalit.pattern">pattern() (porems.pattern.AlphaCristobalit method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/pattern/index.html#porems.pattern.BetaCristobalit.pattern">(porems.pattern.BetaCristobalit method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/store/index.html#porems.store.Store.pdb">pdb() (porems.store.Store method)</a>
+</li>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Cone.Phi">Phi() (porems.shape.Cone method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cuboid.Phi">(porems.shape.Cuboid method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cylinder.Phi">(porems.shape.Cylinder method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Hourglass.Phi">(porems.shape.Hourglass method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Sphere.Phi">(porems.shape.Sphere method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Shape.plot">plot() (porems.shape.Shape method)</a>
+</li>
+        <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore">Pore (class in porems.pore)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreAmorphCylinder">PoreAmorphCylinder (class in porems.system)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreCapsule">PoreCapsule (class in porems.system)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreCone">PoreCone (class in porems.system)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreCylinder">PoreCylinder (class in porems.system)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit">PoreKit (class in porems.system)</a>
+</li>
+        <li>
+    porems
+
+        <ul>
+          <li><a href="autoapi/porems/index.html#module-porems">module</a>
+</li>
+        </ul></li>
+        <li>
+    porems.atom
+
+        <ul>
+          <li><a href="autoapi/porems/atom/index.html#module-porems.atom">module</a>
+</li>
+        </ul></li>
+        <li>
+    porems.database
+
+        <ul>
+          <li><a href="autoapi/porems/database/index.html#module-porems.database">module</a>
+</li>
+        </ul></li>
+        <li>
+    porems.dice
+
+        <ul>
+          <li><a href="autoapi/porems/dice/index.html#module-porems.dice">module</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li>
+    porems.generic
+
+        <ul>
+          <li><a href="autoapi/porems/generic/index.html#module-porems.generic">module</a>
+</li>
+        </ul></li>
+        <li>
+    porems.geometry
+
+        <ul>
+          <li><a href="autoapi/porems/geometry/index.html#module-porems.geometry">module</a>
+</li>
+        </ul></li>
+        <li>
+    porems.matrix
+
+        <ul>
+          <li><a href="autoapi/porems/matrix/index.html#module-porems.matrix">module</a>
+</li>
+        </ul></li>
+        <li>
+    porems.molecule
+
+        <ul>
+          <li><a href="autoapi/porems/molecule/index.html#module-porems.molecule">module</a>
+</li>
+        </ul></li>
+        <li>
+    porems.pattern
+
+        <ul>
+          <li><a href="autoapi/porems/pattern/index.html#module-porems.pattern">module</a>
+</li>
+        </ul></li>
+        <li>
+    porems.pore
+
+        <ul>
+          <li><a href="autoapi/porems/pore/index.html#module-porems.pore">module</a>
+</li>
+        </ul></li>
+        <li>
+    porems.shape
+
+        <ul>
+          <li><a href="autoapi/porems/shape/index.html#module-porems.shape">module</a>
+</li>
+        </ul></li>
+        <li>
+    porems.store
+
+        <ul>
+          <li><a href="autoapi/porems/store/index.html#module-porems.store">module</a>
+</li>
+        </ul></li>
+        <li>
+    porems.system
+
+        <ul>
+          <li><a href="autoapi/porems/system/index.html#module-porems.system">module</a>
+</li>
+        </ul></li>
+        <li>
+    porems.utils
+
+        <ul>
+          <li><a href="autoapi/porems/utils/index.html#module-porems.utils">module</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreMultiChannel">PoreMultiChannel (class in porems.system)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreSlit">PoreSlit (class in porems.system)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.pos">pos() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.prepare">prepare() (porems.pore.Pore method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.prepare">(porems.system.PoreKit method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.put">put() (porems.molecule.Molecule method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="R" class="genindex-section">
+  <h2>R</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/utils/index.html#porems.utils.replace">replace() (in module porems.utils)</a>
+</li>
+        <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.reservoir">reservoir() (porems.pore.Pore method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.reservoir">(porems.system.PoreKit method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Cone.rim">rim() (porems.shape.Cone method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cuboid.rim">(porems.shape.Cuboid method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cylinder.rim">(porems.shape.Cylinder method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Hourglass.rim">(porems.shape.Hourglass method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Sphere.rim">(porems.shape.Sphere method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/geometry/index.html#porems.geometry.rotate">rotate() (in module porems.geometry)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.rotate">(porems.molecule.Molecule method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.roughness">roughness() (porems.system.PoreKit method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="S" class="genindex-section">
+  <h2>S</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/utils/index.html#porems.utils.save">save() (in module porems.utils)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.set_atom_name">set_atom_name() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.set_atom_residue">set_atom_residue() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/atom/index.html#porems.atom.Atom.set_atom_type">set_atom_type() (porems.atom.Atom method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.set_atom_type">(porems.molecule.Molecule method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.set_box">set_box() (porems.molecule.Molecule method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.set_box">(porems.pore.Pore method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.set_charge">set_charge() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.set_mass">set_mass() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.set_masses">set_masses() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/atom/index.html#porems.atom.Atom.set_name">set_name() (porems.atom.Atom method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.set_name">(porems.molecule.Molecule method)</a>
+</li>
+          <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.set_name">(porems.pore.Pore method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/dice/index.html#porems.dice.Dice.set_pbc">set_pbc() (porems.dice.Dice method)</a>
+</li>
+        <li><a href="autoapi/porems/atom/index.html#porems.atom.Atom.set_residue">set_residue() (porems.atom.Atom method)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.set_short">set_short() (porems.molecule.Molecule method)</a>
+</li>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Shape">Shape (class in porems.shape)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.shape">shape() (porems.system.PoreKit method)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.shape_cone">shape_cone() (porems.system.PoreKit method)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.shape_cylinder">shape_cylinder() (porems.system.PoreKit method)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.shape_slit">shape_slit() (porems.system.PoreKit method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.shape_sphere">shape_sphere() (porems.system.PoreKit method)</a>
+</li>
+        <li><a href="autoapi/porems/generic/index.html#porems.generic.silanol">silanol() (in module porems.generic)</a>
+</li>
+        <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.siloxane">siloxane() (porems.pore.Pore method)</a>
+</li>
+        <li><a href="autoapi/porems/pore/index.html#porems.pore.Pore.sites">sites() (porems.pore.Pore method)</a>
+</li>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Sphere">Sphere (class in porems.shape)</a>
+</li>
+        <li><a href="autoapi/porems/matrix/index.html#porems.matrix.Matrix.split">split() (porems.matrix.Matrix method)</a>
+</li>
+        <li><a href="autoapi/porems/store/index.html#porems.store.Store">Store (class in porems.store)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.store">store() (porems.system.PoreKit method)</a>
+</li>
+        <li><a href="autoapi/porems/matrix/index.html#porems.matrix.Matrix.strip">strip() (porems.matrix.Matrix method)</a>
+</li>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.structure">structure() (porems.system.PoreKit method)</a>
+</li>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Cone.surf">surf() (porems.shape.Cone method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cuboid.surf">(porems.shape.Cuboid method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cylinder.surf">(porems.shape.Cylinder method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Hourglass.surf">(porems.shape.Hourglass method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Sphere.surf">(porems.shape.Sphere method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Cone.surface">surface() (porems.shape.Cone method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cuboid.surface">(porems.shape.Cuboid method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cylinder.surface">(porems.shape.Cylinder method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Hourglass.surface">(porems.shape.Hourglass method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Sphere.surface">(porems.shape.Sphere method)</a>
+</li>
+          <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.surface">(porems.system.PoreKit method)</a>
+</li>
+        </ul></li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.switch_atom_order">switch_atom_order() (porems.molecule.Molecule method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="T" class="genindex-section">
+  <h2>T</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.table">table() (porems.system.PoreKit method)</a>
+</li>
+        <li><a href="autoapi/porems/utils/index.html#porems.utils.tic">tic() (in module porems.utils)</a>
+</li>
+        <li><a href="autoapi/porems/generic/index.html#porems.generic.tms">tms() (in module porems.generic)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/utils/index.html#porems.utils.toc">toc() (in module porems.utils)</a>
+</li>
+        <li><a href="autoapi/porems/store/index.html#porems.store.Store.top">top() (porems.store.Store method)</a>
+</li>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.translate">translate() (porems.molecule.Molecule method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="U" class="genindex-section">
+  <h2>U</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/geometry/index.html#porems.geometry.unit">unit() (in module porems.geometry)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="V" class="genindex-section">
+  <h2>V</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/geometry/index.html#porems.geometry.vector">vector() (in module porems.geometry)</a>
+</li>
+        <li><a href="autoapi/porems/shape/index.html#porems.shape.Cone.volume">volume() (porems.shape.Cone method)</a>
+
+        <ul>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cuboid.volume">(porems.shape.Cuboid method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Cylinder.volume">(porems.shape.Cylinder method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Hourglass.volume">(porems.shape.Hourglass method)</a>
+</li>
+          <li><a href="autoapi/porems/shape/index.html#porems.shape.Sphere.volume">(porems.shape.Sphere method)</a>
+</li>
+          <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.volume">(porems.system.PoreKit method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="X" class="genindex-section">
+  <h2>X</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/store/index.html#porems.store.Store.xyz">xyz() (porems.store.Store method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="Y" class="genindex-section">
+  <h2>Y</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/system/index.html#porems.system.PoreKit.yml">yml() (porems.system.PoreKit method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="Z" class="genindex-section">
+  <h2>Z</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="autoapi/porems/molecule/index.html#porems.molecule.Molecule.zero">zero() (porems.molecule.Molecule method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, Hamzeh Kraus
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=8d563738"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>

@@ -1,0 +1,129 @@
+porems.pattern
+==============
+
+.. py:module:: porems.pattern
+
+.. autoapi-nested-parse::
+
+   This file contains minimal pattern structures and their properties for
+   creating pore structures.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   porems.pattern.Pattern
+   porems.pattern.BetaCristobalit
+   porems.pattern.AlphaCristobalit
+
+
+Module Contents
+---------------
+
+.. py:class:: Pattern
+
+   This class is a container for individual pattern classes.
+
+
+   .. py:method:: generate(size, orient)
+
+      Generate full block structure.
+
+      :param size: Desired block dimensions
+      :type size: list
+      :param orient: Orientation of the block that should be drilled
+      :type orient: string
+
+      :returns: **structure** -- Full block structure
+      :rtype: Molecule
+
+
+
+   .. py:method:: get_repeat()
+
+      Return the repeat distances in all dimensions.
+
+      :returns: **repeat** -- List of repetition distances
+      :rtype: list
+
+
+
+   .. py:method:: get_gap()
+
+      Return the gap between the pore block and the box edge in all
+      dimensions.
+
+      :returns: **gap** -- List of edge distances
+      :rtype: list
+
+
+
+   .. py:method:: get_size()
+
+      Return the size of the generated block structure.
+
+      :returns: **size** -- List of molecule dimentsions
+      :rtype: list
+
+
+
+   .. py:method:: get_block()
+
+      Return the generated molecule object.
+
+      :returns: **block** -- Generated block molecule
+      :rtype: Molecule
+
+
+
+   .. py:method:: get_orient()
+
+      Return the orientation of the block.
+
+      :returns: **orient** -- Block orientation
+      :rtype: string
+
+
+
+.. py:class:: BetaCristobalit
+
+   Bases: :py:obj:`Pattern`
+
+
+   This class defines the minimal structure of a :math:`\beta`-cristobalite
+   molecule.
+
+
+   .. py:method:: pattern()
+
+      Construct minimal block structure.
+
+      :returns: **block** -- Minimal block structure
+      :rtype: Molecule
+
+
+
+.. py:class:: AlphaCristobalit
+
+   Bases: :py:obj:`Pattern`
+
+
+   This class defines the minimal structure of a :math:`\alpha`-cristobalite
+   molecule.
+
+   * http://aflowlib.org/prototype-encyclopedia/A2B_tP12_92_b_a.html
+   * https://www.atomic-scale-physics.de/lattice/struk/acrist.html
+
+
+   .. py:method:: pattern()
+
+      Construct minimal block structure.
+
+      :returns: **block** -- Minimal block structure
+      :rtype: Molecule
+
+
+

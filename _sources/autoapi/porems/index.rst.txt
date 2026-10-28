@@ -1,0 +1,27 @@
+porems
+======
+
+.. py:module:: porems
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/porems/atom/index
+   /autoapi/porems/database/index
+   /autoapi/porems/dice/index
+   /autoapi/porems/generic/index
+   /autoapi/porems/geometry/index
+   /autoapi/porems/matrix/index
+   /autoapi/porems/molecule/index
+   /autoapi/porems/pattern/index
+   /autoapi/porems/pore/index
+   /autoapi/porems/shape/index
+   /autoapi/porems/store/index
+   /autoapi/porems/system/index
+   /autoapi/porems/utils/index
+
+

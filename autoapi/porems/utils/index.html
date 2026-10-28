@@ -1,0 +1,716 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html"><link rel="prev" title="porems.system" href="../system/index.html">
+        <link rel="prefetch" href="../../../_static/logo_text.svg" as="image">
+        <link rel="prefetch" href="../../../_static/logo_text.svg" as="image">
+
+    <!-- Generated with Sphinx 9.1.1 and Furo 2025.12.19 -->
+        <title>porems.utils - PoreMS 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/style.css?v=803689d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style>
+    
+    <script>
+        // Default to light mode; respect any explicit user preference stored in localStorage
+        if (!localStorage.getItem("theme")) {
+            localStorage.setItem("theme", "light");
+        }
+    </script>
+</head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">PoreMS 1.0.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../../../_static/logo_text.svg" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../../../_static/logo_text.svg" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">PoreMS 1.0.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../molecule.html">Generate a Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pore.html">Generate a Pore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../workflow.html">Simulation Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../shape_examples.html">Complex structure with PoreKit</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">porems</a><input aria-label="Toggle navigation of porems" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../atom/index.html">porems.atom</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../database/index.html">porems.database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dice/index.html">porems.dice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generic/index.html">porems.generic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../geometry/index.html">porems.geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../matrix/index.html">porems.matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../molecule/index.html">porems.molecule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pattern/index.html">porems.pattern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pore/index.html">porems.pore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../shape/index.html">porems.shape</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../store/index.html">porems.store</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../system/index.html">porems.system</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">porems.utils</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/autoapi/porems/utils/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-porems.utils">
+<span id="porems-utils"></span><h1>porems.utils<a class="headerlink" href="#module-porems.utils" title="Link to this heading">¶</a></h1>
+<p>Here popular basic methods are noted.</p>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#porems.utils.mkdirp" title="porems.utils.mkdirp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mkdirp</span></code></a>(directory)</p></td>
+<td><p>Create directory if it does not exist.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#porems.utils.copy" title="porems.utils.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(source, target)</p></td>
+<td><p>Copy a specified file to a specified location.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#porems.utils.column" title="porems.utils.column"><code class="xref py py-obj docutils literal notranslate"><span class="pre">column</span></code></a>(data)</p></td>
+<td><p>Convert a row-major list matrix into a column-major list matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#porems.utils.tic" title="porems.utils.tic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tic</span></code></a>()</p></td>
+<td><p>MATLAB tic replica - return current time.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#porems.utils.toc" title="porems.utils.toc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toc</span></code></a>(t[, message, is_print])</p></td>
+<td><p>MATLAB toc replica - return time difference to tic and alternatively</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#porems.utils.replace" title="porems.utils.replace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace</span></code></a>(file_link, old, new)</p></td>
+<td><p>Replace a given string in a file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#porems.utils.save" title="porems.utils.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(obj, link)</p></td>
+<td><p>Save an object using pickle in the specified link.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#porems.utils.load" title="porems.utils.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(link)</p></td>
+<td><p>Load pickled object from the specified folder.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#porems.utils.mumol_m2_to_mols" title="porems.utils.mumol_m2_to_mols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mumol_m2_to_mols</span></code></a>(c, A)</p></td>
+<td><p>Convert the concentration in <span class="math notranslate nohighlight">\(\frac{\mu\text{mol}}{\text{m}^2}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#porems.utils.mols_to_mumol_m2" title="porems.utils.mols_to_mumol_m2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mols_to_mumol_m2</span></code></a>(N, A)</p></td>
+<td><p>Convert the number of molecules to concentration in</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#porems.utils.mmol_g_to_mumol_m2" title="porems.utils.mmol_g_to_mumol_m2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mmol_g_to_mumol_m2</span></code></a>(c, SBET)</p></td>
+<td><p>Convert the concentration <span class="math notranslate nohighlight">\(\frac{\text{mmol}}{\text{g}}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#porems.utils.mmol_l_to_mols" title="porems.utils.mmol_l_to_mols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mmol_l_to_mols</span></code></a>(c, V)</p></td>
+<td><p>Convert the concentration in <span class="math notranslate nohighlight">\(\frac{\text{mmol}}{\text{l}}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#porems.utils.mols_to_mmol_l" title="porems.utils.mols_to_mmol_l"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mols_to_mmol_l</span></code></a>(N, V)</p></td>
+<td><p>Convert the number of molecules to concentration in</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="porems.utils.mkdirp">
+<span class="sig-prename descclassname"><span class="pre">porems.utils.</span></span><span class="sig-name descname"><span class="pre">mkdirp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.utils.mkdirp" title="Link to this definition">¶</a></dt>
+<dd><p>Create directory if it does not exist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>directory</strong> (<em>string</em>) – Directory name</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="porems.utils.copy">
+<span class="sig-prename descclassname"><span class="pre">porems.utils.</span></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.utils.copy" title="Link to this definition">¶</a></dt>
+<dd><p>Copy a specified file to a specified location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> (<em>string</em>) – Link to requested file</p></li>
+<li><p><strong>target</strong> (<em>string</em>) – Link to requested new file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="porems.utils.column">
+<span class="sig-prename descclassname"><span class="pre">porems.utils.</span></span><span class="sig-name descname"><span class="pre">column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.utils.column" title="Link to this definition">¶</a></dt>
+<dd><p>Convert a row-major list matrix into a column-major list matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>list</em>) – Row data matrix</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>data_col</strong> – Column data matrix</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="porems.utils.tic">
+<span class="sig-prename descclassname"><span class="pre">porems.utils.</span></span><span class="sig-name descname"><span class="pre">tic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#porems.utils.tic" title="Link to this definition">¶</a></dt>
+<dd><p>MATLAB tic replica - return current time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>time</strong> – Current time in seconds</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="porems.utils.toc">
+<span class="sig-prename descclassname"><span class="pre">porems.utils.</span></span><span class="sig-name descname"><span class="pre">toc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_print</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.utils.toc" title="Link to this definition">¶</a></dt>
+<dd><p>MATLAB toc replica - return time difference to tic and alternatively
+print a message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>float</em>) – Starting time - given by tic function</p></li>
+<li><p><strong>message</strong> (<em>string</em><em>, </em><em>optional</em>) – Custom output message</p></li>
+<li><p><strong>is_print</strong> (<em>bool</em><em>, </em><em>optional</em>) – True for printing an output message</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>time</strong> – Time difference</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="porems.utils.replace">
+<span class="sig-prename descclassname"><span class="pre">porems.utils.</span></span><span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_link</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.utils.replace" title="Link to this definition">¶</a></dt>
+<dd><p>Replace a given string in a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_link</strong> (<em>string</em>) – Link to requested file</p></li>
+<li><p><strong>old</strong> (<em>string</em>) – String to be replaced in file</p></li>
+<li><p><strong>new</strong> (<em>string</em>) – New string to be written</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="porems.utils.save">
+<span class="sig-prename descclassname"><span class="pre">porems.utils.</span></span><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.utils.save" title="Link to this definition">¶</a></dt>
+<dd><p>Save an object using pickle in the specified link.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<em>Object</em>) – Object to be saved</p></li>
+<li><p><strong>link</strong> (<em>string</em>) – Specific link to save object</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="porems.utils.load">
+<span class="sig-prename descclassname"><span class="pre">porems.utils.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">link</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.utils.load" title="Link to this definition">¶</a></dt>
+<dd><p>Load pickled object from the specified folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>link</strong> (<em>string</em>) – Specific link to load object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>obj</strong> – Loaded object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="porems.utils.mumol_m2_to_mols">
+<span class="sig-prename descclassname"><span class="pre">porems.utils.</span></span><span class="sig-name descname"><span class="pre">mumol_m2_to_mols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.utils.mumol_m2_to_mols" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the concentration in <span class="math notranslate nohighlight">\(\frac{\mu\text{mol}}{\text{m}^2}\)</span>
+to number of molecules.</p>
+<p>The concentration is given as</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[c=\frac{N}{N_A\cdot A}\]</div>
+</div>
+<p>with surface <span class="math notranslate nohighlight">\(A\)</span> and avogadro constant
+<span class="math notranslate nohighlight">\(N_A=6.022\cdot10^{23}\,\text{mol}^{-1}\)</span>. Assuming that the unit of
+the concentration is <span class="math notranslate nohighlight">\(\mu\text{mol}\cdot\text{m}^{-2}\)</span> and of the
+surface is <span class="math notranslate nohighlight">\(\text{nm}^2\)</span>, the number of molecules is given by</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[N=c\cdot N_A\cdot A
+=[c]\cdot10^{-24}\,\frac{\text{mol}}{\text{nm}^2}\cdot6.022\cdot10^{23}\,\frac{1}{\text{mol}}\cdot[A]\,\text{nm}^2\]</div>
+</div>
+<p>and thus</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\boxed{N=0.6022\cdot[c]\cdot[A]}\ .\]</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c</strong> (<em>float</em>) – Concentration in <span class="math notranslate nohighlight">\(\frac{\mu\text{mol}}{\text{m}^2}\)</span></p></li>
+<li><p><strong>A</strong> (<em>float</em>) – Surface in <span class="math notranslate nohighlight">\(\text{nm}^2\)</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>N</strong> – Number of molecules</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="porems.utils.mols_to_mumol_m2">
+<span class="sig-prename descclassname"><span class="pre">porems.utils.</span></span><span class="sig-name descname"><span class="pre">mols_to_mumol_m2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.utils.mols_to_mumol_m2" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the number of molecules to concentration in
+<span class="math notranslate nohighlight">\(\frac{\mu\text{mol}}{\text{m}^2}\)</span>.</p>
+<p>The concentration is given as</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[c=\frac{N}{N_A\cdot A}\]</div>
+</div>
+<p>with surface <span class="math notranslate nohighlight">\(A\)</span> and avogadro constant
+<span class="math notranslate nohighlight">\(N_A=6.022\cdot10^{23}\,\text{mol}^{-1}\)</span>. Assuming that the unit of
+the concentration is <span class="math notranslate nohighlight">\(\mu\text{mol}\cdot\text{m}^{-2}\)</span> and of the
+surface is <span class="math notranslate nohighlight">\(\text{nm}^2\)</span>, the number of molecules is given by</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[c=\frac{[N]}{6.022\cdot10^{23}\,\text{mol}^{-1}\cdot[A]\,\text{nm}^2}\]</div>
+</div>
+<p>and thus</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\boxed{c=\frac{N}{0.6022\cdot[A]}\cdot\frac{\mu\text{mol}}{\text{m}^2}}\ .\]</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> (<em>int</em>) – Number of molecules</p></li>
+<li><p><strong>A</strong> (<em>float</em>) – Surface in <span class="math notranslate nohighlight">\(\text{nm}^2\)</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>c</strong> – Concentration in <span class="math notranslate nohighlight">\(\frac{\mu\text{mol}}{\text{m}^2}\)</span></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="porems.utils.mmol_g_to_mumol_m2">
+<span class="sig-prename descclassname"><span class="pre">porems.utils.</span></span><span class="sig-name descname"><span class="pre">mmol_g_to_mumol_m2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SBET</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.utils.mmol_g_to_mumol_m2" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the concentration <span class="math notranslate nohighlight">\(\frac{\text{mmol}}{\text{g}}\)</span>
+to <span class="math notranslate nohighlight">\(\frac{\mu\text{mol}}{\text{m}^2}\)</span>.</p>
+<p>This is done by dividing the concentration per gram by the material surface
+per gram property <span class="math notranslate nohighlight">\(S_\text{BET}\)</span></p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\boxed{c_A=\frac{c_g}{S_\text{BET}}\cdot10^3}\ .\]</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c</strong> (<em>float</em>) – Concentration in <span class="math notranslate nohighlight">\(\frac{\text{mmol}}{\text{g}}\)</span></p></li>
+<li><p><strong>SBET</strong> (<em>float</em>) – Material surface in <span class="math notranslate nohighlight">\(\frac{\text{m}^2}{\text{g}}\)</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>c</strong> – Concentration in <span class="math notranslate nohighlight">\(\frac{\mu\text{mol}}{\text{m}^2}\)</span></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="porems.utils.mmol_l_to_mols">
+<span class="sig-prename descclassname"><span class="pre">porems.utils.</span></span><span class="sig-name descname"><span class="pre">mmol_l_to_mols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.utils.mmol_l_to_mols" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the concentration in <span class="math notranslate nohighlight">\(\frac{\text{mmol}}{\text{l}}\)</span>
+to number of molecules.</p>
+<p>The concentration in regard to volume is calculated by</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[c=\frac{N}{N_A\cdot V}\]</div>
+</div>
+<p>with volume <span class="math notranslate nohighlight">\(V\)</span>. Assuming that the unit of the concentration is
+<span class="math notranslate nohighlight">\(\text{mmol}\cdot\text{l}\)</span> and of the volume is
+<span class="math notranslate nohighlight">\(\text{nm}^3\)</span>, the number of molecules is given by</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[N=c\cdot N_A\cdot V
+=[c]\cdot10^{-27}\,\frac{\text{mol}}{\text{nm}^3}\cdot6.022\cdot10^{23}\,\frac{1}{\text{mol}}\cdot[V]\,\text{nm}^3\]</div>
+</div>
+<p>and thus</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\boxed{N=6.022\cdot10^{-4}\cdot[c]\cdot[V]}\ .\]</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c</strong> (<em>float</em>) – Concentration in <span class="math notranslate nohighlight">\(\frac{\text{mmol}}{\text{l}}\)</span></p></li>
+<li><p><strong>V</strong> (<em>float</em>) – Surface in <span class="math notranslate nohighlight">\(\text{nm}^3\)</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>N</strong> – Number of molecules</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="porems.utils.mols_to_mmol_l">
+<span class="sig-prename descclassname"><span class="pre">porems.utils.</span></span><span class="sig-name descname"><span class="pre">mols_to_mmol_l</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#porems.utils.mols_to_mmol_l" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the number of molecules to concentration in
+<span class="math notranslate nohighlight">\(\frac{\text{mmol}}{\text{l}}\)</span>.</p>
+<p>The concentration in regard to volume is calculated by</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[c=\frac{N}{N_A\cdot V}\]</div>
+</div>
+<p>with volume <span class="math notranslate nohighlight">\(V\)</span>. Assuming that the unit of the concentration is
+<span class="math notranslate nohighlight">\(\text{mmol}\cdot\text{l}\)</span> and of the volume is
+<span class="math notranslate nohighlight">\(\text{nm}^3\)</span>, the number of molecules is given by</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[c=\frac{N}{6.022\cdot10^{23}\cdot[V]\,\text{nm}^3}\]</div>
+</div>
+<p>and thus</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\boxed{c=\frac{N}{6.022\times10^{-4}\cdot[V]}\cdot\frac{\text{mmol}}{\text{l}}}\ .\]</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> (<em>int</em>) – Number of molecules</p></li>
+<li><p><strong>V</strong> (<em>float</em>) – Surface in <span class="math notranslate nohighlight">\(\text{nm}^3\)</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>c</strong> – Concentration in <span class="math notranslate nohighlight">\(\frac{\text{mmol}}{\text{l}}\)</span></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          <a class="prev-page" href="../system/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">porems.system</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, Hamzeh Kraus
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">porems.utils</a><ul>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#porems.utils.mkdirp"><code class="docutils literal notranslate"><span class="pre">mkdirp()</span></code></a></li>
+<li><a class="reference internal" href="#porems.utils.copy"><code class="docutils literal notranslate"><span class="pre">copy()</span></code></a></li>
+<li><a class="reference internal" href="#porems.utils.column"><code class="docutils literal notranslate"><span class="pre">column()</span></code></a></li>
+<li><a class="reference internal" href="#porems.utils.tic"><code class="docutils literal notranslate"><span class="pre">tic()</span></code></a></li>
+<li><a class="reference internal" href="#porems.utils.toc"><code class="docutils literal notranslate"><span class="pre">toc()</span></code></a></li>
+<li><a class="reference internal" href="#porems.utils.replace"><code class="docutils literal notranslate"><span class="pre">replace()</span></code></a></li>
+<li><a class="reference internal" href="#porems.utils.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
+<li><a class="reference internal" href="#porems.utils.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+<li><a class="reference internal" href="#porems.utils.mumol_m2_to_mols"><code class="docutils literal notranslate"><span class="pre">mumol_m2_to_mols()</span></code></a></li>
+<li><a class="reference internal" href="#porems.utils.mols_to_mumol_m2"><code class="docutils literal notranslate"><span class="pre">mols_to_mumol_m2()</span></code></a></li>
+<li><a class="reference internal" href="#porems.utils.mmol_g_to_mumol_m2"><code class="docutils literal notranslate"><span class="pre">mmol_g_to_mumol_m2()</span></code></a></li>
+<li><a class="reference internal" href="#porems.utils.mmol_l_to_mols"><code class="docutils literal notranslate"><span class="pre">mmol_l_to_mols()</span></code></a></li>
+<li><a class="reference internal" href="#porems.utils.mols_to_mmol_l"><code class="docutils literal notranslate"><span class="pre">mols_to_mmol_l()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=8d563738"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    </body>
+</html>

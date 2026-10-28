@@ -1,0 +1,590 @@
+porems.system
+=============
+
+.. py:module:: porems.system
+
+.. autoapi-nested-parse::
+
+   Here basic pore system constructions are defined.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   porems.system.PoreKit
+   porems.system.PoreCylinder
+   porems.system.PoreSlit
+   porems.system.PoreCapsule
+   porems.system.PoreAmorphCylinder
+   porems.system.PoreMultiChannel
+   porems.system.PoreCone
+
+
+Module Contents
+---------------
+
+.. py:class:: PoreKit
+
+   Pore construction kit.
+
+
+   .. py:method:: structure(structure)
+
+      Add structure to the Pore builder.
+
+      :param structure: Crystal structure given as a PoreMS Molecule object
+      :type structure: Molecule
+
+
+
+   .. py:method:: build(bonds=[0.155 - 0.01, 0.155 + 0.01])
+
+      Process provided structure to build connectivity matrix.
+
+      :param bonds: Minimal ans maximal bond length range for Si-O bonds
+      :type bonds: list, optional
+
+
+
+   .. py:method:: exterior(res, hydro=0)
+
+      Optionally create and adjust exterior surface.
+
+      :param res: Reservoir length in nm
+      :type res: float
+      :param hydro: Hydroxilation degree for exterior surface in
+                    :math:`\frac{\mu\text{mol}}{\text{m}^2}`
+                    leave zero for no adjustment
+      :type hydro: float, optional
+
+
+
+   .. py:method:: add_shape(shape, section=None, hydro=0)
+
+      Add shape to pore system for drilling.
+
+      :param shape: Shape type (pos 0) and shape (pos 1)
+      :type shape: list
+      :param section: Range of shape from start x,y,z-length to end x,y,z-length,
+                      leave empty for whole range - mainly used to assign
+                      silanol groups to the shapes
+      :type section: dictionary, optional
+      :param hydro: Hydroxylation degree for interior surface in
+                    :math:`\frac{\mu\text{mol}}{\text{m}^2}`
+      :type hydro: float, optional
+
+
+
+   .. py:method:: shape_cylinder(diam, length=0, centroid=None, central=None)
+
+      Add cylindrical shape
+
+      :param diam: Cylinder diameter
+      :type diam: float
+      :param length: length of cylindrical shape leave zero for full length
+      :type length: float, optional
+      :param centroid: Cylinder centroid - leave zero for system centroid
+      :type centroid: list, optional
+      :param central: Central axis for cylinder
+      :type central: list, optional
+
+      :returns: **shape** -- Shape type (pos 0) and shape (pos 1)
+      :rtype: list
+
+
+
+   .. py:method:: shape_slit(height, length=0, centroid=None, central=None)
+
+      Add slit shape
+
+      :param height: Cylinder diameter
+      :type height: float
+      :param length: length of cylindrical shape
+      :type length: float, optional
+      :param centroid: Cylinder centroid - leave zero for system centroid
+      :type centroid: list, optional
+      :param central: Central axis for cylinder
+      :type central: list, optional
+
+      :returns: **shape** -- Shape type (pos 0) and shape (pos 1)
+      :rtype: list
+
+
+
+   .. py:method:: shape_sphere(diameter, centroid=None, central=None)
+
+      Add sphere shape
+
+      :param diameter: Sphere diameter
+      :type diameter: float
+      :param centroid: Sphere centroid - leave zero for system centroid
+      :type centroid: list, optional
+      :param central: Central axis for Sphere
+      :type central: list, optional
+
+      :returns: **shape** -- Shape type (pos 0) and shape (pos 1)
+      :rtype: list
+
+
+
+   .. py:method:: shape_cone(diam_1, diam_2, length=0, centroid=None, central=None)
+
+      Add cone shape
+
+      :param diam_1: Cone first diameter
+      :type diam_1: float
+      :param diam_2: Cone second diameter
+      :type diam_2: float
+      :param length: length of cylindrical shape leave zero for full length
+      :type length: float, optional
+      :param centroid: Cone centroid - leave zero for system centroid
+      :type centroid: list, optional
+      :param central: Central axis for cone
+      :type central: list, optional
+
+      :returns: **shape** -- Shape type (pos 0) and shape (pos 1)
+      :rtype: list
+
+
+
+   .. py:method:: prepare()
+
+      Prepare pore surface, add siloxane bridges, assign sites to sections,
+      and assign a unique normal vector to each site by updating the
+      original pore object site list.
+
+
+
+   .. py:method:: attach(mol, mount, axis, amount, site_type='in', inp='num', shape='all', pos_list=None, scale=1, trials=1000, is_proxi=True, is_rotate=False, is_g=True)
+
+      Attach molecule on the surface.
+
+      :param mol: Molecule object to attach
+      :type mol: Molecule
+      :param mount: Atom id of the molecule that is placed on the surface silicon atom
+      :type mount: integer
+      :param axis: List of two atom ids of the molecule that define the molecule axis
+      :type axis: list
+      :param amount: Number of molecules to attach
+      :type amount: int
+      :param site_type: Use **in** for the interior surface and **ex** for the exterior
+      :type site_type: string, optional
+      :param inp: Input type: **num** - Number of molecules,
+                  **molar** - :math:`\frac{\mu\text{mol}}{\text{m}^2}`,
+                  **percent** - :math:`\%` of OH groups
+      :type inp: string, optional
+      :param shape: Optional is "all" this means every shape will be functionalize.
+                    Otherwise specific the shape if you want to functionalize.
+      :type shape: string, optional
+      :param pos_list: List of positions (Cartesian) to find nearest available binding site for
+      :type pos_list: list, optional
+      :param scale: Circumference scaling around the molecule position
+      :type scale: float, optional
+      :param trials: Number of trials picking a random site
+      :type trials: integer, optional
+      :param is_proxi: True to fill binding sites in proximity of filled binding site
+      :type is_proxi: bool, optional
+      :param is_rotate: True to randomly rotate molecule around own axis
+      :type is_rotate: bool, optional
+      :param is_g: Force to add molecules only on single binding sites
+      :type is_g: bool, optional
+
+
+
+   .. py:method:: attach_special(mol, mount, axis, amount, scale=1, symmetry='point', is_proxi=True, is_rotate=False)
+
+      Attach molecules at geometrically symmetric positions along z-axis.
+
+      :param mol: Molecule to attach
+      :type mol: Molecule
+      :param mount: Atom id used as mounting point
+      :type mount: integer
+      :param axis: Two atom ids defining the molecule axis
+      :type axis: list
+      :param amount: Number of molecules to attach
+      :type amount: int
+      :param scale: Circumference scaling factor
+      :type scale: float, optional
+      :param symmetry: ``"point"`` — alternating sides; ``"mirror"`` — same side
+      :type symmetry: string, optional
+      :param is_proxi: Fill proximity sites with silanol if True
+      :type is_proxi: bool, optional
+      :param is_rotate: Randomly rotate molecule around own axis if True
+      :type is_rotate: bool, optional
+
+
+
+   .. py:method:: finalize()
+
+      Finalize pore system.
+
+
+
+   .. py:method:: store(link='./', sort_list=None)
+
+      Store pore system and all necessary files for simulation at given
+      link.
+
+      :param link: Folder link for output
+      :type link: string, optional
+
+
+
+   .. py:method:: yml(link='./')
+
+      Save yaml file with properties necessary for analysis.
+
+      :param link: Folder link for output
+      :type link: string, optional
+
+
+
+   .. py:method:: diameter()
+
+      Calculate true diameter after drilling and preparation.
+
+      :returns: **diameter** -- List of shape diameters after preparation
+      :rtype: list
+
+
+
+   .. py:method:: roughness()
+
+      Calculate surface roughness (RMS) for interior and exterior surfaces.
+
+      :returns: **roughness** -- ``{"in": [rq_shape_0, ...], "ex": rq_exterior}``
+      :rtype: dict
+
+
+
+   .. py:method:: volume(is_sum=True)
+
+      Calculate pore volume. This is done by defining a new shape object
+      with system sizes after pore preparation and using the volume functions.
+
+      .. rubric:: Notes
+
+      Sphere volume is fully calculated.
+
+      :param is_sum: True to return sum of all sections
+      :type is_sum: bool, optional
+
+      :returns: **volume** -- Total pore volume if is_sum is True. Otherwise a list of volumes
+      :rtype: float, list
+
+
+
+   .. py:method:: surface(is_sum=True)
+
+      Calculate pore surface and exterior surface. This is done by defining
+      a new shape object with system sizes after pore preparation and using
+      the surface functions.
+
+      .. rubric:: Notes
+
+      Sphere surface is fully calculated and outer surface assumes
+      that spheres intersect at the center.
+
+      :param is_sum: True to return sum of all sections
+      :type is_sum: bool, optional
+
+      :returns: **surface** -- Pore surface of interior and exterior
+      :rtype: dictionary
+
+
+
+   .. py:method:: allocation()
+
+      Calculate molecule allocation on the surface. Using interior and
+      exterior surfaces, the allocation rates can be determined by counting
+      the number of used molecules on the surfaces.
+
+      Using the conversion function :func:`porems.utils.mols_to_mumol_m2`, the
+      number of molecules is converted to concentration in
+      :math:`\frac{\mu\text{mol}}{\text{m}^2}`.
+
+      :returns: **alloc** -- Dictionary containing the surface allocation of all molecules in
+                number of molecules, :math:`\frac{\text{mols}}{\text{nm}^2}` and
+                :math:`\frac{\mu\text{mol}}{\text{m}^2}`
+      :rtype: dictionary
+
+
+
+   .. py:method:: reservoir()
+
+      Return the reservoir length.
+
+      :returns: **res** -- Reservoir length
+      :rtype: float
+
+
+
+   .. py:method:: box()
+
+      Return the box size of the pore block.
+
+      :returns: **box** -- Box size in all dimensions
+      :rtype: list
+
+
+
+   .. py:method:: centroid()
+
+      Return pore centroid.
+
+      :returns: **centroid** -- Centroid of the pore
+      :rtype: list
+
+
+
+   .. py:method:: shape()
+
+      Return the pore shape for analysis using PoreAna.
+
+      :returns: **pore_shape** -- Pore shape
+      :rtype: dictionary
+
+
+
+   .. py:method:: table(decimals=3, fmt=None)
+
+      Create a properties table for the pore system.
+
+      :param decimals: Number of decimal places
+      :type decimals: integer, optional
+      :param fmt: Output format.  ``None`` (default) returns a
+                  :class:`pandas.DataFrame` for programmatic use.
+                  ``"plain"`` returns a formatted string suitable for
+                  printing to a terminal.  ``"latex"`` returns a
+                  ``longtable`` LaTeX environment (requires the *booktabs*
+                  and *longtable* packages).
+      :type fmt: None | "plain" | "latex", optional
+
+      :returns: **table** -- Pore properties in the requested format
+      :rtype: DataFrame | str
+
+
+
+.. py:class:: PoreCylinder(size, diam, res=5, hydro=None)
+
+   Bases: :py:obj:`PoreKit`
+
+
+   This class carves a cylindrical pore system out of a
+   :math:`\beta`-cristobalite block.
+
+   :param size: Size of the silicon-oxygen-grid
+   :type size: list
+   :param diam: Cylinder diameter
+   :type diam: float
+   :param res: Reservoir size on each side
+   :type res: float, optional
+   :param hydro: Hydroxilation degree for interior and exterior of the pore in
+                 :math:`\frac{\mu\text{mol}}{\text{m}^2}`
+   :type hydro: list, optional
+
+   .. rubric:: Examples
+
+   Following example generates a cylindrical pore with a diameter of 4nm,
+   reservoirs of 5nm on each side and a surface functionalized with TMS
+
+   .. code-block:: python
+
+       import porems as pms
+
+       pore = pms.PoreCylinder([6, 6, 6], 4, 5)
+
+       pore.attach(pms.gen.tms(), 0, [0, 1], 100, "in")
+       pore.attach(pms.gen.tms(), 0, [0, 1], 20, "ex")
+
+       pore.finalize()
+
+       pore.store("output/")
+
+
+.. py:class:: PoreSlit(size, height, res=0, hydro=None)
+
+   Bases: :py:obj:`PoreKit`
+
+
+   This class carves a slit-pore out of a :math:`\beta`-cristobalite block.
+
+   :param size: Size of the silicon-oxygen-grid
+   :type size: list
+   :param height: Pore height
+   :type height: float
+   :param res: Reservoir size on each side
+   :type res: float, optional
+   :param hydro: Hydroxilation degree for interior and exterior of the pore in
+                 :math:`\frac{\mu\text{mol}}{\text{m}^2}`
+   :type hydro: list, optional
+
+   .. rubric:: Examples
+
+   Following example generates a slit-pore with a height of 4nm functionalized
+   with TMS
+
+   .. code-block:: python
+
+       import porems as pms
+
+       pore = pms.PoreSlit([6, 6, 6], 4)
+
+       pore.attach(pms.gen.tms(), 0, [0, 1], 100, "in")
+
+       pore.finalize()
+
+       pore.store("output/")
+
+
+.. py:class:: PoreCapsule(size, diam, sep, res=5, hydro=None)
+
+   Bases: :py:obj:`PoreKit`
+
+
+   This class carves a capsule pore system out of a
+   :math:`\beta`-cristobalite block.
+
+   :param size: Size of the silicon-oxygen-grid
+   :type size: list
+   :param diam: Cylinder diameter
+   :type diam: float
+   :param sep: Separation length between capsule
+   :type sep: float
+   :param res: Reservoir size on each side
+   :type res: float, optional
+   :param hydro: Hydroxilation degree for interior and exterior of the pore in
+                 :math:`\frac{\mu\text{mol}}{\text{m}^2}`
+   :type hydro: list, optional
+
+   .. rubric:: Examples
+
+   Following example generates a capsule pore with a diameter of 4nm, a
+   separation distance between the capsules of 2nm, reservoirs of 5nm on each
+   side and a surface functionalized with TMS
+
+   .. code-block:: python
+
+       import porems as pms
+
+       pore = pms.PoreCapsule([6, 6, 12], 4, 2)
+
+       pore.attach(pms.gen.tms(), 0, [0, 1], 100, "in")
+       pore.attach(pms.gen.tms(), 0, [0, 1], 20, "ex")
+
+       pore.finalize()
+
+       pore.store("output/")
+
+
+.. py:class:: PoreAmorphCylinder(diam, res=5, hydro=None)
+
+   Bases: :py:obj:`PoreKit`
+
+
+   This class carves a cylindrical pore system out of an amorph
+   :math:`\beta`-cristobalite block from
+   `Vink et al. <http://doi.org/10.1103/PhysRevB.67.245201>`_ with dimensions
+   [9.605, 9.605, 9.605] (x, y, z).
+
+   :param diam: Cylinder diameter
+   :type diam: float
+   :param res: Reservoir size on each side
+   :type res: float, optional
+   :param hydro: Hydroxilation degree for interior and exterior of the pore in
+                 :math:`\frac{\mu\text{mol}}{\text{m}^2}`
+   :type hydro: list, optional
+
+   .. rubric:: Examples
+
+   Following example generates a cylindrical pore with a diameter of 4nm,
+   reservoirs of 5nm on each side and a surface functionalized with TMS
+
+   .. code-block:: python
+
+       import porems as pms
+
+       pore = pms.PoreAmorphCylinder(4, 5)
+
+       pore.attach(pms.gen.tms(), 0, [0, 1], 100, "in")
+       pore.attach(pms.gen.tms(), 0, [0, 1], 20, "ex")
+
+       pore.finalize()
+
+       pore.store("output/")
+
+
+.. py:class:: PoreMultiChannel(size, n_channels, diam, spacing=None, res=5, hydro=None)
+
+   Bases: :py:obj:`PoreKit`
+
+
+   Convenience class that carves *N* parallel cylindrical channels into a
+   :math:`\beta`-cristobalite block.
+
+   The channels are arranged in a regular 1-D row along the x-axis and share
+   the same y-coordinate as the block centroid.  Their centre-to-centre
+   spacing is ``spacing`` (defaulting to ``diam + 0.5`` nm).
+
+   :param size: ``[nx, ny, nz]`` repeat counts for the BetaCristobalit block (nm).
+   :type size: list
+   :param n_channels: Number of parallel channels to carve.
+   :type n_channels: int
+   :param diam: Channel diameter in nm.
+   :type diam: float
+   :param spacing: Centre-to-centre channel spacing in nm.  Defaults to ``diam + 0.5``.
+   :type spacing: float, optional
+   :param res: Reservoir length on each side in nm (0 = no reservoir).
+   :type res: float, optional
+   :param hydro: Hydroxylation density ``[interior, exterior]`` in
+                 :math:`\mu\text{mol}\,\text{m}^{-2}`.
+   :type hydro: list, optional
+
+   .. rubric:: Examples
+
+   .. code-block:: python
+
+       import porems as pms
+
+       pore = pms.PoreMultiChannel([8, 4, 8], 3, 2.0, spacing=3.0, res=5)
+       pore.attach(pms.gen.tms(), 0, [0, 1], 100, "in")
+       pore.finalize()
+       pore.store("output/multi/")
+
+
+.. py:class:: PoreCone(size, diam_in, diam_out, res=5, hydro=None)
+
+   Bases: :py:obj:`PoreKit`
+
+
+   Convenience class that carves a conical pore into a β-cristobalite block.
+
+   The cone transitions linearly from ``diam_in`` at one end to ``diam_out``
+   at the other.  Both end diameters are on the interior surface.
+
+   :param size: ``[nx, ny, nz]`` block repeat counts (nm).
+   :type size: list
+   :param diam_in: Diameter at the narrow end (nm).
+   :type diam_in: float
+   :param diam_out: Diameter at the wide end (nm).
+   :type diam_out: float
+   :param res: Reservoir length on each side (nm). Default 5.
+   :type res: float, optional
+   :param hydro: Hydroxylation density ``[interior, exterior]`` in μmol m⁻².
+   :type hydro: list, optional
+
+   .. rubric:: Examples
+
+   .. code-block:: python
+
+       import porems as pms
+
+       pore = pms.PoreCone([8, 8, 10], 2.0, 4.0, res=5)
+       pore.attach(pms.gen.tms(), 0, [0, 1], 100, "in")
+       pore.finalize()
+       pore.store("output/cone/")
+
+

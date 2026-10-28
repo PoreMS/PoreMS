@@ -1,0 +1,258 @@
+porems.geometry
+===============
+
+.. py:module:: porems.geometry
+
+.. autoapi-nested-parse::
+
+   Here basic geometric functions are noted.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   porems.geometry.dot_product
+   porems.geometry.length
+   porems.geometry.vector
+   porems.geometry.unit
+   porems.geometry.cross_product
+   porems.geometry.angle
+   porems.geometry.angle_polar
+   porems.geometry.angle_azi
+   porems.geometry.main_axis
+   porems.geometry.rotate
+
+
+Module Contents
+---------------
+
+.. py:function:: dot_product(vec_a, vec_b)
+
+   Calculate the dot product of two vectors
+   :math:`\boldsymbol{a},\boldsymbol{b}\in\mathbb{R}^n`
+
+   .. math::
+
+       \text{dot}(\boldsymbol{a},\boldsymbol{b})=
+       \begin{pmatrix}a_1\\\vdots\\a_n\end{pmatrix}\cdot
+       \begin{pmatrix}b_1\\\vdots\\b_n\end{pmatrix}=
+       a_1\cdot b_1+a_2\cdot b_2+\dots+a_n\cdot b_n.
+
+   :param vec_a: First vector :math:`\boldsymbol{a}`
+   :type vec_a: list
+   :param vec_b: Second vector :math:`\boldsymbol{b}`
+   :type vec_b: list
+
+   :returns: **dot** -- Dot product value
+   :rtype: float
+
+
+.. py:function:: length(vec)
+
+   Calculate the length of a vector
+   :math:`\boldsymbol{a}\in\mathbb{R}^n`
+
+   .. math::
+
+       \text{length}(\boldsymbol{a})=|\boldsymbol{a}|
+       =\sqrt{\boldsymbol{a}\cdot\boldsymbol{a}}
+
+   :param vec: Vector a
+   :type vec: list
+
+   :returns: **length** -- Vector length
+   :rtype: float
+
+
+.. py:function:: vector(pos_a, pos_b)
+
+   Calculate the vector between to two positions
+   :math:`\boldsymbol{a},\boldsymbol{b}\in\mathbb{R}^n`
+
+   .. math::
+
+       \text{vec}(\boldsymbol{a},\boldsymbol{b})
+       =\begin{pmatrix}b_1-a_1\\\vdots\\b_n-a_n\end{pmatrix}
+
+   :param pos_a: First position :math:`\boldsymbol{a}`
+   :type pos_a: list
+   :param pos_b: Second position :math:`\boldsymbol{b}`
+   :type pos_b: list
+
+   :returns: **vector** -- Bond vector
+   :rtype: list
+
+
+.. py:function:: unit(vec)
+
+   Transform a vector :math:`\boldsymbol{a}\in\mathbb{R}^n` into a
+   unit vector
+
+   .. math::
+
+       \text{unit}(\boldsymbol{a})
+       =\frac{\boldsymbol{a}}{|\boldsymbol{a}|}
+
+   :param vec: Vector a
+   :type vec: list
+
+   :returns: **vec** -- Unit vector
+   :rtype: list
+
+
+.. py:function:: cross_product(vec_a, vec_b)
+
+   Calculate the cross product of two three-dimensional vectors
+   :math:`\boldsymbol{a},\boldsymbol{b}\in\mathbb{R}^3`
+
+   .. math::
+
+       \text{cross}(\boldsymbol{a},\boldsymbol{b})=\begin{pmatrix}
+       a_2\cdot b_3-a_3\cdot b_2\\
+       a_3\cdot b_1-a_1\cdot b_3\\
+       a_1\cdot b_2-a_2\cdot b_1
+       \end{pmatrix}
+
+   :param vec_a: First vector :math:`\boldsymbol{a}`
+   :type vec_a: list
+   :param vec_b: Second vector :math:`\boldsymbol{b}`
+   :type vec_b: list
+
+   :returns: **vec** -- Cross product vector
+   :rtype: list
+
+
+.. py:function:: angle(vec_a, vec_b, is_deg=True)
+
+   Calculate the angle between two vectors
+   :math:`\boldsymbol{a},\boldsymbol{b}\in\mathbb{R}^n`
+
+   .. math::
+
+       \text{angle}=\cos^{-1}\frac{\boldsymbol{a}\cdot\boldsymbol{b}}
+       {|\boldsymbol{a}||\boldsymbol{a}|}
+
+   :param vec_a: First vector :math:`\boldsymbol{a}`
+   :type vec_a: list
+   :param vec_b: Second vector :math:`\boldsymbol{b}`
+   :type vec_b: list
+   :param is_deg: True if the output should be in degree
+   :type is_deg: bool, optional
+
+   :returns: **angle** -- Angle
+   :rtype: float
+
+
+.. py:function:: angle_polar(pos, is_deg=False)
+
+   Calculate the polar angle of a position vector
+   :math:`\boldsymbol{a}\in\mathbb{R}^3`, which is the angle of the
+   x-axis towards the reflected position vector on the x-y-plane
+
+   .. math::
+
+       \text{polar}(\boldsymbol{a})=\arctan2(x,y)\left\{
+       \begin{array}{ll}
+       \tan^{-1}\left(\frac{y}{x}\right)&x>0\\
+       \tan^{-1}\left(\frac{y}{x}\right)+\pi&x<0,y>0\\
+       \pm\pi&x<0,y=0\\
+       \tan^{-1}\left(\frac{y}{x}\right)-\pi&x<0,y<0\\
+       +\frac{\pi}{2}&x=0,y>0\\
+       -\frac{\pi}{2}&x=0,y<0
+       \end{array}
+       \right.
+
+   with :math:`x` as the first vector entry and :math:`y` as the second.
+
+   :param pos: Position vector :math:`\boldsymbol{a}`
+   :type pos: list
+   :param is_deg: True if the output should be in degree
+   :type is_deg: bool, optional
+
+   :returns: **angle** -- Polar angle
+   :rtype: float
+
+
+.. py:function:: angle_azi(pos, is_deg=False)
+
+   Calculate the azimuthal angle of a position vector
+   :math:`\boldsymbol{a}\in\mathbb{R}^3`, which is the angle of the
+   position vector towards the x-y-plane
+
+   .. math::
+
+       \text{azimut}(\boldsymbol{a})
+       =\cos^{-1}\frac{y}{|\boldsymbol{a}|}
+
+   with :math:`y` as the second vector entry.
+
+   :param pos: Position vector :math:`\boldsymbol{a}`
+   :type pos: list
+   :param is_deg: True if the output should be in degree
+   :type is_deg: bool, optional
+
+   :returns: **angle** -- Azimuthal angle
+   :rtype: float
+
+
+.. py:function:: main_axis(inp, dim=3)
+
+   Return the three-dimensional unit-vector of the main axes.
+   Input is either integer or string
+
+   * 1 or "x" for the x-axis
+   * 2 or "y" for the y-axis
+   * 3 or "z" for the z-axis
+
+   :param inp: Axis type input
+   :type inp: integer, string
+   :param dim: Number of dimensions
+   :type dim: integer, optional
+
+   :returns: **vec** -- Unit vector
+   :rtype: list
+
+
+.. py:function:: rotate(data, axis, angle, is_deg, dim=3)
+
+   Rotate a vector :math:`\boldsymbol{a}\in\mathbb{R}^3`
+   along an axis :math:`\boldsymbol{b}\in\mathbb{R}^3` with angle
+   :math:`\alpha\in\mathbb{R}`. The rotation is performed using the
+   rotation-matrix
+
+   .. math::
+
+       \boldsymbol{R}_\boldsymbol{n}(\alpha)=\begin{pmatrix}
+       n_1^2 (1-\cos\alpha)+   \cos\alpha&n_1n_2(1-\cos\alpha)-n_3\sin\alpha&n_1n_3(1-\cos\alpha)+n_2\sin\alpha\\
+       n_2n_1(1-\cos\alpha)+n_3\sin\alpha&n_2^2 (1-\cos\alpha)+   \cos\alpha&n_2n_3(1-\cos\alpha)-n_1\sin\alpha\\
+       n_3n_1(1-\cos\alpha)-n_2\sin\alpha&n_3n_2(1-\cos\alpha)+n_1\sin\alpha&n_3^2 (1-\cos\alpha)+   \cos\alpha
+       \end{pmatrix}
+
+   where :math:`n_i` are the entries for the unit vector
+   :math:`\boldsymbol{n}` of the axis. The new coordinates
+   :math:`\boldsymbol{c}` are then calculated using a matrix-vector
+   multiplication
+
+   .. math::
+
+       \boldsymbol{c}=\boldsymbol{R}_\boldsymbol{n}\boldsymbol{a}.
+
+   :param data: Vector :math:`\boldsymbol{a}`
+   :type data: list
+   :param axis: Axis :math:`\boldsymbol{b}`
+   :type axis: integer, string, list
+   :param angle: Angle
+   :type angle: float
+   :param is_deg: True if the input is in degree
+   :type is_deg: bool
+   :param dim: Number of dimensions
+   :type dim: integer, optional
+
+   :returns: **coord** -- Vector c as the result of the rotation (list for single 3D vectors,
+             numpy array for multi-dimensional data)
+   :rtype: list or numpy.ndarray
+
+

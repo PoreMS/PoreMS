@@ -1,0 +1,90 @@
+porems.atom
+===========
+
+.. py:module:: porems.atom
+
+.. autoapi-nested-parse::
+
+   All necessary function for creating and editing atoms.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   porems.atom.Atom
+
+
+Module Contents
+---------------
+
+.. py:class:: Atom(atom_type, name='', residue=0)
+
+   This class defines an atom object containing the atom type and optionally
+   a specific name and residue index. Position data is stored in the parent
+   :class:`porems.molecule.Molecule` as a numpy-backed list.
+
+   :param atom_type: Atom type as in the periodic table of elements
+   :type atom_type: string
+   :param name: Atom name
+   :type name: string, optional
+   :param residue: Residue number
+   :type residue: integer, optional
+
+
+   .. py:method:: set_atom_type(atom_type)
+
+      Set the atom type.
+
+      :param atom_type: Atom type as in the periodic table of elements
+      :type atom_type: string
+
+
+
+   .. py:method:: set_name(name)
+
+      Set the atom name.
+
+      :param name: Atom name
+      :type name: string
+
+
+
+   .. py:method:: set_residue(residue)
+
+      Set the residue index.
+
+      :param residue: Residue index
+      :type residue: integer
+
+
+
+   .. py:method:: get_atom_type()
+
+      Return the atom type.
+
+      :returns: **atom_type** -- Atom type
+      :rtype: string
+
+
+
+   .. py:method:: get_name()
+
+      Return the atom name.
+
+      :returns: **name** -- Atom name
+      :rtype: string
+
+
+
+   .. py:method:: get_residue()
+
+      Return the residue index.
+
+      :returns: **residue** -- Residue index
+      :rtype: integer
+
+
+

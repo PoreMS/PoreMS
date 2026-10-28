@@ -1,0 +1,286 @@
+porems.pore
+===========
+
+.. py:module:: porems.pore
+
+.. autoapi-nested-parse::
+
+   Function for editing a pore surface.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   porems.pore.Pore
+
+
+Module Contents
+---------------
+
+.. py:class:: Pore(block, matrix)
+
+   This class prepares and converts a given molecule block into a pore
+   system.
+
+   Methods are provided for preparing the surface according to procedures
+   described in literature and for functionalizing the surface with any desired
+   molecule objects.
+
+   :param block: Block molecule to be prepared as a pore
+   :type block: Molecule
+   :param matrix: Matrix object containing all bond information of given block molecule
+   :type matrix: Matrix
+
+
+   .. py:method:: prepare()
+
+      For the purpose of ensuring chemical propriety, the carved out
+      surface needs to be processed based on a set of rules as proposed by
+      Coasne et al. (2008).
+
+      First, all unsaturated silicon atoms are to be removed. Next, silicon
+      atoms with three unsaturated oxygen bonds are eliminated. Finally, now
+      unbound oxygen atoms must be deleted. The resulting surface has fully
+      saturated silicon atoms with a maximum of two unsaturated oxygen bonds.
+
+      These unsaturated oxygens will be used as binding sites to connect
+      molecules that are to be placed on the surface.
+
+
+
+   .. py:method:: amorph(dist=0.05, accept=[0.1, 0.2], trials=100)
+
+      Make Structure amorphous.
+
+      :param dist: Maximal displacement distance
+      :type dist: float, optional
+      :param accept: Acceptance criteria for allowed bond distances with partners
+      :type accept: list, optional
+      :param trials: Allowed number of trials per atom
+      :type trials: integer, optional
+
+
+
+   .. py:method:: exterior()
+
+      Create an exterior surface for reservoir attachement. Using the
+      periodic boundary distance as the indication, the bond between Si and O
+      is broken and the silicon atom is saturated with and additional O atom
+      using the original bond vector for orientation. At the end, the system
+      is shifted by the given gap vector which represents the distance between
+      bonds.
+
+
+
+   .. py:method:: sites()
+
+      Create binding site dictionary of the format
+
+      .. math::
+
+          \boldsymbol{B}=\begin{Bmatrix}
+              si_1:&
+              \begin{Bmatrix}
+                  \text{o}: \begin{pmatrix}o_{1,1},\dots o_{1,n}\end{pmatrix}&
+                  \text{type}: \text{in/ex}&
+                  \text{state}: \text{True/False}
+              \end{Bmatrix}\\
+              \vdots&\vdots\\
+              si_m:&
+              \begin{Bmatrix}
+                  \text{o}: \begin{pmatrix}o_{m,1},\dots o_{m,n}\end{pmatrix}&
+                  \text{type}: \text{in/ex}&
+                  \text{state}: \text{True/False}
+              \end{Bmatrix}
+          \end{Bmatrix}
+
+      with entries
+
+      * **o** - Unsaturated oxygen atoms bound to silicon atom
+      * **type** - Exterior "ex" or interior "in" binding site
+      * **state** - available - True, used - False
+
+
+
+   .. py:method:: attach(mol, mount, axis, sites, amount, scale=1, trials=1000, pos_list=None, site_type='in', is_proxi=True, is_random=True, is_rotate=False, is_g=True)
+
+      Attach molecules on the surface.
+
+      :param mol: Molecule object to attach
+      :type mol: Molecule
+      :param mount: Atom id of the molecule that is placed on the surface silicon atom
+      :type mount: integer
+      :param axis: List of two atom ids of the molecule that define the molecule axis
+      :type axis: list
+      :param sites: List of silicon ids of which binding sites should be picked
+      :type sites: list
+      :param amount: Number of molecules to attach
+      :type amount: int
+      :param scale: Circumference scaling around the molecule position
+      :type scale: float, optional
+      :param trials: Number of trials picking a random site
+      :type trials: integer, optional
+      :param pos_list: List of positions (cartesian) to find nearest available binding site for
+      :type pos_list: list, optional
+      :param site_type: Site type - interior **in**, exterior **ex**
+      :type site_type: string, optional
+      :param is_proxi: True to fill binding sites in proximity of filled binding site
+      :type is_proxi: bool, optional
+      :param is_random: True to randomly pick a binding site from given list
+      :type is_random: bool, optional
+      :param is_rotate: True to randomly rotate molecule around own axis
+      :type is_rotate: bool, optional
+      :param is_g: Force to add molecules only on single binding sites
+      :type is_g: bool, optinal
+
+      :returns: **mol_list** -- List of molecule objects that are attached on the surface
+      :rtype: list
+
+
+
+   .. py:method:: siloxane(sites, amount, slx_dist=[0.507 - 0.01, 0.507 + 0.01], trials=1000, site_type='in')
+
+      Attach siloxane bridges on the surface similar to Krishna et al.
+      (2009). Here silicon atoms of silanol groups wich are at least 0.31 nm
+      near each other can be converted to siloxan bridges, by removing one
+      oxygen atom of the silanol groups and moving the other at the center of
+      the two.
+
+      :param sites: List of silicon ids of which binding sites should be picked
+      :type sites: list
+      :param amount: Number of molecules to attach
+      :type amount: int
+      :param slx_dist: Silicon atom distance bounds to search for parters in proximity
+                       [lower, upper]
+      :type slx_dist: list
+      :param trials: Number of trials picking a random site
+      :type trials: integer, optional
+      :param site_type: Site type - interior **in**, exterior **ex**
+      :type site_type: string, optional
+
+
+
+   .. py:method:: fill_sites(sites, site_type)
+
+      Fill list of given sites that are empty with silanol and geminal
+      silanol molecules, respectively.
+
+      :param sites: List of silicon ids
+      :type sites: list
+      :param normal: Function that returns the normal vector of the surface for a given
+                     position
+      :type normal: function
+      :param site_type: Site type - interior **in**, exterior **ex**
+      :type site_type: string, optional
+
+      :returns: **mol_list** -- List of molecule objects that are attached on the surface
+      :rtype: list
+
+
+
+   .. py:method:: objectify(atoms)
+
+      Create molecule objects of specified list of atoms.
+
+      :param atoms: List of atom ids
+      :type atoms: list
+
+      :returns: **mol_list** -- List of molecule objects
+      :rtype: list
+
+
+
+   .. py:method:: reservoir(size)
+
+      Create a reservoir with given length on each side of pore system.
+
+      :param size: Reservoir size in nm
+      :type size: float
+
+
+
+   .. py:method:: set_name(name)
+
+      Set the pore name.
+
+      :param name: Pore name
+      :type name: string
+
+
+
+   .. py:method:: set_box(box)
+
+      Set the box size.
+
+      :param box: Box size in all dimensions
+      :type box: list
+
+
+
+   .. py:method:: get_name()
+
+      Return the pore name.
+
+      :returns: **name** -- Pore name
+      :rtype: string
+
+
+
+   .. py:method:: get_box()
+
+      Return the box size of the pore.
+
+      :returns: **box** -- Box size in all dimensions
+      :rtype: list
+
+
+
+   .. py:method:: get_block()
+
+      Return the block molecule.
+
+      :returns: **block** -- Block molecule object
+      :rtype: Molecule
+
+
+
+   .. py:method:: get_sites()
+
+      Return the binding sites dictionary.
+
+      :returns: **sites** -- Binding sites dictionary
+      :rtype: dictionary
+
+
+
+   .. py:method:: get_mol_dict()
+
+      Return the dictionary of all molecules.
+
+      :returns: **mol_dict** -- Dictionary of all molecules
+      :rtype: dictionary
+
+
+
+   .. py:method:: get_site_dict()
+
+      Return the molecule dictionary with site type differentiation.
+
+      :returns: **site_dict** -- Dictionary of all molecules with sorted sites
+      :rtype: dictionary
+
+
+
+   .. py:method:: get_num_in_ex()
+
+      Return the number of geminal si-binding sites that have one OH on the
+      interior surface and on on the exterior surface.
+
+      :returns: **num_in_ex** -- Dictionary of all molecules with sorted sites
+      :rtype: integer
+
+
+

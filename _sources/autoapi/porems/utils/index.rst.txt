@@ -1,0 +1,281 @@
+porems.utils
+============
+
+.. py:module:: porems.utils
+
+.. autoapi-nested-parse::
+
+   Here popular basic methods are noted.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   porems.utils.mkdirp
+   porems.utils.copy
+   porems.utils.column
+   porems.utils.tic
+   porems.utils.toc
+   porems.utils.replace
+   porems.utils.save
+   porems.utils.load
+   porems.utils.mumol_m2_to_mols
+   porems.utils.mols_to_mumol_m2
+   porems.utils.mmol_g_to_mumol_m2
+   porems.utils.mmol_l_to_mols
+   porems.utils.mols_to_mmol_l
+
+
+Module Contents
+---------------
+
+.. py:function:: mkdirp(directory)
+
+   Create directory if it does not exist.
+
+   :param directory: Directory name
+   :type directory: string
+
+
+.. py:function:: copy(source, target)
+
+   Copy a specified file to a specified location.
+
+   :param source: Link to requested file
+   :type source: string
+   :param target: Link to requested new file
+   :type target: string
+
+
+.. py:function:: column(data)
+
+   Convert a row-major list matrix into a column-major list matrix.
+
+   :param data: Row data matrix
+   :type data: list
+
+   :returns: **data_col** -- Column data matrix
+   :rtype: list
+
+
+.. py:function:: tic()
+
+   MATLAB tic replica - return current time.
+
+   :returns: **time** -- Current time in seconds
+   :rtype: float
+
+
+.. py:function:: toc(t, message='', is_print=True)
+
+   MATLAB toc replica - return time difference to tic and alternatively
+   print a message.
+
+   :param t: Starting time - given by tic function
+   :type t: float
+   :param message: Custom output message
+   :type message: string, optional
+   :param is_print: True for printing an output message
+   :type is_print: bool, optional
+
+   :returns: **time** -- Time difference
+   :rtype: float
+
+
+.. py:function:: replace(file_link, old, new)
+
+   Replace a given string in a file.
+
+   :param file_link: Link to requested file
+   :type file_link: string
+   :param old: String to be replaced in file
+   :type old: string
+   :param new: New string to be written
+   :type new: string
+
+
+.. py:function:: save(obj, link)
+
+   Save an object using pickle in the specified link.
+
+   :param obj: Object to be saved
+   :type obj: Object
+   :param link: Specific link to save object
+   :type link: string
+
+
+.. py:function:: load(link)
+
+   Load pickled object from the specified folder.
+
+   :param link: Specific link to load object
+   :type link: string
+
+   :returns: **obj** -- Loaded object
+   :rtype: Object
+
+
+.. py:function:: mumol_m2_to_mols(c, A)
+
+   Convert the concentration in :math:`\frac{\mu\text{mol}}{\text{m}^2}`
+   to number of molecules.
+
+   The concentration is given as
+
+   .. math::
+
+       c=\frac{N}{N_A\cdot A}
+
+   with surface :math:`A` and avogadro constant
+   :math:`N_A=6.022\cdot10^{23}\,\text{mol}^{-1}`. Assuming that the unit of
+   the concentration is :math:`\mu\text{mol}\cdot\text{m}^{-2}` and of the
+   surface is :math:`\text{nm}^2`, the number of molecules is given by
+
+   .. math::
+
+       N=c\cdot N_A\cdot A
+       =[c]\cdot10^{-24}\,\frac{\text{mol}}{\text{nm}^2}\cdot6.022\cdot10^{23}\,\frac{1}{\text{mol}}\cdot[A]\,\text{nm}^2
+
+   and thus
+
+   .. math::
+
+       \boxed{N=0.6022\cdot[c]\cdot[A]}\ .
+
+   :param c: Concentration in :math:`\frac{\mu\text{mol}}{\text{m}^2}`
+   :type c: float
+   :param A: Surface in :math:`\text{nm}^2`
+   :type A: float
+
+   :returns: **N** -- Number of molecules
+   :rtype: float
+
+
+.. py:function:: mols_to_mumol_m2(N, A)
+
+   Convert the number of molecules to concentration in
+   :math:`\frac{\mu\text{mol}}{\text{m}^2}`.
+
+   The concentration is given as
+
+   .. math::
+
+       c=\frac{N}{N_A\cdot A}
+
+   with surface :math:`A` and avogadro constant
+   :math:`N_A=6.022\cdot10^{23}\,\text{mol}^{-1}`. Assuming that the unit of
+   the concentration is :math:`\mu\text{mol}\cdot\text{m}^{-2}` and of the
+   surface is :math:`\text{nm}^2`, the number of molecules is given by
+
+   .. math::
+
+       c=\frac{[N]}{6.022\cdot10^{23}\,\text{mol}^{-1}\cdot[A]\,\text{nm}^2}
+
+   and thus
+
+   .. math::
+
+       \boxed{c=\frac{N}{0.6022\cdot[A]}\cdot\frac{\mu\text{mol}}{\text{m}^2}}\ .
+
+   :param N: Number of molecules
+   :type N: int
+   :param A: Surface in :math:`\text{nm}^2`
+   :type A: float
+
+   :returns: **c** -- Concentration in :math:`\frac{\mu\text{mol}}{\text{m}^2}`
+   :rtype: float
+
+
+.. py:function:: mmol_g_to_mumol_m2(c, SBET)
+
+   Convert the concentration :math:`\frac{\text{mmol}}{\text{g}}`
+   to :math:`\frac{\mu\text{mol}}{\text{m}^2}`.
+
+   This is done by dividing the concentration per gram by the material surface
+   per gram property :math:`S_\text{BET}`
+
+   .. math::
+
+       \boxed{c_A=\frac{c_g}{S_\text{BET}}\cdot10^3}\ .
+
+   :param c: Concentration in :math:`\frac{\text{mmol}}{\text{g}}`
+   :type c: float
+   :param SBET: Material surface in :math:`\frac{\text{m}^2}{\text{g}}`
+   :type SBET: float
+
+   :returns: **c** -- Concentration in :math:`\frac{\mu\text{mol}}{\text{m}^2}`
+   :rtype: float
+
+
+.. py:function:: mmol_l_to_mols(c, V)
+
+   Convert the concentration in :math:`\frac{\text{mmol}}{\text{l}}`
+   to number of molecules.
+
+   The concentration in regard to volume is calculated by
+
+   .. math::
+
+       c=\frac{N}{N_A\cdot V}
+
+   with volume :math:`V`. Assuming that the unit of the concentration is
+   :math:`\text{mmol}\cdot\text{l}` and of the volume is
+   :math:`\text{nm}^3`, the number of molecules is given by
+
+   .. math::
+
+       N=c\cdot N_A\cdot V
+       =[c]\cdot10^{-27}\,\frac{\text{mol}}{\text{nm}^3}\cdot6.022\cdot10^{23}\,\frac{1}{\text{mol}}\cdot[V]\,\text{nm}^3
+
+   and thus
+
+   .. math::
+
+       \boxed{N=6.022\cdot10^{-4}\cdot[c]\cdot[V]}\ .
+
+   :param c: Concentration in :math:`\frac{\text{mmol}}{\text{l}}`
+   :type c: float
+   :param V: Surface in :math:`\text{nm}^3`
+   :type V: float
+
+   :returns: **N** -- Number of molecules
+   :rtype: float
+
+
+.. py:function:: mols_to_mmol_l(N, V)
+
+   Convert the number of molecules to concentration in
+   :math:`\frac{\text{mmol}}{\text{l}}`.
+
+   The concentration in regard to volume is calculated by
+
+   .. math::
+
+       c=\frac{N}{N_A\cdot V}
+
+   with volume :math:`V`. Assuming that the unit of the concentration is
+   :math:`\text{mmol}\cdot\text{l}` and of the volume is
+   :math:`\text{nm}^3`, the number of molecules is given by
+
+   .. math::
+
+       c=\frac{N}{6.022\cdot10^{23}\cdot[V]\,\text{nm}^3}
+
+   and thus
+
+   .. math::
+
+       \boxed{c=\frac{N}{6.022\times10^{-4}\cdot[V]}\cdot\frac{\text{mmol}}{\text{l}}}\ .
+
+   :param N: Number of molecules
+   :type N: int
+   :param V: Surface in :math:`\text{nm}^3`
+   :type V: float
+
+   :returns: **c** -- Concentration in :math:`\frac{\text{mmol}}{\text{l}}`
+   :rtype: float
+
+

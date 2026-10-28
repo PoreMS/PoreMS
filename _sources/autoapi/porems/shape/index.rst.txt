@@ -1,0 +1,895 @@
+porems.shape
+============
+
+.. py:module:: porems.shape
+
+.. autoapi-nested-parse::
+
+   This file contains shape definitions to be cut out from the crystal block.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   porems.shape.Shape
+   porems.shape.Cylinder
+   porems.shape.Sphere
+   porems.shape.Cuboid
+   porems.shape.Cone
+   porems.shape.Hourglass
+
+
+Module Contents
+---------------
+
+.. py:class:: Shape(inp)
+
+   This class is a container for individual shape classes.
+
+   :param inp: Dictionary of necessary inputs
+   :type inp: dictionary
+
+
+   .. py:method:: convert(data, to_zero=True)
+
+      This helper method rotates the given data to match the global central
+      axis and translates it so that the center point is aligned.
+
+      :param data: Data input
+      :type data: list
+      :param to_zero: True to convert data towards zero axis, False to convert data from
+                      zero axis to central axis.
+      :type to_zero: bool
+
+      :returns: **data** -- Converted input
+      :rtype: list
+
+
+
+   .. py:method:: plot(inp=0, num=100, vec=None)
+
+      Plot surface and rim.
+
+      :param inp: Position on the axis
+      :type inp: float, optional
+      :param num: Number of points
+      :type num: integer, optional
+      :param vec: Vector on surface to test normal vector
+      :type vec: list, optional
+
+
+
+   .. py:method:: get_inp()
+
+      Return full input dictionary.
+
+      :returns: **inp** -- Dictionary of all inputs
+      :rtype: dictionary
+
+
+
+.. py:class:: Cylinder(inp)
+
+   Bases: :py:obj:`Shape`
+
+
+   This class defines a cylindrical shape. Needed inputs are
+
+   * **central** - Central axis
+   * **centroid** - Centroid of block
+   * **length** - Cylinder length
+   * **diameter** - Cylinder diameter
+
+   :param inp: Dictionary of necessary inputs
+   :type inp: dictionary
+
+
+   .. py:method:: Phi(r, phi, z)
+
+      Surface function of a cylinder
+
+      .. math::
+
+          \Phi(r,\phi,z)=
+          \begin{bmatrix}r\cos(\phi)\\r\sin(\phi)\\z\end{bmatrix}
+
+      with radius :math:`r`, polar angle :math:`\phi` and cylinder length
+      :math:`z`.
+
+      :param r: Radius
+      :type r: float
+      :param phi: Polar angle
+      :type phi: float
+      :param z: Distance ins z-axis
+      :type z: float
+
+      :returns: **pos** -- Cartesian coordinates for given polar coordinates
+      :rtype: list
+
+
+
+   .. py:method:: d_Phi_phi(r, phi, z)
+
+      Derivative of the surface function considering the polar angle
+
+      .. math::
+
+          \frac{\partial\Phi}{\partial\phi}(r,\phi,z)=
+          \begin{bmatrix}-r\sin(\phi)\\r\cos(\phi)\\0\end{bmatrix}
+
+      with radius :math:`r`, polar angle :math:`\phi` and cylinder length
+      :math:`z`.
+
+      :param r: Radius
+      :type r: float
+      :param phi: Polar angle
+      :type phi: float
+      :param z: Distance ins z-axis
+      :type z: float
+
+      :returns: **pos** -- Cartesian coordinates for given polar coordinates
+      :rtype: list
+
+
+
+   .. py:method:: d_Phi_z(r, phi, z)
+
+      Derivative of the surface function considering the z-axis
+
+      .. math::
+
+          \frac{\partial\Phi}{\partial z}(r,\phi,z)=
+          \begin{bmatrix}0\\0\\1\end{bmatrix}
+
+      with radius :math:`r`, polar angle :math:`\phi` and cylinder length
+      :math:`z`.
+
+      :param r: Radius
+      :type r: float
+      :param phi: Polar angle
+      :type phi: float
+      :param z: Distance ins z-axis
+      :type z: float
+
+      :returns: **pos** -- Cartesian coordinates for given polar coordinates
+      :rtype: list
+
+
+
+   .. py:method:: normal(pos)
+
+      Calculate unit normal vector on surface for a given position
+
+      .. math::
+
+          \frac{\partial\Phi}{\partial\phi}(r,\phi,z)\times
+          \frac{\partial\Phi}{\partial z}(r,\phi,z)=
+          \begin{bmatrix}r\cos(\phi)\\r\sin(\phi)\\0\end{bmatrix}
+
+      with radius :math:`r`, polar angle :math:`\phi` and cylinder length
+      :math:`z`.
+
+      :param pos: Position
+      :type pos: list
+
+      :returns: **normal** -- Normal vector
+      :rtype: list
+
+
+
+   .. py:method:: is_in(pos)
+
+      Check if given position is inside of shape.
+
+      :param pos: Position
+      :type pos: list
+
+      :returns: **is_in** -- True if position is inside of shape
+      :rtype: bool
+
+
+
+   .. py:method:: rim(z, num=100)
+
+      Return x and y values for given z-position.
+
+      :param z: Position on the axis
+      :type z: float
+      :param num: Number of points
+      :type num: integer, optional
+
+      :returns: **positions** -- x and y arrays of the surface rim on the z-position
+      :rtype: list
+
+
+
+   .. py:method:: surf(num=100)
+
+      Return x, y and z values for the shape.
+
+      :param num: Number of points
+      :type num: integer, optional
+
+      :returns: **positions** -- x, y and z arrays of the surface rim
+      :rtype: list
+
+
+
+   .. py:method:: volume()
+
+      Calculate volume
+
+      .. math::
+
+          V=\pi r^2l
+
+      with radius :math:`r` and cylinder length :math:`length`.
+
+      :returns: **volume** -- Volume
+      :rtype: float
+
+
+
+   .. py:method:: surface()
+
+      Calculate inner surface
+
+      .. math::
+
+          S=2\pi rl
+
+      with radius :math:`r` and cylinder length :math:`length`.
+
+      :returns: **surface** -- Inner surface
+      :rtype: float
+
+
+
+.. py:class:: Sphere(inp)
+
+   Bases: :py:obj:`Shape`
+
+
+   This class defines a sphere shape. Needed inputs are
+
+   * **central** - Central axis
+   * **centroid** - Sphere Centroid
+   * **diameter** - Sphere diameter
+
+   :param inp: Dictionary of necessary inputs
+   :type inp: dictionary
+
+
+   .. py:method:: Phi(r, theta, phi)
+
+      Surface function of a sphere
+
+      .. math::
+
+          \Phi(r,\phi,\theta)=
+          \begin{bmatrix}r\cos(\phi)\sin(\theta)\\r\sin(\phi)\sin(\theta)\\r\cos(\theta)\end{bmatrix}
+
+      with radius :math:`r`, polar angle :math:`\phi` and azimuthal angle
+      :math:`\theta`.
+
+      :param r: Radius
+      :type r: float
+      :param theta: Azimuth angle
+      :type theta: float
+      :param phi: Polar angle
+      :type phi: float
+
+      :returns: **pos** -- Cartesian coordinates for given spherical coordinates
+      :rtype: list
+
+
+
+   .. py:method:: d_Phi_phi(r, theta, phi)
+
+      Derivative of the surface function considering the polar angle
+      :math:`\phi`
+
+      .. math::
+
+          \frac{\partial\Phi}{\partial\phi}(r,\phi,\theta)=
+          \begin{bmatrix}-r\sin(\phi)\sin(\theta)\\r\cos(\phi)\sin(\theta)\\0\end{bmatrix}
+
+      with radius :math:`r`, polar angle :math:`\phi` and azimuthal angle
+      :math:`\theta`.
+
+      :param r: Radius
+      :type r: float
+      :param theta: Azimuth angle
+      :type theta: float
+      :param phi: Polar angle
+      :type phi: float
+
+      :returns: **pos** -- Cartesian coordinates for given spherical coordinates
+      :rtype: list
+
+
+
+   .. py:method:: d_Phi_theta(r, theta, phi)
+
+      Derivative of the surface function considering the azimuthal angle
+      :math:`\theta`
+
+      .. math::
+
+          \frac{\partial\Phi}{\partial\theta}(r,\phi,\theta)=
+          \begin{bmatrix}r\cos(\phi)\cos(\theta)\\r\sin(\phi)\cos(\theta)\\-r\sin(\theta)\end{bmatrix}
+
+      with radius :math:`r`, polar angle :math:`\phi` and azimuthal angle
+      :math:`\theta`.
+
+      :param r: Radius
+      :type r: float
+      :param theta: Azimuth angle
+      :type theta: float
+      :param phi: Polar angle
+      :type phi: float
+
+      :returns: **pos** -- Cartesian coordinates for given spherical coordinates
+      :rtype: list
+
+
+
+   .. py:method:: normal(pos)
+
+      Calculate unit normal vector on surface for a given position
+
+      .. math::
+
+          \frac{\partial\Phi}{\partial\theta}(r,\phi,\theta)\times
+          \frac{\partial\Phi}{\partial\phi}(r,\phi,\theta)=
+          \begin{bmatrix}
+          -r^2\cos(\phi)\sin(\theta)^2\\
+          r^2\sin(\phi)\sin(\theta)^2\\
+          -r^2\sin(\theta)\cos(\theta)\left[\sin(\phi)^2-\cos(\phi)^2\right]\\
+          \end{bmatrix}
+
+      with radius :math:`r`, polar angle :math:`\phi` and cylinder length
+      :math:`z`.
+
+      :param pos: Position
+      :type pos: list
+
+      :returns: **normal** -- Normal vector
+      :rtype: list
+
+
+
+   .. py:method:: is_in(pos)
+
+      Check if given position is inside of shape.
+
+      :param pos: Position
+      :type pos: list
+
+      :returns: **is_in** -- True if position is inside of shape
+      :rtype: bool
+
+
+
+   .. py:method:: rim(phi, num=100)
+
+      Return x and y values for given polar angle.
+
+      :param phi: Position on the axis
+      :type phi: float
+      :param num: Number of points
+      :type num: integer, optional
+
+      :returns: **positions** -- x and y arrays of the surface rim on the z-position
+      :rtype: list
+
+
+
+   .. py:method:: surf(num=100)
+
+      Return x, y and z values for the shape.
+
+      :param num: Number of points
+      :type num: integer, optional
+
+      :returns: **positions** -- x, y and z arrays of the surface rim
+      :rtype: list
+
+
+
+   .. py:method:: volume()
+
+      Calculate volume
+
+      .. math::
+
+          V=\frac43\pi r^3
+
+      with radius :math:`r`.
+
+      :returns: **volume** -- Volume
+      :rtype: float
+
+
+
+   .. py:method:: surface()
+
+      Calculate inner surface
+
+      .. math::
+
+          S=4\pi r^2
+
+      with radius :math:`r`.
+
+      :returns: **surface** -- Inner surface
+      :rtype: float
+
+
+
+.. py:class:: Cuboid(inp)
+
+   Bases: :py:obj:`Shape`
+
+
+   This class defines a cuboid shape. Needed inputs are
+
+   * **central** - Central axis
+   * **centroid** - Centroid of block
+   * **length** - Cuboid length
+   * **width** - Cuboid width
+   * **height** - Cuboid height
+
+   :param inp: Dictionary of necessary inputs
+   :type inp: dictionary
+
+
+   .. py:method:: Phi(x, y, z)
+
+      Surface function of a cuboid.
+
+      :param x: Width
+      :type x: float
+      :param y: Height
+      :type y: float
+      :param z: Length
+      :type z: float
+
+      :returns: **pos** -- Cartesian coordinates for given spherical coordinates
+      :rtype: list
+
+
+
+   .. py:method:: normal(pos)
+
+      Calculate unit normal vector on surface for a given position.
+
+      :param pos: Position
+      :type pos: list
+
+      :returns: **normal** -- Unit normal vector
+      :rtype: list
+
+
+
+   .. py:method:: is_in(pos)
+
+      Check if given position is inside of shape.
+
+      :param pos: Position
+      :type pos: list
+
+      :returns: **is_in** -- True if position is inside of shape
+      :rtype: bool
+
+
+
+   .. py:method:: rim(z, num=100)
+
+      Return x and y values for given length.
+
+      :param z: Position on the axis
+      :type z: float
+      :param num: Number of points
+      :type num: integer, optional
+
+      :returns: **positions** -- x and y arrays of the surface rim on the z-position
+      :rtype: list
+
+
+
+   .. py:method:: surf(num=100)
+
+      Return x, y and z values for the shape.
+
+      :param num: Number of points
+      :type num: integer, optional
+
+      :returns: **positions** -- x, y and z arrays of the surface rim
+      :rtype: list
+
+
+
+   .. py:method:: volume()
+
+      Calculate volume
+
+      .. math::
+
+          V=w\cdot h\cdot length
+
+      with width :math:`w`, height :math:`h` and length :math:`length`.
+
+      :returns: **volume** -- Volume
+      :rtype: float
+
+
+
+   .. py:method:: surface()
+
+      Calculate inner surface
+
+      .. math::
+
+          S=2\cdot(w\cdot h+w\cdot length+h\cdot length)
+
+      with width :math:`w`, height :math:`h` and length :math:`length`.
+
+      :returns: **surface** -- Inner surface
+      :rtype: float
+
+
+
+.. py:class:: Cone(inp)
+
+   Bases: :py:obj:`Shape`
+
+
+   This class defines a conical shape. Needed inputs are
+
+   * **central** - Central axis
+   * **centroid** - Centroid of block
+   * **length** - Cone length
+   * **diameter_1** - Cone starting diameter
+   * **diameter_2** - Cone ending diameter
+
+   :param inp: Dictionary of necessary inputs
+   :type inp: dictionary
+
+
+   .. py:method:: Phi(r, phi, z)
+
+      Surface function of a cone
+
+      .. math::
+
+          \Phi(r(z),\phi,z)=
+          \begin{bmatrix}r(z)\cos(\phi)\\r(z)\sin(\phi)\\z\end{bmatrix}
+
+      with polar angle :math:`\phi` and radius function along the :math:`z`-axis
+
+      .. math::
+
+          r(z)=r_1+\frac{r_2-r_1}{length-1}(z-1)
+
+      with radii :math:`r_1` and :math:`r_2` and cone length :math:`length`.
+
+      :param r: Radius
+      :type r: float
+      :param phi: Polar angle
+      :type phi: float
+      :param z: Distance ins z-axis
+      :type z: float
+
+      :returns: **pos** -- Cartesian coordinates for given polar coordinates
+      :rtype: list
+
+
+
+   .. py:method:: d_Phi_phi(r, phi, z)
+
+      Derivative of the surface function considering the polar angle
+
+      .. math::
+
+          \frac{\partial\Phi}{\partial\phi}(r(z),\phi,z)=
+          \begin{bmatrix}-r(z)\sin(\phi)\\r(z)\cos(\phi)\\0\end{bmatrix}
+
+      with polar angle :math:`\phi` and radius function along the :math:`z`-axis
+
+      .. math::
+
+          r(z)=r_1+\frac{r_2-r_1}{length-1}(z-1)
+
+      with radii :math:`r_1` and :math:`r_2` and cone length :math:`length`.
+
+      :param r: Radius
+      :type r: float
+      :param phi: Polar angle
+      :type phi: float
+      :param z: Distance ins z-axis
+      :type z: float
+
+      :returns: **pos** -- Cartesian coordinates for given polar coordinates
+      :rtype: list
+
+
+
+   .. py:method:: d_Phi_z(r, phi, z)
+
+      Derivative of the surface function considering the z-axis
+
+      .. math::
+
+          \frac{\partial\Phi}{\partial z}(r(z),\phi,z)=
+          \begin{bmatrix}r(z)\cos(\phi)\\r(z)\sin(\phi)\\1\end{bmatrix}
+
+      with polar angle :math:`\phi` and radius function along the :math:`z`-axis
+
+      .. math::
+
+          r(z)=\frac{r_2-r_1}{length-1}
+
+      with radii :math:`r_1` and :math:`r_2` and cone length :math:`length`.
+
+      :param r: Radius
+      :type r: float
+      :param phi: Polar angle
+      :type phi: float
+      :param z: Distance ins z-axis
+      :type z: float
+
+      :returns: **pos** -- Cartesian coordinates for given polar coordinates
+      :rtype: list
+
+
+
+   .. py:method:: normal(pos)
+
+      Calculate unit normal vector on surface for a given position
+
+      .. math::
+
+          \frac{\partial\Phi}{\partial\phi}(\tilde r(z),\phi,z)\times
+          \frac{\partial\Phi}{\partial z}(\hat r(z),\phi,z)=
+          \begin{bmatrix}\tilde r(z)\cos(\phi)\\\tilde r(z)\sin(\phi)\\\tilde r(z)\hat r(z)\end{bmatrix}
+
+      with polar angle :math:`\phi` and radius functions along the :math:`z`-axis
+
+      .. math::
+
+          &\tilde r(z)=r_1+\frac{r_2-r_1}{length-1}(z-1)\\
+          &\hat r(z)=\frac{r_2-r_1}{length-1},
+
+      with radii :math:`r_1` and :math:`r_2` and cone length :math:`length`.
+
+      :param pos: Position
+      :type pos: list
+
+      :returns: **normal** -- Normal vector
+      :rtype: list
+
+
+
+   .. py:method:: is_in(pos)
+
+      Check if given position is inside of shape.
+
+      :param pos: Position
+      :type pos: list
+
+      :returns: **is_in** -- True if position is inside of shape
+      :rtype: bool
+
+
+
+   .. py:method:: rim(z, num=100)
+
+      Return x and y values for given z-position.
+
+      :param z: Position on the axis
+      :type z: float
+      :param num: Number of points
+      :type num: integer, optional
+
+      :returns: **positions** -- x and y arrays of the surface rim on the z-position
+      :rtype: list
+
+
+
+   .. py:method:: surf(num=100)
+
+      Return x, y and z values for the shape.
+
+      :param num: Number of points
+      :type num: integer, optional
+
+      :returns: **positions** -- x, y and z arrays of the surface rim
+      :rtype: list
+
+
+
+   .. py:method:: volume()
+
+      Calculate volume
+
+      .. math::
+
+          V=\frac{1}{3}\pi \left[r_1^2+r_2^2+r_1r_2\right]length
+
+      with radii :math:`r_1` and :math:`r_2` and cone length :math:`length`.
+
+      :returns: **volume** -- Volume
+      :rtype: float
+
+
+
+   .. py:method:: surface()
+
+      Calculate inner surface
+
+      .. math::
+
+          S=\pi (r_1+r_2)length
+
+      with radii :math:`r_1` and :math:`r_2` and cone length :math:`length`.
+
+      :returns: **surface** -- Inner surface
+      :rtype: float
+
+
+
+.. py:class:: Hourglass(inp)
+
+   Bases: :py:obj:`Shape`
+
+
+   Cylindrical shape whose radius varies as a cosine along the axis,
+   narrowing to a minimum at the mid-point.
+
+   Required inputs:
+
+   * **central** - Central axis unit vector
+   * **centroid** - Centroid of the block
+   * **length** - Total length along the axis
+   * **diameter_outer** - Diameter at both ends (widest)
+   * **diameter_inner** - Diameter at the mid-point (narrowest)
+
+   The radius profile is
+
+   .. math::
+
+       r(z) = r_i + (r_o - r_i)\,\frac{1 + \cos\!\left(\frac{2\pi z}{length}\right)}{2}
+
+   with outer radius :math:`r_o`, inner radius :math:`r_i` and length
+   :math:`length`.
+
+   :param inp: Dictionary of necessary inputs
+   :type inp: dictionary
+
+
+   .. py:method:: Phi(r, phi, z)
+
+      Surface parametrisation.
+
+      :param r: Kept for interface consistency; radius is determined by ``z``.
+      :type r: ignored
+      :param phi: Polar angles
+      :type phi: array-like
+      :param z: Positions along the axis
+      :type z: array-like
+
+      :returns: **pos** -- x, y, z arrays of the surface
+      :rtype: list
+
+
+
+   .. py:method:: d_Phi_phi(r, phi, z)
+
+      Azimuthal tangent vector.
+
+      :param r: Radius at z
+      :type r: float
+      :param phi: Polar angle
+      :type phi: float
+      :param z: Position along axis
+      :type z: float
+
+      :returns: **tangent**
+      :rtype: list
+
+
+
+   .. py:method:: d_Phi_z(r, phi, z)
+
+      Axial tangent vector.
+
+      :param r: Radius at z (unused; r'(z) is recomputed internally)
+      :type r: float
+      :param phi: Polar angle
+      :type phi: float
+      :param z: Position along axis
+      :type z: float
+
+      :returns: **tangent**
+      :rtype: list
+
+
+
+   .. py:method:: normal(pos)
+
+      Outward surface normal at ``pos``.
+
+      :param pos: Global position on the surface
+      :type pos: list
+
+      :returns: **normal** -- Normal vector (unnormalised)
+      :rtype: list
+
+
+
+   .. py:method:: is_in(pos)
+
+      Return True if ``pos`` is inside the hourglass.
+
+      :param pos: Global position
+      :type pos: list
+
+      :returns: **is_in**
+      :rtype: bool
+
+
+
+   .. py:method:: rim(z, num=100)
+
+      Circle of surface points at axial position ``z``.
+
+      :param z: Position along the axis (local frame)
+      :type z: float
+      :param num: Number of points
+      :type num: int, optional
+
+      :returns: **positions** -- x, y, z arrays
+      :rtype: list
+
+
+
+   .. py:method:: surf(num=100)
+
+      Parametric surface mesh.
+
+      :param num: Number of points in each direction
+      :type num: int, optional
+
+      :returns: **positions** -- x, y, z arrays
+      :rtype: list
+
+
+
+   .. py:method:: volume()
+
+      Volume enclosed by the hourglass.
+
+      .. math::
+
+          V = \pi length \left(r_i^2 + r_i\,\Delta r + \frac{3\,\Delta r^2}{8}\right)
+
+      with :math:`\Delta r = r_o - r_i`.
+
+      :returns: **volume**
+      :rtype: float
+
+
+
+   .. py:method:: surface()
+
+      Lateral surface area (numerical integration).
+
+      :returns: **surface**
+      :rtype: float
+
+
+

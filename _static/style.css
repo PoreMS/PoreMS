@@ -1,0 +1,26 @@
+/* Brand colours */
+a.reference,
+a.reference:visited {
+    color: #4c72b0;
+}
+
+footer a {
+    color: #4c72b0;
+}
+
+/* Plot images are generated with black text on a transparent background.
+   In dark mode the page background turns dark and the text becomes unreadable.
+   Adding a white background keeps them legible in both themes. */
+@media (prefers-color-scheme: dark) {
+    article img {
+        background-color: #ffffff;
+        border-radius: 4px;
+        padding: 6px;
+    }
+}
+
+html[data-theme="dark"] article img {
+    background-color: #ffffff;
+    border-radius: 4px;
+    padding: 6px;
+}

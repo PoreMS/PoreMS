@@ -1,0 +1,180 @@
+porems.dice
+===========
+
+.. py:module:: porems.dice
+
+.. autoapi-nested-parse::
+
+   Separation of a molecule object into smaller cubes for pair-search.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   porems.dice.Dice
+
+
+Module Contents
+---------------
+
+.. py:class:: Dice(mol, size, is_pbc)
+
+   This class splits the molecule into smaller sub boxes and provides
+   parallelized functions for pair-search.
+
+   The aim is reducing the workload on search algorithms for atom pairs.
+   Normally the computational effort would be
+
+   .. math::
+
+       \mathcal O(n^2)
+
+   with the number of atoms :math:`n`, because each atom has to be compared
+   with all other atoms.
+
+   Since a bond distance is fixed, the idea is reducing the search space by
+   dividing the molecule box into cubes and only performing the  pair-search
+   within these smaller boxes and their 26 immediate neighbors. Assuming that
+   the grid structure is ideal in a geometrical sense, that all bond length and
+   angles are constant, the number of atoms in each cube are a constant
+   :math:`b`. The computational effort for each atom is thus a constant
+
+   .. math::
+
+       \mathcal O(27\cdot b^2)
+
+   Therefore, the computational effort for an entire search scales linear with
+   the number of cubes. For example, doubling the cristobalite block size only
+   increases the effort eightfold.
+
+   Furthermore, the search is easily parallelizable, since no communication is
+   needed between the subprocesses that each cover a set of cubes. The effort
+   therefore has an ideal speedup.
+
+   Note that the cube size must be strictly greater than the intended
+   bond length searches.
+
+   :param mol: Molecule to be divided
+   :type mol: Molecule
+   :param size: Cube edge size
+   :type size: float
+   :param is_pbc: True if periodic boundary conditions are needed
+   :type is_pbc: bool
+
+
+   .. py:method:: neighbor(cube_id, is_self=True)
+
+      Get the ids of the cubes surrounding the given one.
+
+      :param index: Main cube index
+      :type index: list
+      :param is_self: True to add the main cube to the output
+      :type is_self: bool, optional
+
+      :returns: **neighbor** -- List of surrounding cube ids, optionally including given cube id
+      :rtype: list
+
+
+
+   .. py:method:: find_bond(cube_list, atom_type, distance)
+
+      Single-threaded bond search used as a reference implementation.
+
+      Searches for atom-pairs that fulfill the distance requirements within the
+      given cube and all 26 surrounding ones. For parallel execution see
+      :func:`find_parallel`, which calls the module-level :func:`_find_bond_task`
+      to avoid pickling the full :class:`Molecule` object.
+
+      :param cube_list: List of cube indices to search in, use an empty list for all cubes
+      :type cube_list: list
+      :param atom_type: List of two atom types, e.g. ``["Si", "O"]``
+      :type atom_type: list
+      :param distance: Bounds of allowed distance ``[lower, upper]`` in nm
+      :type distance: list
+
+      :returns: **bond_list** -- Bond array containing lists of two atom ids
+      :rtype: list
+
+
+
+   .. py:method:: find_parallel(cube_list, atom_type, distance)
+
+      Parallelized bond search using :func:`_find_bond_task`.
+
+      Divides the cube list across ``cpu_count()`` workers. Workers receive only
+      the atom-data and pointer dicts rather than the full
+      :class:`~porems.Molecule`, reducing IPC overhead. On single-threaded
+      Unix processes a ``fork`` start-context is used so workers inherit the
+      parent's memory via copy-on-write (zero-copy). ``spawn`` is used on
+      Windows and inside multi-threaded processes (e.g. test runners) where
+      ``fork`` risks deadlocks.
+
+      :param cube_list: List of cube indices to search in, use an empty list for all cubes
+      :type cube_list: list
+      :param atom_type: List of two atom types, e.g. ``["Si", "O"]``
+      :type atom_type: list
+      :param distance: Bounds of allowed distance ``[lower, upper]`` in nm
+      :type distance: list
+
+      :returns: **bond_list** -- Bond array containing lists of two atom ids
+      :rtype: list
+
+
+
+   .. py:method:: set_pbc(pbc)
+
+      Turn the periodic boundary conditions on or off.
+
+      :param bond: True to turn on periodic boundary conditions
+      :type bond: bool
+
+
+
+   .. py:method:: get_origin()
+
+      Return the origin positions of the cubes.
+
+      :returns: **origin** -- Dictionary of origin positions for each cube
+      :rtype: dictionary
+
+
+
+   .. py:method:: get_pointer()
+
+      Return the list of atoms in each cube.
+
+      :returns: **pointer** -- Pointer dictionary
+      :rtype: dictionary
+
+
+
+   .. py:method:: get_count()
+
+      Return the number of cubes in each dimension.
+
+      :returns: **count** -- Number of cubes
+      :rtype: list
+
+
+
+   .. py:method:: get_size()
+
+      Return the cubes size.
+
+      :returns: **size** -- Cube size
+      :rtype: integer
+
+
+
+   .. py:method:: get_mol()
+
+      Return the molecule.
+
+      :returns: **mol** -- Molecule
+      :rtype: Molecule
+
+
+

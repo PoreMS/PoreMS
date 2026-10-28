@@ -1,0 +1,112 @@
+porems.generic
+==============
+
+.. py:module:: porems.generic
+
+.. autoapi-nested-parse::
+
+   This file contains function for generic molecules  and serves as an exemplary
+   molecule generation process.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   porems.generic.alkane
+   porems.generic.alcohol
+   porems.generic.ketone
+   porems.generic.tms
+   porems.generic.silanol
+
+
+Module Contents
+---------------
+
+.. py:function:: alkane(length, name='alkane', short='ALK', is_h=True)
+
+   This function generates linear alkane molecules.
+
+   :param length: Number of carbon atoms
+   :type length: integer
+   :param name: Molecule name
+   :type name: string, optional
+   :param short: Molecule short name
+   :type short: string, optional
+   :param is_h: True if hydrogens are to be added
+   :type is_h: bool, optional
+
+   :returns: **mol** -- Molecule object
+   :rtype: Molecule
+
+
+.. py:function:: alcohol(length, name='alcohol', short='ALC', is_h=True)
+
+   This function generates linear alcohol molecules.
+
+   :param length: Number of carbon atoms
+   :type length: integer
+   :param name: Molecule name
+   :type name: string, optional
+   :param short: Molecule short name
+   :type short: string, optional
+   :param is_h: True if hydrogens are needed
+   :type is_h: bool, optional
+
+   :returns: **mol** -- Molecule object
+   :rtype: Molecule
+
+
+.. py:function:: ketone(length, pos, name='ketone', short='KET', is_h=True)
+
+   This function generates linear ketone molecules.
+
+   :param length: Number of carbon atoms
+   :type length: integer
+   :param pos: Position of the oxygen atom
+   :type pos: integer
+   :param name: Molecule name
+   :type name: string, optional
+   :param short: Molecule short name
+   :type short: string, optional
+   :param is_h: True if hydrogens are needed
+   :type is_h: bool
+
+   :returns: **mol** -- Molecule object
+   :rtype: Molecule
+
+
+.. py:function:: tms(name='tms', short='TMS', separation=30, is_si=True, is_hydro=True)
+
+   This function generates a trimethylsilyl (TMS) molecule.
+
+   :param name: Molecule name
+   :type name: string, optional
+   :param short: Molecule short name
+   :type short: string, optional
+   :param separation: Sparation of carbon and hydrogen atoms
+   :type separation: float, optional
+   :param is_si: True if the terminus should be a lone silicon, False for a CH3 group
+   :type is_si: bool, optional
+   :param is_hydro: True if the hydrogen atoms should be added
+   :type is_hydro: bool, optional
+
+   :returns: **mol** -- Molecule object
+   :rtype: Molecule
+
+
+.. py:function:: silanol(name='sl', short='SL')
+
+   This function generates a silanol molecule.
+
+   :param name: Molecule name
+   :type name: string, optional
+   :param short: Molecule short name
+   :type short: string, optional
+
+   :returns: **mol** -- Molecule object
+   :rtype: Molecule
+
+
