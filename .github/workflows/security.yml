@@ -17,6 +17,6 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: uv pip install --system pip-audit .
+        run: uv pip install pip-audit .
       - name: Audit dependencies
         run: pip-audit
